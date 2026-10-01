@@ -1,628 +1,980 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>阿斐理恩魔法学院 · 课题板</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { height: 100%; }
+<div id="mainScreen">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="topbar-left">
+        <span class="user-info" id="topUser"></span>
+      </div>
+      <div class="topbar-right">
+        <div class="world-time" id="worldTime"></div>
+        <button class="magic-btn small" onclick="doLogout()">退 出</button>
+      </div>
+    </div>
+    <div class="tabs" id="tabBar"></div>
+    <div id="tabContents"></div>
+  </div>
+</div>
 
-  body {
-    font-family: "Songti SC", "宋体", "SimSun", serif;
-    color: #e8e3d3;
-    min-height: 100vh;
-    background: #060c20;
-    overflow-x: hidden;
-    position: relative;
-  }
+<div id="loadingOverlay">
+  <div class="magic-circle">
+    <div class="rune-ring">
+      <svg viewBox="0 0 220 220">
+        <defs>
+          <path id="runeCirclePath" d="M 110,110 m -100,0 a 100,100 0 1,1 200,0 a 100,100 0 1,1 -200,0" />
+        </defs>
+        <text>
+          <textPath href="#runeCirclePath" startOffset="0%">
+            ✦ A P H E L I O N · M A G I C A · A C A D E M Y ✦ ✦ M A G I C A L · A R C A N U M ✦
+          </textPath>
+        </text>
+      </svg>
+    </div>
+    <div class="rune-ring-2">
+      <svg viewBox="0 0 220 220">
+        <defs>
+          <path id="runeCirclePath2" d="M 110,110 m -84,0 a 84,84 0 1,1 168,0 a 84,84 0 1,1 -168,0" />
+        </defs>
+        <text>
+          <textPath href="#runeCirclePath2" startOffset="0%">
+            ✧ ✦ ✧ ☾ ☉ ✧ ✦ ✧ ★ ✧ ✦ ✧ ☽ ✧ ✦ ✧
+          </textPath>
+        </text>
+      </svg>
+    </div>
+    <div class="hexagram">
+      <svg viewBox="0 0 150 150">
+        <polygon points="75,10 130,120 20,120" />
+        <polygon points="75,140 20,30 130,30" />
+      </svg>
+    </div>
+    <div class="inner-ring"></div>
+    <div class="core"></div>
+  </div>
+  <div class="loading-text" id="loadingText">正 在 连 接 魔 法 网 络</div>
+</div>
 
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 70% 60% at 50% 40%, rgba(10,20,50,0.05), rgba(4,8,24,0.35) 90%),
-      linear-gradient(160deg, rgba(10,20,60,0.15), rgba(4,8,24,0.25));
-  }
+<div class="modal-overlay" id="modal">
+  <div class="modal-box" id="modalBox"></div>
+</div>
 
-  body::after {
-    content: "";
-    position: fixed;
-    inset: -10%;
-    z-index: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(circle 2px at 8% 18%, rgba(255,255,255,1), transparent 50%),
-      radial-gradient(circle 1.5px at 22% 62%, rgba(200,220,255,0.95), transparent 50%),
-      radial-gradient(circle 2.5px at 38% 12%, rgba(255,255,255,0.9), transparent 50%),
-      radial-gradient(circle 1.5px at 52% 78%, rgba(180,210,255,0.9), transparent 50%),
-      radial-gradient(circle 2px at 68% 32%, rgba(255,250,240,0.9), transparent 50%),
-      radial-gradient(circle 2px at 82% 68%, rgba(255,255,255,0.95), transparent 50%),
-      radial-gradient(circle 1.5px at 92% 15%, rgba(255,255,255,0.85), transparent 50%),
-      radial-gradient(circle 2px at 15% 88%, rgba(210,230,255,0.9), transparent 50%);
-    animation: twinkle 6s ease-in-out infinite;
-  }
+<script>
+/* ==================== 配置 ==================== */
+const SUPABASE_URL = "https://svrdrzaxyxtbltctcfzu.supabase.co";
+const SUPABASE_KEY = "sb_publishable_oyPdCr7KE32s-m10MeRMXQ_OvnuAnfm";
 
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.75; }
-    50%      { opacity: 0.35; }
-  }
+const STUDENT_PASSWORD = "Aphelion2026";
+const TEACHER_PASSWORD = "Aphelionschool2006";
+const SUPER_PASSWORD   = "ListenPast100690926";
 
-  .center-sigil {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: min(80vmin, 720px);
-    height: min(80vmin, 720px);
-    transform: translate(-50%, -50%);
-    z-index: 0;
-    pointer-events: none;
-    background-image: url("kabbalah.png");
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.14;
-    animation: sigilBreath 14s ease-in-out infinite;
-    mix-blend-mode: screen;
-  }
+const HOUSES = ["伊希利尔","维尔卡帕","阿特莱亚","塔利亚","穆萨菲尔","克瑞乌萨"];
+const LOCATIONS = [
+  "缄默林外围","中央广场","魔药课教室","种植园","主城堡三楼走廊","天文台",
+  "教师办公室","基础魔法理论教室","世界史教室","图书馆","进阶魔法理论教室",
+  "战斗技巧教室","算术占卜教室","古代占卜教室","奥术秘能研究室","校医室","阿斐理恩中央花园"
+];
 
-  @keyframes sigilBreath {
-    0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-    50%      { opacity: 0.18; transform: translate(-50%, -50%) scale(1.03) rotate(1.5deg); }
-  }
+const WORLD_EPOCH_REAL = 2020;
+const WORLD_EPOCH_WORLD = 1703;
 
-  .wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 32px 20px 80px;
-  }
+const HEADERS = {
+  "apikey": SUPABASE_KEY,
+  "Authorization": "Bearer " + SUPABASE_KEY,
+  "Content-Type": "application/json",
+  "Prefer": "return=representation"
+};
 
-  .panel {
-    position: relative;
-    background: rgba(10,18,42,0.78);
-    border: 1px solid rgba(120,170,255,0.3);
-    border-radius: 16px;
-    padding: 28px 26px;
-    box-shadow:
-      0 0 60px rgba(60,120,230,0.18),
-      0 0 20px rgba(30,70,160,0.35),
-      inset 0 0 40px rgba(30,60,140,0.25);
-    backdrop-filter: blur(8px);
-    margin-bottom: 20px;
-  }
+let session = { role: null, name: null, house: null, position: null, enrollYear: null };
 
-  .panel::before,
-  .panel::after {
-    content: "";
-    position: absolute;
-    width: 36px;
-    height: 36px;
-    border: 1px solid rgba(150,190,255,0.45);
-    pointer-events: none;
-  }
-  .panel::before { top: 8px; left: 8px; border-right: none; border-bottom: none; border-top-left-radius: 10px; }
-  .panel::after  { bottom: 8px; right: 8px; border-left: none; border-top: none; border-bottom-right-radius: 10px; }
+/* ==================== 工具 ==================== */
+function esc(s) {
+  return String(s || "").replace(/[&<>"']/g, m => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[m]));
+}
 
-  #loginScreen, #teacherScreen {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 20px;
-    position: relative;
-    z-index: 2;
-  }
-  #teacherScreen { display: none; }
+async function api(path, opts = {}) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    ...opts,
+    headers: { ...HEADERS, ...(opts.headers || {}) }
+  });
+  const text = await res.text();
+  let data = null;
+  try { data = text ? JSON.parse(text) : null; } catch { data = text; }
+  if (!res.ok) throw new Error(typeof data === "object" ? JSON.stringify(data) : data);
+  return data;
+}
 
-  .login-box { width: 100%; max-width: 560px; }
+function showLoading(text = "正 在 连 接 魔 法 网 络") {
+  document.getElementById("loadingText").textContent = text;
+  document.getElementById("loadingOverlay").classList.add("show");
+}
+function hideLoading() {
+  document.getElementById("loadingOverlay").classList.remove("show");
+}
+function openModal(html) {
+  document.getElementById("modalBox").innerHTML = html;
+  document.getElementById("modal").classList.add("show");
+}
+function closeModal() {
+  document.getElementById("modal").classList.remove("show");
+}
+function toggleEye(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if (inp.type === "password") { inp.type = "text"; btn.classList.add("on"); }
+  else { inp.type = "password"; btn.classList.remove("on"); }
+}
 
-  .login-title {
-    font-size: 24px;
-    letter-spacing: 6px;
-    text-align: center;
-    color: #bcd8ff;
-    margin-bottom: 6px;
-    font-weight: normal;
-    text-shadow: 0 0 20px rgba(100,160,255,0.7);
-  }
+/* ==================== 世界历 ==================== */
+function getWorldDate() {
+  const now = new Date();
+  const year = WORLD_EPOCH_WORLD + (now.getFullYear() - WORLD_EPOCH_REAL);
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+  let season;
+  if (month >= 9 && month <= 11) season = "植收季";
+  else if (month === 12 || month <= 2) season = "冰雪季";
+  else if (month >= 3 && month <= 5) season = "萌芽季";
+  else season = "谷收季";
+  return { year, month, day, season };
+}
+function getCurrentWorldYear() { return getWorldDate().year; }
+function renderWorldTime() {
+  const w = getWorldDate();
+  const el = document.getElementById("worldTime");
+  if (!el) return;
+  el.innerHTML = `世界历 <span class="season">${w.year}</span> <span class="sep">·</span> ${w.month} <span class="sep">·</span> ${w.day} <span class="sep">·</span> <span class="season">${w.season}</span>`;
+  setTimeout(renderWorldTime, 60000);
+}
+function calcGrade(enrollYear) {
+  if (!enrollYear) return null;
+  const g = getCurrentWorldYear() - enrollYear + 1;
+  if (g < 1) return 1;
+  if (g > 7) return 7;
+  return g;
+}
+function gradeText(enrollYear) {
+  const g = calcGrade(enrollYear);
+  return g ? `${g} 年级` : "";
+}
 
-  .login-sub {
-    text-align: center;
-    font-size: 12px;
-    color: #7f9bc8;
-    letter-spacing: 4px;
-    margin-bottom: 28px;
-  }
+/* ==================== 登录 ==================== */
+async function doLogin() {
+  const name = document.getElementById("loginName").value.trim();
+  const pass = document.getElementById("loginPass").value;
+  const house = document.getElementById("loginHouse").value;
 
-  .field-label {
-    font-size: 12px;
-    letter-spacing: 3px;
-    color: #7f9bc8;
-    margin-bottom: 8px;
-    margin-top: 4px;
-  }
+  if (!name) { alert("请告诉我你的名谓。"); return; }
+  if (!house) { alert("请选择你的学院。"); return; }
+  if (pass !== STUDENT_PASSWORD) { alert("通行密码不正确。"); return; }
 
-  .magic-input {
-    display: block;
-    width: 100%;
-    padding: 13px 16px;
-    margin-bottom: 16px;
-    font-size: 15px;
-    font-family: inherit;
-    letter-spacing: 2px;
-    color: #eaf2ff;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(120,170,255,0.4);
-    border-radius: 10px;
-    outline: none;
-    transition: all 0.3s;
-  }
-  .magic-input::placeholder { color: #6d80a0; }
-  .magic-input:focus {
-    border-color: rgba(180,215,255,0.9);
-    box-shadow: 0 0 24px rgba(120,170,255,0.5);
-    background: rgba(255,255,255,0.08);
-  }
+  showLoading("正 在 唤 醒 魔 法 阵");
 
-  textarea.magic-input {
-    min-height: 80px;
-    font-family: inherit;
-    resize: vertical;
-    line-height: 1.7;
-  }
-
-  .pass-wrap { position: relative; margin-bottom: 16px; }
-  .pass-wrap .magic-input { margin-bottom: 0; padding-right: 46px; }
-  .eye-btn {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 26px; height: 26px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; color: #7f9bc8; transition: color 0.3s;
-    background: transparent; border: none; padding: 0;
-  }
-  .eye-btn:hover { color: #bcd8ff; }
-  .eye-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-  .eye-btn .eye-off { display: none; }
-  .eye-btn.on .eye-on { display: none; }
-  .eye-btn.on .eye-off { display: block; }
-
-  .select-wrap { position: relative; margin-bottom: 16px; }
-  .select-wrap::after {
-    content: "▾";
-    position: absolute; right: 16px; top: 50%;
-    transform: translateY(-50%);
-    color: #7f9bc8; font-size: 14px; pointer-events: none;
-  }
-  .magic-select {
-    display: block; width: 100%;
-    padding: 13px 40px 13px 16px;
-    font-size: 15px; font-family: inherit; letter-spacing: 2px;
-    color: #eaf2ff;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(120,170,255,0.4);
-    border-radius: 10px; outline: none; transition: all 0.3s;
-    appearance: none; -webkit-appearance: none; cursor: pointer;
-  }
-  .magic-select:focus {
-    border-color: rgba(180,215,255,0.9);
-    box-shadow: 0 0 24px rgba(120,170,255,0.5);
-    background: rgba(255,255,255,0.08);
-  }
-  .magic-select option { background: #0a1428; color: #eaf2ff; }
-
-  .magic-btn {
-    position: relative;
-    display: block; width: 100%;
-    padding: 15px;
-    font-size: 15px; font-family: inherit; letter-spacing: 5px;
-    color: #eaf2ff;
-    background:
-      linear-gradient(135deg, rgba(60,120,220,0.55), rgba(20,50,120,0.75)),
-      linear-gradient(180deg, rgba(255,255,255,0.06), transparent);
-    border: 1px solid rgba(120,170,255,0.55);
-    border-radius: 10px;
-    cursor: pointer; transition: all 0.4s ease;
-    box-shadow: 0 0 22px rgba(100,160,255,0.35), 0 0 60px rgba(60,120,230,0.25), inset 0 0 20px rgba(100,160,255,0.18);
-    text-shadow: 0 0 12px rgba(150,190,255,0.8);
-    overflow: hidden; margin-top: 6px;
-  }
-  .magic-btn::before {
-    content: "";
-    position: absolute; top: 0; left: -120%;
-    width: 60%; height: 100%;
-    background: linear-gradient(100deg, transparent, rgba(190,220,255,0.55), transparent);
-    transform: skewX(-20deg);
-    animation: sweep 3.5s ease-in-out infinite;
-    pointer-events: none;
-  }
-  @keyframes sweep {
-    0%   { left: -120%; }
-    55%  { left: 130%; }
-    100% { left: 130%; }
-  }
-  .magic-btn:hover {
-    transform: translateY(-2px); color: #fff;
-    border-color: rgba(180,215,255,0.9);
-    box-shadow: 0 0 32px rgba(120,170,255,0.65), 0 0 90px rgba(70,130,240,0.4), inset 0 0 26px rgba(140,190,255,0.3);
-  }
-  .magic-btn.small { width: auto; padding: 8px 16px; font-size: 12px; letter-spacing: 3px; margin: 0; }
-  .magic-btn.danger { background: linear-gradient(135deg, rgba(200,70,70,0.5), rgba(120,20,20,0.75)); border-color: rgba(255,140,140,0.5); }
-  .magic-btn.danger:hover { box-shadow: 0 0 32px rgba(255,120,120,0.6), inset 0 0 26px rgba(255,140,140,0.3); }
-  .magic-btn.success { background: linear-gradient(135deg, rgba(60,180,120,0.5), rgba(20,100,60,0.75)); border-color: rgba(140,255,190,0.5); }
-  .magic-btn.success:hover { box-shadow: 0 0 32px rgba(120,255,180,0.6), inset 0 0 26px rgba(140,255,190,0.3); }
-  .magic-btn.ghost { background: linear-gradient(135deg, rgba(80,80,100,0.5), rgba(30,30,50,0.75)); border-color: rgba(180,180,200,0.4); }
-
-  .teacher-entry {
-    position: fixed !important;
-    right: 0 !important; top: 50% !important;
-    left: auto !important; bottom: auto !important;
-    transform: translateY(-50%) !important;
-    z-index: 9998 !important;
-    padding: 22px 16px;
-    background: linear-gradient(135deg, rgba(30,60,140,0.9), rgba(10,20,50,0.95));
-    border: 1px solid rgba(120,170,255,0.5);
-    border-right: none;
-    border-radius: 14px 0 0 14px;
-    font-size: 12px; letter-spacing: 5px; color: #bcd8ff;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: -4px 0 20px rgba(60,120,230,0.35), inset 0 0 18px rgba(100,160,255,0.18);
-    text-shadow: 0 0 10px rgba(150,190,255,0.7);
-    writing-mode: vertical-rl; text-orientation: upright;
-    display: flex; align-items: center; justify-content: center;
-    gap: 10px; user-select: none;
-  }
-  .teacher-entry::before {
-    content: "";
-    position: absolute; left: 0; top: 15%; bottom: 15%; width: 2px;
-    background: linear-gradient(to bottom, transparent, #8ab4ff, transparent);
-    animation: teacherGlow 2.5s ease-in-out infinite;
-    border-radius: 2px;
-  }
-  @keyframes teacherGlow { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
-  .teacher-entry:hover {
-    transform: translateY(-50%) translateX(-6px) !important;
-    color: #eaf2ff;
-    border-color: rgba(180,215,255,0.95);
-    box-shadow: -8px 0 40px rgba(120,170,255,0.7), -4px 0 20px rgba(60,120,230,0.5), inset 0 0 26px rgba(140,190,255,0.3);
-    text-shadow: 0 0 18px rgba(200,225,255,1);
-    padding-right: 22px;
-  }
-
-  .screen-flip-out {
-    animation: flipOut 0.7s cubic-bezier(0.6, 0, 0.4, 1) forwards;
-    transform-origin: left center; backface-visibility: hidden; pointer-events: none;
-  }
-  @keyframes flipOut {
-    0%   { transform: perspective(1400px) rotateY(0deg); opacity: 1; }
-    100% { transform: perspective(1400px) rotateY(-100deg); opacity: 0; }
-  }
-  .screen-flip-in {
-    animation: flipIn 0.7s cubic-bezier(0.6, 0, 0.4, 1) forwards;
-    transform-origin: right center; backface-visibility: hidden;
-  }
-  @keyframes flipIn {
-    0%   { transform: perspective(1400px) rotateY(100deg); opacity: 0; }
-    100% { transform: perspective(1400px) rotateY(0deg); opacity: 1; }
-  }
-
-  #mainScreen { display: none; }
-
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 0 20px;
-    border-bottom: 1px solid rgba(120,170,255,0.2);
-    margin-bottom: 22px; flex-wrap: wrap; gap: 12px;
-  }
-  .topbar-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .user-info { font-size: 13px; letter-spacing: 2px; color: #bcd8ff; }
-  .user-house { font-size: 11px; color: #7f9bc8; letter-spacing: 2px; margin-left: 8px; }
-  .topbar-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-
-  .world-time {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13px; letter-spacing: 2px; color: #a8c4f0;
-    padding: 6px 14px;
-    border: 1px solid rgba(120,170,255,0.3);
-    border-radius: 20px;
-    background: rgba(10,18,42,0.5);
-    display: flex; align-items: center; gap: 10px;
-  }
-  .world-time .season { color: #bcd8ff; text-shadow: 0 0 10px rgba(140,190,255,0.6); }
-  .world-time .sep { color: rgba(120,170,255,0.4); }
-
-  .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-  .tab {
-    padding: 10px 20px;
-    font-size: 13px; font-family: inherit; letter-spacing: 3px;
-    color: #7f9bc8;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(120,170,255,0.2);
-    border-radius: 8px; cursor: pointer; transition: all 0.3s;
-  }
-  .tab:hover { color: #bcd8ff; border-color: rgba(150,190,255,0.5); }
-  .tab.active {
-    color: #eaf2ff;
-    background: rgba(100,160,255,0.15);
-    border-color: rgba(180,215,255,0.8);
-    box-shadow: 0 0 20px rgba(120,170,255,0.35), inset 0 0 14px rgba(140,190,255,0.12);
-  }
-
-  .quest-card {
-    position: relative;
-    background: rgba(255,255,255,0.035);
-    border: 1px solid rgba(120,170,255,0.25);
-    border-radius: 12px;
-    padding: 18px 20px;
-    margin-bottom: 12px;
-    transition: all 0.3s;
-  }
-  .quest-card:hover {
-    border-color: rgba(150,190,255,0.6);
-    background: rgba(100,160,255,0.08);
-    box-shadow: 0 0 24px rgba(120,170,255,0.2);
-  }
-  .quest-title { font-size: 16px; letter-spacing: 2px; color: #eaf2ff; margin-bottom: 8px; }
-  .quest-desc { font-size: 13px; line-height: 1.9; color: #c4d2e8; margin-bottom: 8px; }
-  .quest-reward { font-size: 12px; color: #bcd8ff; letter-spacing: 1px; margin-bottom: 10px; }
-
-  .status-badge {
-    display: inline-block;
-    font-size: 11px; letter-spacing: 2px;
-    padding: 3px 10px; border-radius: 12px; margin-right: 8px;
-  }
-  .s-open { background: rgba(60,180,120,0.2); color: #8ee0b0; border: 1px solid rgba(140,255,190,0.4); }
-  .s-pending { background: rgba(230,180,60,0.2); color: #f0d090; border: 1px solid rgba(255,220,140,0.4); }
-  .s-doing { background: rgba(80,150,255,0.2); color: #a8c8ff; border: 1px solid rgba(140,190,255,0.4); }
-  .s-done { background: rgba(150,150,150,0.2); color: #b0b0b0; border: 1px solid rgba(180,180,180,0.4); }
-  .s-rejected { background: rgba(200,70,70,0.2); color: #ffa0a0; border: 1px solid rgba(255,140,140,0.4); }
-
-  .empty-hint {
-    text-align: center; padding: 40px 20px;
-    color: #7f9bc8; font-size: 13px; letter-spacing: 2px;
-  }
-
-  .house-group { margin-bottom: 28px; }
-  .house-group-title {
-    font-size: 15px; letter-spacing: 4px; color: #bcd8ff;
-    padding-bottom: 8px; margin-bottom: 14px;
-    border-bottom: 1px solid rgba(120,170,255,0.25);
-    display: flex; justify-content: space-between; align-items: baseline;
-  }
-  .house-group-title small { font-size: 11px; color: #7f9bc8; letter-spacing: 2px; }
-  .student-row {
-    padding: 12px 16px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(120,170,255,0.18);
-    border-radius: 8px; margin-bottom: 8px;
-    font-size: 13px; line-height: 1.8; color: #c4d2e8;
-  }
-  .student-row .name { color: #eaf2ff; letter-spacing: 2px; font-size: 14px; }
-  .student-row .grade {
-    font-size: 11px; color: #bcd8ff; margin-left: 8px;
-    padding: 1px 8px;
-    border: 1px solid rgba(140,190,255,0.4);
-    border-radius: 10px;
-  }
-  .student-row .quest-info {
-    margin-top: 6px; padding-left: 12px;
-    border-left: 1px dashed rgba(120,170,255,0.3);
-    font-size: 12px; color: #a0b8d8;
-  }
-
-  .comment-item {
-    padding: 8px 12px; margin-bottom: 8px;
-    background: rgba(255,255,255,0.03);
-    border-left: 2px solid rgba(140,190,255,0.5);
-    border-radius: 0 6px 6px 0;
-    font-size: 13px; line-height: 1.7;
-  }
-  .comment-item .meta { color: #bcd8ff; font-size: 12px; margin-bottom: 4px; }
-  .comment-item .text { color: #c4d2e8; }
-
-  #loadingOverlay {
-    position: fixed; inset: 0; z-index: 9999;
-    background: #060c20; display: none;
-    align-items: center; justify-content: center;
-    flex-direction: column; gap: 28px;
-  }
-  #loadingOverlay.show { display: flex; }
-
-  .magic-circle { position: relative; width: 220px; height: 220px; }
-  .magic-circle .rune-ring {
-    position: absolute; inset: 0; border-radius: 50%;
-    animation: spinSlow 24s linear infinite; transform-origin: center;
-  }
-  .magic-circle .rune-ring svg { width: 100%; height: 100%; overflow: visible; }
-  .magic-circle .rune-ring svg text {
-    fill: rgba(160,200,255,0.85);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13px; letter-spacing: 2px;
-    text-shadow: 0 0 8px rgba(140,190,255,0.9);
-  }
-  .magic-circle .rune-ring-2 {
-    position: absolute; inset: 18px; border-radius: 50%;
-    animation: spinSlowRev 18s linear infinite; transform-origin: center;
-  }
-  .magic-circle .rune-ring-2 svg { width: 100%; height: 100%; overflow: visible; }
-  .magic-circle .rune-ring-2 svg text {
-    fill: rgba(180,215,255,0.55);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 10px; letter-spacing: 3px;
-  }
-  .magic-circle .hexagram {
-    position: absolute; inset: 34px;
-    animation: spinSlow 30s linear infinite reverse;
-    transform-origin: center;
-  }
-  .magic-circle .hexagram svg { width: 100%; height: 100%; overflow: visible; }
-  .magic-circle .hexagram polygon {
-    fill: none;
-    stroke: rgba(180,215,255,0.9);
-    stroke-width: 1.2;
-    filter: drop-shadow(0 0 6px rgba(140,190,255,0.9));
-  }
-  .magic-circle .inner-ring {
-    position: absolute; inset: 54px; border-radius: 50%;
-    border: 1px dashed rgba(180,215,255,0.7);
-    animation: spinSlowRev 12s linear infinite;
-    box-shadow: 0 0 18px rgba(140,190,255,0.5), inset 0 0 18px rgba(140,190,255,0.4);
-  }
-  .magic-circle .core {
-    position: absolute; inset: 88px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(220,235,255,1) 0%, rgba(180,215,255,0.8) 30%, rgba(120,170,255,0.35) 60%, transparent 100%);
-    box-shadow: 0 0 30px rgba(180,220,255,0.9), 0 0 60px rgba(120,170,255,0.6), 0 0 100px rgba(80,140,230,0.4);
-    animation: corePulse 2s ease-in-out infinite;
-  }
-  .magic-circle::before {
-    content: ""; position: absolute; inset: -20px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(120,170,255,0.15) 0%, rgba(80,140,230,0.08) 40%, transparent 70%);
-    animation: corePulse 3s ease-in-out infinite;
-    pointer-events: none;
-  }
-  @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  @keyframes spinSlowRev { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-  @keyframes corePulse {
-    0%, 100% { transform: scale(1); opacity: 0.85; }
-    50%      { transform: scale(1.08); opacity: 1; }
-  }
-  .loading-text {
-    font-size: 13px; letter-spacing: 6px; color: #bcd8ff;
-    text-shadow: 0 0 14px rgba(120,170,255,0.7);
-    animation: pulse 1.8s ease-in-out infinite;
-    margin-top: 8px;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 0.7; }
-    50%      { opacity: 1; }
-  }
-
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 10000;
-    background: rgba(4,8,24,0.88);
-    backdrop-filter: blur(6px);
-    display: none; align-items: center; justify-content: center;
-    padding: 20px;
-  }
-  .modal-overlay.show { display: flex; }
-  .modal-box {
-    position: relative; max-width: 420px; width: 100%;
-    background: rgba(10,18,42,0.92);
-    border: 1px solid rgba(120,170,255,0.4);
-    border-radius: 14px; padding: 26px 24px;
-    box-shadow: 0 0 60px rgba(60,120,230,0.35), inset 0 0 40px rgba(30,60,140,0.3);
-  }
-  .modal-title {
-    font-size: 16px; letter-spacing: 4px; color: #bcd8ff;
-    margin-bottom: 14px;
-    text-shadow: 0 0 14px rgba(100,160,255,0.6);
-  }
-  .modal-box .magic-input { margin-bottom: 10px; }
-  .modal-actions { display: flex; gap: 10px; margin-top: 14px; }
-  .modal-actions .magic-btn { flex: 1; margin-top: 0; }
-
-  @media (max-width: 600px) {
-    .wrap { padding: 20px 12px 80px; }
-    .panel { padding: 20px 16px; }
-    .login-title { font-size: 20px; letter-spacing: 4px; }
-    .tab { padding: 8px 14px; font-size: 12px; letter-spacing: 2px; }
-    .topbar { padding: 10px 0 16px; }
-    .teacher-entry {
-      writing-mode: horizontal-tb;
-      padding: 12px 16px;
-      border-radius: 12px 0 0 12px;
-      letter-spacing: 3px; font-size: 11px;
+  try {
+    const existing = await api(`students?name=eq.${encodeURIComponent(name)}&select=*`);
+    if (existing && existing.length) {
+      const stu = existing[0];
+      const patch = {};
+      if (stu.house !== house) patch.house = house;
+      if (!stu.enroll_year) patch.enroll_year = getCurrentWorldYear();
+      if (!stu.role) patch.role = "student";
+      if (Object.keys(patch).length) {
+        await api(`students?name=eq.${encodeURIComponent(name)}`, {
+          method: "PATCH",
+          body: JSON.stringify(patch)
+        });
+      }
+      session = { role: "student", name, house, enrollYear: stu.enroll_year || getCurrentWorldYear() };
+    } else {
+      const enrollYear = getCurrentWorldYear();
+      await api(`students`, {
+        method: "POST",
+        body: JSON.stringify({ name, house, role: "student", enroll_year: enrollYear })
+      });
+      session = { role: "student", name, house, enrollYear };
     }
+  } catch (e) {
+    console.warn("学生记录失败:", e);
+    session = { role: "student", name, house, enrollYear: getCurrentWorldYear() };
   }
-</style>
-</head>
-<body>
 
-<div class="center-sigil"></div>
+  setTimeout(() => { hideLoading(); enterSystem(); }, 1600);
+}
 
-<div id="loginScreen">
-  <div class="login-box panel">
-    <h1 class="login-title">阿斐理恩魔法学院</h1>
-    <p class="login-sub">APHELION ACADEMY · QUEST BOARD</p>
-    <div class="field-label">姓 名</div>
-    <input type="text" id="loginName" class="magic-input" placeholder="请输入你的名字" maxlength="20">
-    <div class="field-label">通 行 密 码</div>
-    <div class="pass-wrap">
-      <input type="password" id="loginPass" class="magic-input" placeholder="请输入学院通行密码">
-      <button class="eye-btn" type="button" onclick="toggleEye('loginPass', this)">
-        <svg class="eye-on" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="3"/></svg>
-        <svg class="eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-      </button>
-    </div>
-    <div class="field-label">选 择 学 院</div>
-    <div class="select-wrap">
-      <select id="loginHouse" class="magic-select">
-        <option value="">— 请选择你的学院 —</option>
-        <option value="伊希利尔">伊希利尔 · Ethereal</option>
-        <option value="维尔卡帕">维尔卡帕 · Vikalpa</option>
-        <option value="阿特莱亚">阿特莱亚 · Astraia</option>
-        <option value="塔利亚">塔利亚 · Thalia</option>
-        <option value="穆萨菲尔">穆萨菲尔 · Musafir</option>
-        <option value="克瑞乌萨">克瑞乌萨 · Creusa</option>
-      </select>
-    </div>
-    <button class="magic-btn" onclick="doLogin()">进 入 学 院</button>
-  </div>
-</div>
+function flipToTeacher() {
+  const login = document.getElementById("loginScreen");
+  const teacher = document.getElementById("teacherScreen");
+  const entry = document.getElementById("teacherEntry");
+  if (entry) entry.style.display = "none";
+  login.classList.add("screen-flip-out");
+  setTimeout(() => {
+    login.style.display = "none";
+    login.classList.remove("screen-flip-out");
+    teacher.style.display = "flex";
+    teacher.classList.add("screen-flip-in");
+    setTimeout(() => teacher.classList.remove("screen-flip-in"), 700);
+  }, 700);
+}
 
-<div id="teacherScreen">
-  <div class="login-box panel">
-    <h1 class="login-title">教 师 登 录</h1>
-    <p class="login-sub">FACULTY ACCESS</p>
-    <div class="field-label">姓 名</div>
-    <input type="text" id="teacherName" class="magic-input" placeholder="请输入你的名字" maxlength="20">
-    <div class="field-label">职 位</div>
-    <div class="select-wrap">
-      <select id="teacherPosition" class="magic-select">
-        <option value="">— 请选择你的职位 —</option>
-        <option value="基础魔法课教授">基础魔法课教授</option>
-        <option value="魔药学教授">魔药学教授</option>
-        <option value="草药学教授">草药学教授</option>
-        <option value="天文学教授">天文学教授</option>
-        <option value="战斗技巧教授">战斗技巧教授</option>
-        <option value="世界史概论教授">世界史概论教授</option>
-        <option value="奥术基础课教授">奥术基础课教授</option>
-        <option value="进阶魔法课教授">进阶魔法课教授</option>
-        <option value="古代占卜课教授">古代占卜课教授</option>
-        <option value="算术占卜课教授">算术占卜课教授</option>
-        <option value="神奇生物保护课教授">神奇生物保护课教授</option>
-        <option value="缄默林生态区负责人">缄默林生态区负责人</option>
-        <option value="校医">校医</option>
-        <option value="管理员">管理员</option>
-        <option value="园丁">园丁</option>
-        <option value="超级管理员">超级管理员</option>
-      </select>
-    </div>
-    <div class="field-label">密 码</div>
-    <div class="pass-wrap">
-      <input type="password" id="teacherPass" class="magic-input" placeholder="请输入教师密码">
-      <button class="eye-btn" type="button" onclick="toggleEye('teacherPass', this)">
-        <svg class="eye-on" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="3"/></svg>
-        <svg class="eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-      </button>
-    </div>
-    <button class="magic-btn" onclick="doTeacherLogin()">确 认</button>
-    <button class="magic-btn ghost" style="margin-top:12px" onclick="backToStudent()">返 回 学 生 入 口</button>
-  </div>
-</div>
+function backToStudent() {
+  const login = document.getElementById("loginScreen");
+  const teacher = document.getElementById("teacherScreen");
+  const entry = document.getElementById("teacherEntry");
+  teacher.classList.add("screen-flip-out");
+  setTimeout(() => {
+    teacher.style.display = "none";
+    teacher.classList.remove("screen-flip-out");
+    login.style.display = "flex";
+    login.classList.add("screen-flip-in");
+    setTimeout(() => {
+      login.classList.remove("screen-flip-in");
+      if (entry) entry.style.display = "flex";
+    }, 700);
+  }, 700);
+}
 
-<div class="teacher-entry" id="teacherEntry" onclick="flipToTeacher()">
-  <span>教 师 入 口</span>
-</div>
+async function doTeacherLogin() {
+  const name = document.getElementById("teacherName").value.trim();
+  const position = document.getElementById("teacherPosition").value;
+  const pass = document.getElementById("teacherPass").value;
+
+  if (!name) { alert("请输入你的名字。"); return; }
+  if (!position) { alert("请选择你的职位。"); return; }
+
+  let role = null;
+  if (pass === SUPER_PASSWORD) role = "super";
+  else if (pass === TEACHER_PASSWORD) role = "teacher";
+  else { alert("密码不正确。"); return; }
+
+  showLoading("正 在 验 证 教 师 权 限");
+
+  try {
+    const existing = await api(`students?name=eq.${encodeURIComponent(name)}&select=*`);
+    if (existing && existing.length) {
+      await api(`students?name=eq.${encodeURIComponent(name)}`, {
+        method: "PATCH",
+        body: JSON.stringify({ role, position })
+      });
+    } else {
+      await api(`students`, {
+        method: "POST",
+        body: JSON.stringify({ name, role, position, house: null })
+      });
+    }
+  } catch (e) { console.warn("教师记录失败:", e); }
+
+  session = { role, name, position, house: null };
+
+  setTimeout(() => {
+    hideLoading();
+    document.getElementById("teacherScreen").style.display = "none";
+    enterSystem();
+  }, 1400);
+}
+
+function doLogout() {
+  session = { role: null, name: null, house: null, position: null, enrollYear: null };
+  ["loginName","loginPass","loginHouse","teacherName","teacherPass","teacherPosition"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+  document.getElementById("mainScreen").style.display = "none";
+  document.getElementById("teacherScreen").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
+  const te = document.getElementById("teacherEntry");
+  if (te) te.style.display = "flex";
+}
+
+function enterSystem() {
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("teacherScreen").style.display = "none";
+  const te = document.getElementById("teacherEntry");
+  if (te) te.style.display = "none";
+  document.getElementById("mainScreen").style.display = "block";
+
+  const topUser = document.getElementById("topUser");
+  if (session.role === "student") {
+    const grade = gradeText(session.enrollYear);
+    topUser.innerHTML = `${esc(session.name)}<span class="user-house">${esc(session.house)}${grade ? " · " + grade : ""}</span>`;
+  } else {
+    const tag = session.role === "super" ? "SUPER" : "TEACHER";
+    topUser.innerHTML = `${esc(session.name)}<span class="user-house">${esc(session.position || "")} · ${tag}</span>`;
+  }
+
+  renderWorldTime();
+  if (session.role === "student") renderStudentTabs();
+  else renderTeacherTabs();
+}
+
+/* ==================== 学生端 ==================== */
+let studentTab = "quests";
+
+function renderStudentTabs() {
+  document.getElementById("tabBar").innerHTML = `
+    <div class="tab ${studentTab==='quests'?'active':''}" onclick="switchStudentTab('quests')">课 题 板</div>
+    <div class="tab ${studentTab==='mine'?'active':''}" onclick="switchStudentTab('mine')">我 的 课 题</div>
+    <div class="tab ${studentTab==='items'?'active':''}" onclick="switchStudentTab('items')">我 的 物 品</div>
+    <div class="tab ${studentTab==='forum'?'active':''}" onclick="switchStudentTab('forum')">讨 论 区</div>
+    <div class="tab ${studentTab==='messages'?'active':''}" onclick="switchStudentTab('messages')">我 的 消 息</div>
+  `;
+  renderStudentContent();
+}
+function switchStudentTab(t) { studentTab = t; renderStudentTabs(); }
+
+async function renderStudentContent() {
+  const box = document.getElementById("tabContents");
+  box.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
+  try {
+    if (studentTab === "quests") await renderQuests();
+    else if (studentTab === "mine") await renderMyQuests();
+    else if (studentTab === "items") await renderMyItems();
+    else if (studentTab === "forum") await renderForum();
+    else if (studentTab === "messages") await renderMyMessages();
+  } catch (e) {
+    box.innerHTML = `<div class="panel"><div class="empty-hint">读取失败：${esc(e.message)}</div></div>`;
+  }
+}
+
+async function renderQuests() {
+  const quests = await api(`quests?select=*&order=created_at.desc`);
+  const box = document.getElementById("tabContents");
+  if (!Array.isArray(quests) || !quests.length) {
+    box.innerHTML = `<div class="panel"><div class="empty-hint">暂 无 课 题</div></div>`;
+    return;
+  }
+  box.innerHTML = `<div class="panel">${quests.map(q => {
+    const canClaim = q.status === "open";
+    return `
+      <div class="quest-card">
+        <div class="quest-title">${esc(q.title)}</div>
+        ${q.description ? `<div class="quest-desc">${esc(q.description)}</div>` : ""}
+        ${q.location ? `<div class="quest-reward">📍 地点：${esc(q.location)}</div>` : ""}
+        ${q.completion ? `<div class="quest-desc">✓ 完成条件：${esc(q.completion)}</div>` : ""}
+        ${q.reward ? `<div class="quest-reward">✦ 奖励：${esc(q.reward)}</div>` : ""}
+        ${q.max_claims ? `<div class="quest-reward">👥 推荐接取人数：${q.max_claims}</div>` : ""}
+        <span class="status-badge ${statusClass(q.status)}">${statusText(q.status)}</span>
+        ${canClaim ? `<button class="magic-btn small" style="margin-left:8px" onclick="claimQuest(${q.id})">领 取</button>` : ""}
+      </div>
+    `;
+  }).join("")}</div>`;
+}
+
+function statusText(s) {
+  return ({ open:"可领取", taken:"审核中", doing:"进行中", done:"已完成", rejected:"已驳回" })[s] || s;
+}
+function statusClass(s) {
+  return ({ open:"s-open", taken:"s-pending", doing:"s-doing", done:"s-done", rejected:"s-rejected" })[s] || "s-open";
+}
+
+async function claimQuest(questId) {
+  showLoading("正 在 提 交 申 请");
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/claims`, {
+      method: "POST",
+      headers: HEADERS,
+      body: JSON.stringify({
+        quest_id: questId,
+        student_name: session.name,
+        house: session.house,
+        status: "pending"
+      })
+    });
+    if (!res.ok) {
+      alert("这个课题已经被别人领取了。");
+      hideLoading();
+      renderStudentContent();
+      return;
+    }
+    await api(`quests?id=eq.${questId}`, {
+      method: "PATCH",
+      body: JSON.stringify({ status: "taken" })
+    });
+    setTimeout(() => {
+      hideLoading();
+      alert("领取成功，等待教师审核。");
+      renderStudentContent();
+    }, 800);
+  } catch (e) {
+    hideLoading();
+    alert("操作失败：" + e.message);
+  }
+}
+
+async function renderMyQuests() {
+  const claims = await api(`claims?student_name=eq.${encodeURIComponent(session.name)}&select=*&order=created_at.desc`);
+  const quests = await api(`quests?select=*`);
+  const questMap = {};
+  if (Array.isArray(quests)) quests.forEach(q => questMap[q.id] = q);
+
+  const box = document.getElementById("tabContents");
+  if (!Array.isArray(claims) || !claims.length) {
+    box.innerHTML = `<div class="panel"><div class="empty-hint">你 还 没 有 领 取 任 何 课 题</div></div>`;
+    return;
+  }
+  box.innerHTML = `<div class="panel">${claims.map(c => {
+    const q = questMap[c.quest_id] || {};
+    const itemsStatus = c.items_status || "none";
+    let itemLine = "";
+    if (c.items) {
+      itemLine = `<div class="quest-desc">物品：${esc(c.items)} <span class="status-badge ${itemStatusClass(itemsStatus)}">${itemStatusText(itemsStatus)}</span></div>`;
+    }
+    const canSubmit = c.status === "approved" || c.status === "doing" || (c.status === "completed" && itemsStatus === "rejected");
+    return `
+      <div class="quest-card">
+        <div class="quest-title">${esc(q.title || "（课题已删除）")}</div>
+        ${q.location ? `<div class="quest-reward">📍 ${esc(q.location)}</div>` : ""}
+        ${q.completion ? `<div class="quest-desc">✓ 完成条件：${esc(q.completion)}</div>` : ""}
+        <span class="status-badge ${statusClass(c.status === "approved" ? "doing" : c.status)}">${statusText(c.status === "approved" ? "doing" : c.status)}</span>
+        ${itemLine}
+        ${canSubmit ? `<button class="magic-btn small" style="margin-top:10px" onclick="openSubmitItems(${c.id}, '${esc(q.title || "")}')">提 交 物 品</button>` : ""}
+      </div>
+    `;
+  }).join("")}</div>`;
+}
+
+function itemStatusText(s) {
+  return ({ none:"", pending:"待审核", approved:"已通过", rejected:"已驳回" })[s] || "";
+}
+function itemStatusClass(s) {
+  return ({ pending:"s-pending", approved:"s-open", rejected:"s-rejected" })[s] || "";
+}
+
+function openSubmitItems(claimId, questTitle) {
+  openModal(`
+    <div class="modal-title">提 交 物 品</div>
+    <div style="font-size:12px;color:#7f9bc8;margin-bottom:14px;">课题：${esc(questTitle)}</div>
+    <input type="text" id="itemName" class="magic-input" placeholder="物品名称">
+    <input type="text" id="itemQty" class="magic-input" placeholder="数量（可选）">
+    <input type="text" id="itemNote" class="magic-input" placeholder="备注（可选）">
+    <div class="modal-actions">
+      <button class="magic-btn small" style="flex:1" onclick="closeModal()">取 消</button>
+      <button class="magic-btn small" style="flex:1" onclick="submitItems(${claimId})">提 交</button>
+    </div>
+  `);
+}
+
+async function submitItems(claimId) {
+  const name = document.getElementById("itemName").value.trim();
+  const qty = document.getElementById("itemQty").value.trim();
+  const note = document.getElementById("itemNote").value.trim();
+  if (!name) { alert("请填写物品名称"); return; }
+  const items = qty ? `${name} × ${qty}${note ? "（" + note + "）" : ""}` : `${name}${note ? "（" + note + "）" : ""}`;
+  showLoading("正 在 提 交");
+  try {
+    await api(`claims?id=eq.${claimId}`, {
+      method: "PATCH",
+      body: JSON.stringify({ items, items_status: "pending" })
+    });
+    setTimeout(() => {
+      hideLoading();
+      closeModal();
+      alert("已提交，等待教师审核。");
+      renderStudentContent();
+    }, 800);
+  } catch (e) {
+    hideLoading();
+    alert("提交失败：" + e.message);
+  }
+}
+
+async function renderMyItems() {
+  const claims = await api(`claims?student_name=eq.${encodeURIComponent(session.name)}&items_status=eq.approved&select=*&order=created_at.desc`);
+  const quests = await api(`quests?select=*`);
+  const questMap = {};
+  if (Array.isArray(quests)) quests.forEach(q => questMap[q.id] = q);
+
+  const box = document.getElementById("tabContents");
+  if (!Array.isArray(claims) || !claims.length) {
+    box.innerHTML = `<div class="panel"><div class="empty-hint">暂 无 已 记 录 的 物 品</div></div>`;
+    return;
+  }
+  box.innerHTML = `<div class="panel">${claims.map(c => `
+    <div class="quest-card">
+      <div class="quest-title">${esc(c.items)}</div>
+      <div class="quest-desc">来源课题：${esc((questMap[c.quest_id] || {}).title || "（已删除）")}</div>
+      <div class="quest-reward">获得时间：${new Date(c.created_at).toLocaleString("zh-CN")}</div>
+    </div>
+  `).join("")}</div>`;
+}
+
+/* ==================== 讨论区（学生） ==================== */
+async function renderForum() {
+  const box = document.getElementById("tabContents");
+  box.innerHTML = `
+    <div class="panel">
+      <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">发 布 帖 子</div>
+      <input type="text" id="postTitle" class="magic-input" placeholder="标题">
+      <textarea id="postContent" class="magic-input" placeholder="说点什么..." rows="3"></textarea>
+      <button class="magic-btn" onclick="submitPost()">发 布</button>
+    </div>
+    <div id="postList"></div>
+  `;
+  await loadPosts();
+}
+
+async function loadPosts() {
+  const listEl = document.getElementById("postList");
+  if (!listEl) return;
+  listEl.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
+  try {
+    const allPosts = await api(`posts?select=*&order=created_at.desc`);
+    const posts = (allPosts || []).filter(p =>
+      p.status === "approved" || p.author === session.name
+    );
+    if (!posts.length) {
+      listEl.innerHTML = `<div class="panel"><div class="empty-hint">暂 无 帖 子</div></div>`;
+      return;
+    }
+    const comments = await api(`post_comments?select=*&order=created_at.asc`);
+    const commentMap = {};
+    (comments || []).forEach(c => {
+      if (!commentMap[c.post_id]) commentMap[c.post_id] = [];
+      commentMap[c.post_id].push(c);
+    });
+    listEl.innerHTML = `<div class="panel">${posts.map(p => {
+      const myComments = commentMap[p.id] || [];
+      let statusLine = "";
+      if (p.status === "pending") statusLine = `<div class="quest-reward" style="color:#f0d090;">⏳ 审核中</div>`;
+      if (p.status === "rejected") statusLine = `<div class="quest-reward" style="color:#ffa0a0;">✕ 已被驳回</div>`;
+      return `
+        <div class="quest-card">
+          <div class="quest-title">${esc(p.title || "（无标题）")}</div>
+          <div class="quest-desc">${esc(p.content)}</div>
+          <div class="quest-reward">${esc(p.author)}${p.house ? " · " + esc(p.house) : ""} · ${new Date(p.created_at).toLocaleString("zh-CN")}</div>
+          ${statusLine}
+          <button class="magic-btn small" onclick="likePost(${p.id}, ${p.likes || 0})">♡ 点赞 ${p.likes || 0}</button>
+          <button class="magic-btn small" style="margin-left:8px" onclick="toggleComments(${p.id})">评 论 (${myComments.length})</button>
+          <div id="comments-${p.id}" style="display:none;margin-top:14px;padding-top:14px;border-top:1px dashed rgba(120,170,255,0.3);">
+            ${myComments.map(c => `
+              <div class="comment-item">
+                <div class="meta">${esc(c.author)} · ${new Date(c.created_at).toLocaleString("zh-CN")}</div>
+                <div class="text">${esc(c.content)}</div>
+              </div>
+            `).join("")}
+            <div style="display:flex;gap:8px;margin-top:10px;">
+              <input type="text" id="commentInput-${p.id}" class="magic-input" style="margin:0;flex:1;" placeholder="写评论...">
+              <button class="magic-btn small" onclick="submitComment(${p.id})">发 送</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("")}</div>`;
+  } catch (e) {
+    listEl.innerHTML = `<div class="panel"><div class="empty-hint">读取失败：${esc(e.message)}</div></div>`;
+  }
+}
+
+function toggleComments(postId) {
+  const el = document.getElementById("comments-" + postId);
+  if (el) el.style.display = el.style.display === "none" ? "block" : "none";
+}
+
+async function submitPost() {
+  const title = document.getElementById("postTitle").value.trim();
+  const content = document.getElementById("postContent").value.trim();
+  if (!content) { alert("说点什么吧"); return; }
+  showLoading("正 在 发 布");
+  try {
+    await api(`posts`, {
+      method: "POST",
+      body: JSON.stringify({
+        author: session.name,
+        author_role: session.role,
+        house: session.house || null,
+        title: title || null,
+        content,
+        status: "pending"
+      })
+    });
+    document.getElementById("postTitle").value = "";
+    document.getElementById("postContent").value = "";
+    setTimeout(() => { hideLoading(); loadPosts(); }, 700);
+  } catch (e) {
+    hideLoading();
+    alert("发布失败：" + e.message);
+  }
+}
+
+async function likePost(postId, currentLikes) {
+  try {
+    await api(`posts?id=eq.${postId}`, {
+      method: "PATCH",
+      body: JSON.stringify({ likes: (currentLikes || 0) + 1 })
+    });
+    loadPosts();
+  } catch (e) { alert("点赞失败：" + e.message); }
+}
+
+async function submitComment(postId) {
+  const input = document.getElementById("commentInput-" + postId);
+  const content = input.value.trim();
+  if (!content) return;
+  try {
+    await api(`post_comments`, {
+      method: "POST",
+      body: JSON.stringify({ post_id: postId, author: session.name, content })
+    });
+    input.value = "";
+    loadPosts();
+    setTimeout(() => {
+      const el = document.getElementById("comments-" + postId);
+      if (el) el.style.display = "block";
+    }, 200);
+  } catch (e) { alert("评论失败：" + e.message); }
+}
+
+/* ==================== 我的消息 ==================== */
+async function renderMyMessages() {
+  const box = document.getElementById("tabContents");
+  box.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
+  try {
+    const msgs = await api(`messages?to_user=eq.${encodeURIComponent(session.name)}&select=*&order=created_at.desc`);
+    if (!Array.isArray(msgs) || !msgs.length) {
+      box.innerHTML = `<div class="panel"><div class="empty-hint">暂 无 消 息</div></div>`;
+      return;
+    }
+    box.innerHTML = `<div class="panel">${msgs.map(m => `
+      <div class="quest-card" style="${m.is_read ? "" : "border-color:rgba(240,190,90,0.6);box-shadow:0 0 20px rgba(240,190,90,0.25);"}">
+        <div class="quest-title" style="${m.is_read ? "" : "color:#f0d090;"}">${m.is_read ? "系统消息" : "✦ 新消息"}</div>
+        <div class="quest-desc">${esc(m.content)}</div>
+        <div class="quest-reward">${new Date(m.created_at).toLocaleString("zh-CN")}</div>
+        ${m.is_read ? "" : `<button class="magic-btn small" onclick="markRead(${m.id})">标 记 已 读</button>`}
+      </div>
+    `).join("")}</div>`;
+  } catch (e) {
+    box.innerHTML = `<div class="panel"><div class="empty-hint">读取失败：${esc(e.message)}</div></div>`;
+  }
+}
+
+async function markRead(msgId) {
+  await api(`messages?id=eq.${msgId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ is_read: true })
+  });
+  renderMyMessages();
+}
+
+/* ==================== 教师端 ==================== */
+let teacherTab = "quests";
+
+function renderTeacherTabs() {
+  document.getElementById("tabBar").innerHTML = `
+    <div class="tab ${teacherTab==='quests'?'active':''}" onclick="switchTeacherTab('quests')">课 题 管 理</div>
+    <div class="tab ${teacherTab==='review'?'active':''}" onclick="switchTeacherTab('review')">审 核 中 心</div>
+    <div class="tab ${teacherTab==='students'?'active':''}" onclick="switchTeacherTab('students')">学 生 总 览</div>
+    <div class="tab ${teacherTab==='forum'?'active':''}" onclick="switchTeacherTab('forum')">帖 子 管 理</div>
+  `;
+  renderTeacherContent();
+}
+function switchTeacherTab(t) { teacherTab = t; renderTeacherTabs(); }
+
+async function renderTeacherContent() {
+  const box = document.getElementById("tabContents");
+  box.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
+  try {
+    if (teacherTab === "quests") await renderTeacherQuests();
+    else if (teacherTab === "review") await renderReview();
+    else if (teacherTab === "students") await renderStudents();
+    else if (teacherTab === "forum") await renderForumAdmin();
+  } catch (e) {
+    box.innerHTML = `<div class="panel"><div class="empty-hint">读取失败：${esc(e.message)}</div></div>`;
+  }
+}
+
+async function renderTeacherQuests() {
+  const quests = await api(`quests?select=*&order=created_at.desc`);
+  const box = document.getElementById("tabContents");
+  const list = Array.isArray(quests) ? quests : [];
+
+  const locationOptions = LOCATIONS.map(l => `<option value="${l}">${l}</option>`).join("");
+
+  box.innerHTML = `
+    <div class="panel">
+      <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">发 布 新 课 题</div>
+      <input type="text" id="nqTitle" class="magic-input" placeholder="课题标题">
+      <textarea id="nqDesc" class="magic-input" placeholder="课题描述（必填）" rows="5"></textarea>
+      <div class="select-wrap">
+        <select id="nqLocation" class="magic-select">
+          <option value="">— 请选择任务地点 —</option>
+          ${locationOptions}
+        </select>
+      </div>
+      <textarea id="nqCompletion" class="magic-input" placeholder="完成条件（必填，比如：提交一份实验结果）" rows="3"></textarea>
+      <input type="text" id="nqReward" class="magic-input" placeholder="奖励（可选）">
+      <input type="number" id="nqMax" class="magic-input" placeholder="推荐接取人数（默认 1）" min="1" value="1">
+      <button class="magic-btn" onclick="createQuest()">发 布</button>
+    </div>
+    <div class="panel">
+      <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">现 有 课 题</div>
+      ${list.length ? list.map(q => `
+        <div class="quest-card">
+          <div class="quest-title">${esc(q.title)}</div>
+          ${q.description ? `<div class="quest-desc">${esc(q.description)}</div>` : ""}
+          ${q.location ? `<div class="quest-reward">📍 ${esc(q.location)}</div>` : ""}
+          ${q.completion ? `<div class="quest-desc">✓ 完成条件：${esc(q.completion)}</div>` : ""}
+          ${q.reward ? `<div class="quest-reward">✦ ${esc(q.reward)}</div>` : ""}
+          ${q.max_claims ? `<div class="quest-reward">👥 推荐接取人数：${q.max_claims}</div>` : ""}
+          <span class="status-badge ${statusClass(q.status)}">${statusText(q.status)}</span>
+          <button class="magic-btn small danger" style="float:right" onclick="deleteQuest(${q.id})">删 除</button>
+        </div>
+      `).join("") : `<div class="empty-hint">暂 无 课 题</div>`}
+    </div>
+  `;
+}
+
+async function createQuest() {
+  const title = document.getElementById("nqTitle").value.trim();
+  const desc = document.getElementById("nqDesc").value.trim();
+  const location = document.getElementById("nqLocation").value;
+  const completion = document.getElementById("nqCompletion").value.trim();
+  const reward = document.getElementById("nqReward").value.trim();
+  const max = parseInt(document.getElementById("nqMax").value) || 1;
+
+  if (!title) { alert("请填标题"); return; }
+  if (!desc) { alert("课题描述是必填的"); return; }
+  if (!location) { alert("请选择任务地点"); return; }
+  if (!completion) { alert("完成条件是必填的"); return; }
+  if (max < 1) { alert("推荐接取人数至少为 1"); return; }
+
+  showLoading("正 在 发 布");
+  try {
+    await api(`quests`, {
+      method: "POST",
+      body: JSON.stringify({
+        title,
+        description: desc,
+        location,
+        completion,
+        reward,
+        max_claims: max,
+        status: "open"
+      })
+    });
+    setTimeout(() => { hideLoading(); renderTeacherContent(); }, 700);
+  } catch (e) {
+    hideLoading();
+    alert("失败：" + e.message);
+  }
+}
+
+async function deleteQuest(id) {
+  if (!confirm("确定删除这个课题？")) return;
+  await api(`quests?id=eq.${id}`, { method: "DELETE" });
+  renderTeacherContent();
+}
+
+async function renderReview() {
+  const claims = await api(`claims?select=*&order=created_at.desc`);
+  const quests = await api(`quests?select=*`);
+  const questMap = {};
+  if (Array.isArray(quests)) quests.forEach(q => questMap[q.id] = q);
+
+  const box = document.getElementById("tabContents");
+  const list = Array.isArray(claims) ? claims : [];
+  const pendingClaim = list.filter(c => c.status === "pending");
+  const pendingItems = list.filter(c => c.items_status === "pending");
+
+  box.innerHTML = `
+    <div class="panel">
+      <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">课 题 领 取 审 核</div>
+      ${pendingClaim.length ? pendingClaim.map(c => `
+        <div class="quest-card">
+          <div class="quest-title">${esc((questMap[c.quest_id] || {}).title || "（已删除）")}</div>
+          <div class="quest-desc">领取人：${esc(c.student_name)} · ${esc(c.house || "")}</div>
+          <button class="magic-btn small success" onclick="approveClaim(${c.id}, ${c.quest_id})">通 过</button>
+          <button class="magic-btn small danger" style="margin-left:8px" onclick="rejectClaim(${c.id}, ${c.quest_id})">驳 回</button>
+        </div>
+      `).join("") : `<div class="empty-hint">暂 无 待 审 核 的 领 取</div>`}
+    </div>
+    <div class="panel">
+      <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">物 品 审 核</div>
+      ${pendingItems.length ? pendingItems.map(c => `
+        <div class="quest-card">
+          <div class="quest-title">${esc(c.items)}</div>
+          <div class="quest-desc">提交人：${esc(c.student_name)} · ${esc(c.house || "")}</div>
+          <div class="quest-desc">来源课题：${esc((questMap[c.quest_id] || {}).title || "（已删除）")}</div>
+          <button class="magic-btn small success" onclick="approveItems(${c.id})">通 过</button>
+          <button class="magic-btn small danger" style="margin-left:8px" onclick="rejectItems(${c.id})">驳 回</button>
+          ${session.role === "super" ? `<button class="magic-btn small" style="margin-left:8px" onclick="editItems(${c.id}, '${esc(c.items)}')">修 改</button>` : ""}
+        </div>
+      `).join("") : `<div class="empty-hint">暂 无 待 审 核 的 物 品</div>`}
+    </div>
+  `;
+}
+
+async function approveClaim(claimId, questId) {
+  await api(`claims?id=eq.${claimId}`, { method: "PATCH", body: JSON.stringify({ status: "approved" }) });
+  await api(`quests?id=eq.${questId}`, { method: "PATCH", body: JSON.stringify({ status: "doing" }) });
+  renderTeacherContent();
+}
+async function rejectClaim(claimId, questId) {
+  await api(`claims?id=eq.${claimId}`, { method: "DELETE" });
+  await api(`quests?id=eq.${questId}`, { method: "PATCH", body: JSON.stringify({ status: "open" }) });
+  renderTeacherContent();
+}
+async function approveItems(claimId) {
+  await api(`claims?id=eq.${claimId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ items_status: "approved", status: "completed" })
+  });
+  const c = await api(`claims?id=eq.${claimId}&select=*`);
+  if (c && c.length) {
+    await api(`quests?id=eq.${c[0].quest_id}`, { method: "PATCH", body: JSON.stringify({ status: "done" }) });
+  }
+  renderTeacherContent();
+}
+async function rejectItems(claimId) {
+  await api(`claims?id=eq.${claimId}`, { method: "PATCH", body: JSON.stringify({ items_status: "rejected" }) });
+  renderTeacherContent();
+}
+function editItems(claimId, current) {
+  openModal(`
+    <div class="modal-title">修 改 物 品 记 录</div>
+    <input type="text" id="editItemsVal" class="magic-input" value="${esc(current)}">
+    <div class="modal-actions">
+      <button class="magic-btn small" style="flex:1" onclick="closeModal()">取 消</button>
+      <button class="magic-btn small" style="flex:1" onclick="saveEditItems(${claimId})">保 存</button>
+    </div>
+  `);
+}
+async function saveEditItems(claimId) {
+  const v = document.getElementById("editItemsVal").value;
+  await api(`claims?id=eq.${claimId}`, { method: "PATCH", body: JSON.stringify({ items: v }) });
+  closeModal();
+  renderTeacherContent();
+}
+
+async function renderStudents() {
+  const students = await api(`students?select=*&order=created_at.asc`);
+  const claims = await api(`claims?select=*&order=created_at.desc`);
+  const quests = await api(`quests?select=*`);
+
+  const questMap = {};
+  if (Array.isArray(quests)) quests.forEach(q => questMap[q.id] = q);
+
+  const box = document.getElementById("tabContents");
+  const stuList = (Array.isArray(students) ? students : []).filter(s => s.role === "student" || !s.role);
+  const claimList = Array.isArray(claims) ? claims : [];
+
+  const byHouse = {};
+  HOUSES.forEach(h => byHouse[h] = []);
+  stuList.forEach(s => {
+    if (!byHouse[s.house]) byHouse[s.house] = [];
+    byHouse[s.house].push(s);
+  });
+
+  let html = "";
+  for (const h of HOUSES) {
+    const list = byHouse[h] || [];
+    if (!list.length) continue;
+    html += `
+      <div class="house-group">
+        <div class="house-group-title">
+          <span>${h}</span>
+          <small>${list.length} 人</small>
+        </div>
+        ${list.map(s => {
+          const myClaims = claimList.filter(c => c.student_name === s.name);
+          const grade = gradeText(s.enroll_year);
+          return `
+            <div class="student-row">
+              <div class="name">${esc(s.name)}${grade ? `<span class="grade">${grade}</span>` : ""}</div>
+              ${myClaims.length ? myClaims.map(c => {
+                const q = questMap[c.quest_id] || {};
+                const itemTxt = c.items ? ` · 物品：${esc(c.items)} <span class="status-badge ${itemStatusClass(c.items_status || "none")}">${itemStatusText(c.items_status || "none")}</span>` : "";
+                return `<div class="quest-info">◆ ${esc(q.title || "（已删除）")} — ${statusText(c.status === "approved" ? "doing" : c.status)}${itemTxt}</div>`;
+              }).join("") : `<div class="quest-info">暂无领取记录</div>`}
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  if (!html) html = `<div class="empty-hint">暂 无 学 生 记 录</div>`;
+  box.innerHTML = `<div class="panel">${html}</div>`;
+}
+
+/* ==================== 帖子管理（教师） ==================== */
+async function renderForumAdmin() {
+  const box = document.getElementById("tabContents");
+  box.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
+  try {
+    const posts = await api(`posts?select=*&order=created_at.desc`);
+    if (!Array.isArray(posts) || !posts.length) {
+      box.innerHTML = `<div class="panel"><div class="empty-hint">暂 无 帖 子</div></div>`;
+      return;
+    }
+    const pending = posts.filter(p => p.status === "pending");
+    const approved = posts.filter(p => p.status === "approved");
+
+    let html = `
+      <div class="panel">
+        <div style="font-size:14px;letter-spacing:3px;color:#f0d090;margin-bottom:14px;">⏳ 待 审 核 帖 子（${pending.length}）</div>
+        ${pending.length ? pending.map(p => `
+          <div class="quest-card">
+            <div class="quest-title">${esc(p.title || "（无标题）")}</div>
+            <div class="quest-desc">${esc(p.content)}</div>
+            <div class="quest-reward">${esc(p.author)}${p.house ? " · " + esc(p.house) : ""} · ${new Date(p.created_at).toLocaleString("zh-CN")}</div>
+            <button class="magic-btn small success" onclick="approvePost(${p.id})">通 过</button>
+            <button class="magic-btn small danger" style="margin-left:8px" onclick="rejectPost(${p.id}, '${esc(p.author)}', '${esc(p.title || "")}')">驳 回 并 通 知</button>
+          </div>
+        `).join("") : `<div class="empty-hint">暂 无 待 审 核 帖 子</div>`}
+      </div>
+    `;
+
+    html += `
+      <div class="panel">
+        <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">已 通 过 帖 子（${approved.length}）</div>
+        ${approved.length ? approved.map(p => `
+          <div class="quest-card">
+            <div class="quest-title">${esc(p.title || "（无标题）")}</div>
+            <div class="quest-desc">${esc(p.content)}</div>
+            <div class="quest-reward">${esc(p.author)}${p.house ? " · " + esc(p.house) : ""} · ${new Date(p.created_at).toLocaleString("zh-CN")} · ♡ ${p.likes || 0}</div>
+            <button class="magic-btn small danger" onclick="rejectPost(${p.id}, '${esc(p.author)}', '${esc(p.title || "")}')">删 除 并 通 知</button>
+          </div>
+        `).join("") : `<div class="empty-hint">暂 无 已 通 过 帖 子</div>`}
+      </div>
+    `;
+    box.innerHTML = html;
+  } catch (e) {
+    box.innerHTML = `<div class="panel"><div class="empty-hint">读取失败：${esc(e.message)}</div></div>`;
+  }
+}
+
+async function approvePost(postId) {
+  await api(`posts?id=eq.${postId}`, { method: "PATCH", body: JSON.stringify({ status: "approved" }) });
+  renderForumAdmin();
+}
+async function rejectPost(postId, author, title) {
+  if (!confirm(`确定删除「${author}」的帖子？会给 TA 发一条通知。`)) return;
+  const reason = prompt("请填写违禁原因（会发给学生）：", "涉嫌违禁内容");
+  if (reason === null) return;
+  try {
+    await api(`messages`, {
+      method: "POST",
+      body: JSON.stringify({
+        to_user: author,
+        from_user: session.name,
+        type: "post_rejected",
+        content: `你发布的帖子「${title || "（无标题）"}」已被删除。原因：${reason || "涉嫌违禁内容"}`
+      })
+    });
+    await api(`post_comments?post_id=eq.${postId}`, { method: "DELETE" });
+    await api(`posts?id=eq.${postId}`, { method: "DELETE" });
+    alert("已删除，并已通知作者。");
+    renderForumAdmin();
+  } catch (e) {
+    alert("操作失败：" + e.message);
+  }
+}
+
+/* ==================== 启动 ==================== */
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeModal();
+});
+</script>
+
+</body>
+</html>
 <div id="mainScreen">
   <div class="wrap">
     <div class="topbar">
