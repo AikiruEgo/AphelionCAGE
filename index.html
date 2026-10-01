@@ -66,7 +66,6 @@
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0.14;
-    filter: blur(0.3px) saturate(0.9);
     animation: sigilBreath 14s ease-in-out infinite;
     mix-blend-mode: screen;
   }
@@ -119,7 +118,6 @@
     position: relative;
     z-index: 2;
   }
-
   #teacherScreen { display: none; }
 
   .login-box { width: 100%; max-width: 560px; }
@@ -176,29 +174,20 @@
     min-height: 80px;
     font-family: inherit;
     resize: vertical;
+    line-height: 1.7;
   }
 
-  .pass-wrap {
-    position: relative;
-    margin-bottom: 16px;
-  }
+  .pass-wrap { position: relative; margin-bottom: 16px; }
   .pass-wrap .magic-input { margin-bottom: 0; padding-right: 46px; }
   .eye-btn {
     position: absolute;
     right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    width: 26px;
-    height: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #7f9bc8;
-    transition: color 0.3s;
-    background: transparent;
-    border: none;
-    padding: 0;
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: #7f9bc8; transition: color 0.3s;
+    background: transparent; border: none; padding: 0;
   }
   .eye-btn:hover { color: #bcd8ff; }
   .eye-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -206,75 +195,49 @@
   .eye-btn.on .eye-on { display: none; }
   .eye-btn.on .eye-off { display: block; }
 
-  .select-wrap {
-    position: relative;
-    margin-bottom: 16px;
-  }
+  .select-wrap { position: relative; margin-bottom: 16px; }
   .select-wrap::after {
     content: "▾";
-    position: absolute;
-    right: 16px;
-    top: 50%;
+    position: absolute; right: 16px; top: 50%;
     transform: translateY(-50%);
-    color: #7f9bc8;
-    font-size: 14px;
-    pointer-events: none;
+    color: #7f9bc8; font-size: 14px; pointer-events: none;
   }
   .magic-select {
-    display: block;
-    width: 100%;
+    display: block; width: 100%;
     padding: 13px 40px 13px 16px;
-    font-size: 15px;
-    font-family: inherit;
-    letter-spacing: 2px;
+    font-size: 15px; font-family: inherit; letter-spacing: 2px;
     color: #eaf2ff;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(120,170,255,0.4);
-    border-radius: 10px;
-    outline: none;
-    transition: all 0.3s;
-    appearance: none;
-    -webkit-appearance: none;
-    cursor: pointer;
+    border-radius: 10px; outline: none; transition: all 0.3s;
+    appearance: none; -webkit-appearance: none; cursor: pointer;
   }
   .magic-select:focus {
     border-color: rgba(180,215,255,0.9);
     box-shadow: 0 0 24px rgba(120,170,255,0.5);
     background: rgba(255,255,255,0.08);
   }
-  .magic-select option {
-    background: #0a1428;
-    color: #eaf2ff;
-  }
+  .magic-select option { background: #0a1428; color: #eaf2ff; }
 
   .magic-btn {
     position: relative;
-    display: block;
-    width: 100%;
+    display: block; width: 100%;
     padding: 15px;
-    font-size: 15px;
-    font-family: inherit;
-    letter-spacing: 5px;
+    font-size: 15px; font-family: inherit; letter-spacing: 5px;
     color: #eaf2ff;
     background:
       linear-gradient(135deg, rgba(60,120,220,0.55), rgba(20,50,120,0.75)),
       linear-gradient(180deg, rgba(255,255,255,0.06), transparent);
     border: 1px solid rgba(120,170,255,0.55);
     border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    box-shadow:
-      0 0 22px rgba(100,160,255,0.35),
-      0 0 60px rgba(60,120,230,0.25),
-      inset 0 0 20px rgba(100,160,255,0.18);
+    cursor: pointer; transition: all 0.4s ease;
+    box-shadow: 0 0 22px rgba(100,160,255,0.35), 0 0 60px rgba(60,120,230,0.25), inset 0 0 20px rgba(100,160,255,0.18);
     text-shadow: 0 0 12px rgba(150,190,255,0.8);
-    overflow: hidden;
-    margin-top: 6px;
+    overflow: hidden; margin-top: 6px;
   }
   .magic-btn::before {
     content: "";
-    position: absolute;
-    top: 0; left: -120%;
+    position: absolute; top: 0; left: -120%;
     width: 60%; height: 100%;
     background: linear-gradient(100deg, transparent, rgba(190,220,255,0.55), transparent);
     transform: skewX(-20deg);
@@ -287,46 +250,21 @@
     100% { left: 130%; }
   }
   .magic-btn:hover {
-    transform: translateY(-2px);
-    color: #fff;
+    transform: translateY(-2px); color: #fff;
     border-color: rgba(180,215,255,0.9);
-    box-shadow:
-      0 0 32px rgba(120,170,255,0.65),
-      0 0 90px rgba(70,130,240,0.4),
-      inset 0 0 26px rgba(140,190,255,0.3);
+    box-shadow: 0 0 32px rgba(120,170,255,0.65), 0 0 90px rgba(70,130,240,0.4), inset 0 0 26px rgba(140,190,255,0.3);
   }
-  .magic-btn.small {
-    width: auto;
-    padding: 8px 16px;
-    font-size: 12px;
-    letter-spacing: 3px;
-    margin: 0;
-  }
-  .magic-btn.danger {
-    background: linear-gradient(135deg, rgba(200,70,70,0.5), rgba(120,20,20,0.75));
-    border-color: rgba(255,140,140,0.5);
-  }
-  .magic-btn.danger:hover {
-    box-shadow: 0 0 32px rgba(255,120,120,0.6), inset 0 0 26px rgba(255,140,140,0.3);
-  }
-  .magic-btn.success {
-    background: linear-gradient(135deg, rgba(60,180,120,0.5), rgba(20,100,60,0.75));
-    border-color: rgba(140,255,190,0.5);
-  }
-  .magic-btn.success:hover {
-    box-shadow: 0 0 32px rgba(120,255,180,0.6), inset 0 0 26px rgba(140,255,190,0.3);
-  }
-  .magic-btn.ghost {
-    background: linear-gradient(135deg, rgba(80,80,100,0.5), rgba(30,30,50,0.75));
-    border-color: rgba(180,180,200,0.4);
-  }
+  .magic-btn.small { width: auto; padding: 8px 16px; font-size: 12px; letter-spacing: 3px; margin: 0; }
+  .magic-btn.danger { background: linear-gradient(135deg, rgba(200,70,70,0.5), rgba(120,20,20,0.75)); border-color: rgba(255,140,140,0.5); }
+  .magic-btn.danger:hover { box-shadow: 0 0 32px rgba(255,120,120,0.6), inset 0 0 26px rgba(255,140,140,0.3); }
+  .magic-btn.success { background: linear-gradient(135deg, rgba(60,180,120,0.5), rgba(20,100,60,0.75)); border-color: rgba(140,255,190,0.5); }
+  .magic-btn.success:hover { box-shadow: 0 0 32px rgba(120,255,180,0.6), inset 0 0 26px rgba(140,255,190,0.3); }
+  .magic-btn.ghost { background: linear-gradient(135deg, rgba(80,80,100,0.5), rgba(30,30,50,0.75)); border-color: rgba(180,180,200,0.4); }
 
   .teacher-entry {
     position: fixed !important;
-    right: 0 !important;
-    top: 50% !important;
-    left: auto !important;
-    bottom: auto !important;
+    right: 0 !important; top: 50% !important;
+    left: auto !important; bottom: auto !important;
     transform: translateY(-50%) !important;
     z-index: 9998 !important;
     padding: 22px 16px;
@@ -334,55 +272,35 @@
     border: 1px solid rgba(120,170,255,0.5);
     border-right: none;
     border-radius: 14px 0 0 14px;
-    font-size: 12px;
-    letter-spacing: 5px;
-    color: #bcd8ff;
+    font-size: 12px; letter-spacing: 5px; color: #bcd8ff;
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow:
-      -4px 0 20px rgba(60,120,230,0.35),
-      inset 0 0 18px rgba(100,160,255,0.18);
+    box-shadow: -4px 0 20px rgba(60,120,230,0.35), inset 0 0 18px rgba(100,160,255,0.18);
     text-shadow: 0 0 10px rgba(150,190,255,0.7);
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    user-select: none;
+    writing-mode: vertical-rl; text-orientation: upright;
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; user-select: none;
   }
   .teacher-entry::before {
     content: "";
-    position: absolute;
-    left: 0;
-    top: 15%;
-    bottom: 15%;
-    width: 2px;
+    position: absolute; left: 0; top: 15%; bottom: 15%; width: 2px;
     background: linear-gradient(to bottom, transparent, #8ab4ff, transparent);
     animation: teacherGlow 2.5s ease-in-out infinite;
     border-radius: 2px;
   }
-  @keyframes teacherGlow {
-    0%, 100% { opacity: 0.4; }
-    50%      { opacity: 1; }
-  }
+  @keyframes teacherGlow { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
   .teacher-entry:hover {
     transform: translateY(-50%) translateX(-6px) !important;
     color: #eaf2ff;
     border-color: rgba(180,215,255,0.95);
-    box-shadow:
-      -8px 0 40px rgba(120,170,255,0.7),
-      -4px 0 20px rgba(60,120,230,0.5),
-      inset 0 0 26px rgba(140,190,255,0.3);
+    box-shadow: -8px 0 40px rgba(120,170,255,0.7), -4px 0 20px rgba(60,120,230,0.5), inset 0 0 26px rgba(140,190,255,0.3);
     text-shadow: 0 0 18px rgba(200,225,255,1);
     padding-right: 22px;
   }
 
   .screen-flip-out {
     animation: flipOut 0.7s cubic-bezier(0.6, 0, 0.4, 1) forwards;
-    transform-origin: left center;
-    backface-visibility: hidden;
-    pointer-events: none;
+    transform-origin: left center; backface-visibility: hidden; pointer-events: none;
   }
   @keyframes flipOut {
     0%   { transform: perspective(1400px) rotateY(0deg); opacity: 1; }
@@ -390,8 +308,7 @@
   }
   .screen-flip-in {
     animation: flipIn 0.7s cubic-bezier(0.6, 0, 0.4, 1) forwards;
-    transform-origin: right center;
-    backface-visibility: hidden;
+    transform-origin: right center; backface-visibility: hidden;
   }
   @keyframes flipIn {
     0%   { transform: perspective(1400px) rotateY(100deg); opacity: 0; }
@@ -401,14 +318,10 @@
   #mainScreen { display: none; }
 
   .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
     padding: 14px 0 20px;
     border-bottom: 1px solid rgba(120,170,255,0.2);
-    margin-bottom: 22px;
-    flex-wrap: wrap;
-    gap: 12px;
+    margin-bottom: 22px; flex-wrap: wrap; gap: 12px;
   }
   .topbar-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .user-info { font-size: 13px; letter-spacing: 2px; color: #bcd8ff; }
@@ -417,16 +330,12 @@
 
   .world-time {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 13px;
-    letter-spacing: 2px;
-    color: #a8c4f0;
+    font-size: 13px; letter-spacing: 2px; color: #a8c4f0;
     padding: 6px 14px;
     border: 1px solid rgba(120,170,255,0.3);
     border-radius: 20px;
     background: rgba(10,18,42,0.5);
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex; align-items: center; gap: 10px;
   }
   .world-time .season { color: #bcd8ff; text-shadow: 0 0 10px rgba(140,190,255,0.6); }
   .world-time .sep { color: rgba(120,170,255,0.4); }
@@ -434,15 +343,11 @@
   .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
   .tab {
     padding: 10px 20px;
-    font-size: 13px;
-    font-family: inherit;
-    letter-spacing: 3px;
+    font-size: 13px; font-family: inherit; letter-spacing: 3px;
     color: #7f9bc8;
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(120,170,255,0.2);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s;
+    border-radius: 8px; cursor: pointer; transition: all 0.3s;
   }
   .tab:hover { color: #bcd8ff; border-color: rgba(150,190,255,0.5); }
   .tab.active {
@@ -472,11 +377,8 @@
 
   .status-badge {
     display: inline-block;
-    font-size: 11px;
-    letter-spacing: 2px;
-    padding: 3px 10px;
-    border-radius: 12px;
-    margin-right: 8px;
+    font-size: 11px; letter-spacing: 2px;
+    padding: 3px 10px; border-radius: 12px; margin-right: 8px;
   }
   .s-open { background: rgba(60,180,120,0.2); color: #8ee0b0; border: 1px solid rgba(140,255,190,0.4); }
   .s-pending { background: rgba(230,180,60,0.2); color: #f0d090; border: 1px solid rgba(255,220,140,0.4); }
@@ -485,254 +387,142 @@
   .s-rejected { background: rgba(200,70,70,0.2); color: #ffa0a0; border: 1px solid rgba(255,140,140,0.4); }
 
   .empty-hint {
-    text-align: center;
-    padding: 40px 20px;
-    color: #7f9bc8;
-    font-size: 13px;
-    letter-spacing: 2px;
+    text-align: center; padding: 40px 20px;
+    color: #7f9bc8; font-size: 13px; letter-spacing: 2px;
   }
 
   .house-group { margin-bottom: 28px; }
   .house-group-title {
-    font-size: 15px;
-    letter-spacing: 4px;
-    color: #bcd8ff;
-    padding-bottom: 8px;
-    margin-bottom: 14px;
+    font-size: 15px; letter-spacing: 4px; color: #bcd8ff;
+    padding-bottom: 8px; margin-bottom: 14px;
     border-bottom: 1px solid rgba(120,170,255,0.25);
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+    display: flex; justify-content: space-between; align-items: baseline;
   }
   .house-group-title small { font-size: 11px; color: #7f9bc8; letter-spacing: 2px; }
   .student-row {
     padding: 12px 16px;
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(120,170,255,0.18);
-    border-radius: 8px;
-    margin-bottom: 8px;
-    font-size: 13px;
-    line-height: 1.8;
-    color: #c4d2e8;
+    border-radius: 8px; margin-bottom: 8px;
+    font-size: 13px; line-height: 1.8; color: #c4d2e8;
   }
   .student-row .name { color: #eaf2ff; letter-spacing: 2px; font-size: 14px; }
   .student-row .grade {
-    font-size: 11px;
-    color: #bcd8ff;
-    margin-left: 8px;
+    font-size: 11px; color: #bcd8ff; margin-left: 8px;
     padding: 1px 8px;
     border: 1px solid rgba(140,190,255,0.4);
     border-radius: 10px;
   }
   .student-row .quest-info {
-    margin-top: 6px;
-    padding-left: 12px;
+    margin-top: 6px; padding-left: 12px;
     border-left: 1px dashed rgba(120,170,255,0.3);
-    font-size: 12px;
-    color: #a0b8d8;
+    font-size: 12px; color: #a0b8d8;
   }
 
   .comment-item {
-    padding: 8px 12px;
-    margin-bottom: 8px;
+    padding: 8px 12px; margin-bottom: 8px;
     background: rgba(255,255,255,0.03);
     border-left: 2px solid rgba(140,190,255,0.5);
     border-radius: 0 6px 6px 0;
-    font-size: 13px;
-    line-height: 1.7;
+    font-size: 13px; line-height: 1.7;
   }
-  .comment-item .meta {
-    color: #bcd8ff;
-    font-size: 12px;
-    margin-bottom: 4px;
-  }
+  .comment-item .meta { color: #bcd8ff; font-size: 12px; margin-bottom: 4px; }
   .comment-item .text { color: #c4d2e8; }
 
   #loadingOverlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: #060c20;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 28px;
+    position: fixed; inset: 0; z-index: 9999;
+    background: #060c20; display: none;
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 28px;
   }
   #loadingOverlay.show { display: flex; }
-  /* ==================== 魔法阵加载 ==================== */
-.magic-circle {
-  position: relative;
-  width: 220px;
-  height: 220px;
-}
 
-/* 外圈符文环 */
-.magic-circle .rune-ring {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  animation: spinSlow 24s linear infinite;
-  transform-origin: center;
-}
-.magic-circle .rune-ring svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-.magic-circle .rune-ring svg text {
-  fill: rgba(160,200,255,0.85);
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 13px;
-  letter-spacing: 2px;
-  text-shadow: 0 0 8px rgba(140,190,255,0.9);
-}
-
-/* 反向旋转的第二圈符文 */
-.magic-circle .rune-ring-2 {
-  position: absolute;
-  inset: 18px;
-  border-radius: 50%;
-  animation: spinSlowRev 18s linear infinite;
-  transform-origin: center;
-}
-.magic-circle .rune-ring-2 svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-.magic-circle .rune-ring-2 svg text {
-  fill: rgba(180,215,255,0.55);
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 10px;
-  letter-spacing: 3px;
-}
-
-/* 六芒星 */
-.magic-circle .hexagram {
-  position: absolute;
-  inset: 34px;
-  animation: spinSlow 30s linear infinite reverse;
-  transform-origin: center;
-}
-.magic-circle .hexagram svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-.magic-circle .hexagram path,
-.magic-circle .hexagram polygon {
-  fill: none;
-  stroke: rgba(180,215,255,0.9);
-  stroke-width: 1.2;
-  filter: drop-shadow(0 0 6px rgba(140,190,255,0.9));
-}
-
-/* 内圈虚线环 */
-.magic-circle .inner-ring {
-  position: absolute;
-  inset: 54px;
-  border-radius: 50%;
-  border: 1px dashed rgba(180,215,255,0.7);
-  animation: spinSlowRev 12s linear infinite;
-  box-shadow: 0 0 18px rgba(140,190,255,0.5), inset 0 0 18px rgba(140,190,255,0.4);
-}
-
-/* 中心发光核心 */
-.magic-circle .core {
-  position: absolute;
-  inset: 88px;
-  border-radius: 50%;
-  background: radial-gradient(circle,
-    rgba(220,235,255,1) 0%,
-    rgba(180,215,255,0.8) 30%,
-    rgba(120,170,255,0.35) 60%,
-    transparent 100%);
-  box-shadow:
-    0 0 30px rgba(180,220,255,0.9),
-    0 0 60px rgba(120,170,255,0.6),
-    0 0 100px rgba(80,140,230,0.4);
-  animation: corePulse 2s ease-in-out infinite;
-}
-
-/* 外层光晕 */
-.magic-circle::before {
-  content: "";
-  position: absolute;
-  inset: -20px;
-  border-radius: 50%;
-  background: radial-gradient(circle,
-    rgba(120,170,255,0.15) 0%,
-    rgba(80,140,230,0.08) 40%,
-    transparent 70%);
-  animation: corePulse 3s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes spinSlow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-@keyframes spinSlowRev {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(-360deg); }
-}
-@keyframes corePulse {
-  0%, 100% { transform: scale(1);    opacity: 0.85; }
-  50%      { transform: scale(1.08); opacity: 1; }
-}
-
-.loading-text {
-  font-size: 13px;
-  letter-spacing: 6px;
-  color: #bcd8ff;
-  text-shadow: 0 0 14px rgba(120,170,255,0.7);
-  animation: pulse 1.8s ease-in-out infinite;
-  margin-top: 8px;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 0.7; }
-  50%      { opacity: 1; }
-}
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes pulse {
-    0%, 100% { opacity: 0.7; transform: scale(1); }
-    50%      { opacity: 1; transform: scale(1.12); }
+  .magic-circle { position: relative; width: 220px; height: 220px; }
+  .magic-circle .rune-ring {
+    position: absolute; inset: 0; border-radius: 50%;
+    animation: spinSlow 24s linear infinite; transform-origin: center;
+  }
+  .magic-circle .rune-ring svg { width: 100%; height: 100%; overflow: visible; }
+  .magic-circle .rune-ring svg text {
+    fill: rgba(160,200,255,0.85);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(140,190,255,0.9);
+  }
+  .magic-circle .rune-ring-2 {
+    position: absolute; inset: 18px; border-radius: 50%;
+    animation: spinSlowRev 18s linear infinite; transform-origin: center;
+  }
+  .magic-circle .rune-ring-2 svg { width: 100%; height: 100%; overflow: visible; }
+  .magic-circle .rune-ring-2 svg text {
+    fill: rgba(180,215,255,0.55);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 10px; letter-spacing: 3px;
+  }
+  .magic-circle .hexagram {
+    position: absolute; inset: 34px;
+    animation: spinSlow 30s linear infinite reverse;
+    transform-origin: center;
+  }
+  .magic-circle .hexagram svg { width: 100%; height: 100%; overflow: visible; }
+  .magic-circle .hexagram polygon {
+    fill: none;
+    stroke: rgba(180,215,255,0.9);
+    stroke-width: 1.2;
+    filter: drop-shadow(0 0 6px rgba(140,190,255,0.9));
+  }
+  .magic-circle .inner-ring {
+    position: absolute; inset: 54px; border-radius: 50%;
+    border: 1px dashed rgba(180,215,255,0.7);
+    animation: spinSlowRev 12s linear infinite;
+    box-shadow: 0 0 18px rgba(140,190,255,0.5), inset 0 0 18px rgba(140,190,255,0.4);
+  }
+  .magic-circle .core {
+    position: absolute; inset: 88px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(220,235,255,1) 0%, rgba(180,215,255,0.8) 30%, rgba(120,170,255,0.35) 60%, transparent 100%);
+    box-shadow: 0 0 30px rgba(180,220,255,0.9), 0 0 60px rgba(120,170,255,0.6), 0 0 100px rgba(80,140,230,0.4);
+    animation: corePulse 2s ease-in-out infinite;
+  }
+  .magic-circle::before {
+    content: ""; position: absolute; inset: -20px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(120,170,255,0.15) 0%, rgba(80,140,230,0.08) 40%, transparent 70%);
+    animation: corePulse 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes spinSlowRev { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+  @keyframes corePulse {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50%      { transform: scale(1.08); opacity: 1; }
   }
   .loading-text {
-    font-size: 13px;
-    letter-spacing: 6px;
-    color: #bcd8ff;
+    font-size: 13px; letter-spacing: 6px; color: #bcd8ff;
     text-shadow: 0 0 14px rgba(120,170,255,0.7);
     animation: pulse 1.8s ease-in-out infinite;
+    margin-top: 8px;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.7; }
+    50%      { opacity: 1; }
   }
 
   .modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 10000;
+    position: fixed; inset: 0; z-index: 10000;
     background: rgba(4,8,24,0.88);
     backdrop-filter: blur(6px);
-    display: none;
-    align-items: center;
-    justify-content: center;
+    display: none; align-items: center; justify-content: center;
     padding: 20px;
   }
   .modal-overlay.show { display: flex; }
   .modal-box {
-    position: relative;
-    max-width: 420px;
-    width: 100%;
+    position: relative; max-width: 420px; width: 100%;
     background: rgba(10,18,42,0.92);
     border: 1px solid rgba(120,170,255,0.4);
-    border-radius: 14px;
-    padding: 26px 24px;
+    border-radius: 14px; padding: 26px 24px;
     box-shadow: 0 0 60px rgba(60,120,230,0.35), inset 0 0 40px rgba(30,60,140,0.3);
   }
   .modal-title {
-    font-size: 16px;
-    letter-spacing: 4px;
-    color: #bcd8ff;
+    font-size: 16px; letter-spacing: 4px; color: #bcd8ff;
     margin-bottom: 14px;
     text-shadow: 0 0 14px rgba(100,160,255,0.6);
   }
@@ -750,8 +540,7 @@
       writing-mode: horizontal-tb;
       padding: 12px 16px;
       border-radius: 12px 0 0 12px;
-      letter-spacing: 3px;
-      font-size: 11px;
+      letter-spacing: 3px; font-size: 11px;
     }
   }
 </style>
@@ -764,10 +553,8 @@
   <div class="login-box panel">
     <h1 class="login-title">阿斐理恩魔法学院</h1>
     <p class="login-sub">APHELION ACADEMY · QUEST BOARD</p>
-
     <div class="field-label">姓 名</div>
     <input type="text" id="loginName" class="magic-input" placeholder="请输入你的名字" maxlength="20">
-
     <div class="field-label">通 行 密 码</div>
     <div class="pass-wrap">
       <input type="password" id="loginPass" class="magic-input" placeholder="请输入学院通行密码">
@@ -776,7 +563,6 @@
         <svg class="eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
       </button>
     </div>
-
     <div class="field-label">选 择 学 院</div>
     <div class="select-wrap">
       <select id="loginHouse" class="magic-select">
@@ -789,7 +575,6 @@
         <option value="克瑞乌萨">克瑞乌萨 · Creusa</option>
       </select>
     </div>
-
     <button class="magic-btn" onclick="doLogin()">进 入 学 院</button>
   </div>
 </div>
@@ -798,10 +583,8 @@
   <div class="login-box panel">
     <h1 class="login-title">教 师 登 录</h1>
     <p class="login-sub">FACULTY ACCESS</p>
-
     <div class="field-label">姓 名</div>
     <input type="text" id="teacherName" class="magic-input" placeholder="请输入你的名字" maxlength="20">
-
     <div class="field-label">职 位</div>
     <div class="select-wrap">
       <select id="teacherPosition" class="magic-select">
@@ -824,7 +607,6 @@
         <option value="超级管理员">超级管理员</option>
       </select>
     </div>
-
     <div class="field-label">密 码</div>
     <div class="pass-wrap">
       <input type="password" id="teacherPass" class="magic-input" placeholder="请输入教师密码">
@@ -833,7 +615,6 @@
         <svg class="eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
       </button>
     </div>
-
     <button class="magic-btn" onclick="doTeacherLogin()">确 认</button>
     <button class="magic-btn ghost" style="margin-top:12px" onclick="backToStudent()">返 回 学 生 入 口</button>
   </div>
@@ -842,7 +623,6 @@
 <div class="teacher-entry" id="teacherEntry" onclick="flipToTeacher()">
   <span>教 师 入 口</span>
 </div>
-
 <div id="mainScreen">
   <div class="wrap">
     <div class="topbar">
@@ -861,9 +641,37 @@
 
 <div id="loadingOverlay">
   <div class="magic-circle">
-    <div class="ring"></div>
-    <div class="ring"></div>
-    <div class="ring"></div>
+    <div class="rune-ring">
+      <svg viewBox="0 0 220 220">
+        <defs>
+          <path id="runeCirclePath" d="M 110,110 m -100,0 a 100,100 0 1,1 200,0 a 100,100 0 1,1 -200,0" />
+        </defs>
+        <text>
+          <textPath href="#runeCirclePath" startOffset="0%">
+            ✦ A P H E L I O N · M A G I C A · A C A D E M Y ✦ ✦ M A G I C A L · A R C A N U M ✦
+          </textPath>
+        </text>
+      </svg>
+    </div>
+    <div class="rune-ring-2">
+      <svg viewBox="0 0 220 220">
+        <defs>
+          <path id="runeCirclePath2" d="M 110,110 m -84,0 a 84,84 0 1,1 168,0 a 84,84 0 1,1 -168,0" />
+        </defs>
+        <text>
+          <textPath href="#runeCirclePath2" startOffset="0%">
+            ✧ ✦ ✧ ☾ ☉ ✧ ✦ ✧ ★ ✧ ✦ ✧ ☽ ✧ ✦ ✧
+          </textPath>
+        </text>
+      </svg>
+    </div>
+    <div class="hexagram">
+      <svg viewBox="0 0 150 150">
+        <polygon points="75,10 130,120 20,120" />
+        <polygon points="75,140 20,30 130,30" />
+      </svg>
+    </div>
+    <div class="inner-ring"></div>
     <div class="core"></div>
   </div>
   <div class="loading-text" id="loadingText">正 在 连 接 魔 法 网 络</div>
@@ -883,6 +691,11 @@ const TEACHER_PASSWORD = "Aphelionschool2006";
 const SUPER_PASSWORD   = "ListenPast100690926";
 
 const HOUSES = ["伊希利尔","维尔卡帕","阿特莱亚","塔利亚","穆萨菲尔","克瑞乌萨"];
+const LOCATIONS = [
+  "缄默林外围","中央广场","魔药课教室","种植园","主城堡三楼走廊","天文台",
+  "教师办公室","基础魔法理论教室","世界史教室","图书馆","进阶魔法理论教室",
+  "战斗技巧教室","算术占卜教室","古代占卜教室","奥术秘能研究室","校医室","阿斐理恩中央花园"
+];
 
 const WORLD_EPOCH_REAL = 2020;
 const WORLD_EPOCH_WORLD = 1703;
@@ -894,7 +707,6 @@ const HEADERS = {
   "Prefer": "return=representation"
 };
 
-/* ==================== 状态 ==================== */
 let session = { role: null, name: null, house: null, position: null, enrollYear: null };
 
 /* ==================== 工具 ==================== */
@@ -930,7 +742,6 @@ function openModal(html) {
 function closeModal() {
   document.getElementById("modal").classList.remove("show");
 }
-
 function toggleEye(inputId, btn) {
   const inp = document.getElementById(inputId);
   if (inp.type === "password") { inp.type = "text"; btn.classList.add("on"); }
@@ -950,9 +761,7 @@ function getWorldDate() {
   else season = "谷收季";
   return { year, month, day, season };
 }
-
 function getCurrentWorldYear() { return getWorldDate().year; }
-
 function renderWorldTime() {
   const w = getWorldDate();
   const el = document.getElementById("worldTime");
@@ -960,7 +769,6 @@ function renderWorldTime() {
   el.innerHTML = `世界历 <span class="season">${w.year}</span> <span class="sep">·</span> ${w.month} <span class="sep">·</span> ${w.day} <span class="sep">·</span> <span class="season">${w.season}</span>`;
   setTimeout(renderWorldTime, 60000);
 }
-
 function calcGrade(enrollYear) {
   if (!enrollYear) return null;
   const g = getCurrentWorldYear() - enrollYear + 1;
@@ -968,7 +776,6 @@ function calcGrade(enrollYear) {
   if (g > 7) return 7;
   return g;
 }
-
 function gradeText(enrollYear) {
   const g = calcGrade(enrollYear);
   return g ? `${g} 年级` : "";
@@ -1022,7 +829,6 @@ function flipToTeacher() {
   const teacher = document.getElementById("teacherScreen");
   const entry = document.getElementById("teacherEntry");
   if (entry) entry.style.display = "none";
-
   login.classList.add("screen-flip-out");
   setTimeout(() => {
     login.style.display = "none";
@@ -1037,7 +843,6 @@ function backToStudent() {
   const login = document.getElementById("loginScreen");
   const teacher = document.getElementById("teacherScreen");
   const entry = document.getElementById("teacherEntry");
-
   teacher.classList.add("screen-flip-out");
   setTimeout(() => {
     teacher.style.display = "none";
@@ -1124,7 +929,7 @@ function enterSystem() {
   else renderTeacherTabs();
 }
 
-/* ==================== 学生系统 ==================== */
+/* ==================== 学生端 ==================== */
 let studentTab = "quests";
 
 function renderStudentTabs() {
@@ -1137,7 +942,6 @@ function renderStudentTabs() {
   `;
   renderStudentContent();
 }
-
 function switchStudentTab(t) { studentTab = t; renderStudentTabs(); }
 
 async function renderStudentContent() {
@@ -1167,6 +971,9 @@ async function renderQuests() {
       <div class="quest-card">
         <div class="quest-title">${esc(q.title)}</div>
         ${q.description ? `<div class="quest-desc">${esc(q.description)}</div>` : ""}
+        ${q.location ? `<div class="quest-reward">📍 地点：${esc(q.location)}</div>` : ""}
+        ${q.completion ? `<div class="quest-desc">✓ 完成条件：${esc(q.completion)}</div>` : ""}
+        ${q.reward ? `<div class="quest-reward">✦ 奖励：${esc(q.reward)}</div>` : ""}
         ${q.max_claims ? `<div class="quest-reward">👥 推荐接取人数：${q.max_claims}</div>` : ""}
         <span class="status-badge ${statusClass(q.status)}">${statusText(q.status)}</span>
         ${canClaim ? `<button class="magic-btn small" style="margin-left:8px" onclick="claimQuest(${q.id})">领 取</button>` : ""}
@@ -1238,6 +1045,8 @@ async function renderMyQuests() {
     return `
       <div class="quest-card">
         <div class="quest-title">${esc(q.title || "（课题已删除）")}</div>
+        ${q.location ? `<div class="quest-reward">📍 ${esc(q.location)}</div>` : ""}
+        ${q.completion ? `<div class="quest-desc">✓ 完成条件：${esc(q.completion)}</div>` : ""}
         <span class="status-badge ${statusClass(c.status === "approved" ? "doing" : c.status)}">${statusText(c.status === "approved" ? "doing" : c.status)}</span>
         ${itemLine}
         ${canSubmit ? `<button class="magic-btn small" style="margin-top:10px" onclick="openSubmitItems(${c.id}, '${esc(q.title || "")}')">提 交 物 品</button>` : ""}
@@ -1272,9 +1081,7 @@ async function submitItems(claimId) {
   const qty = document.getElementById("itemQty").value.trim();
   const note = document.getElementById("itemNote").value.trim();
   if (!name) { alert("请填写物品名称"); return; }
-
   const items = qty ? `${name} × ${qty}${note ? "（" + note + "）" : ""}` : `${name}${note ? "（" + note + "）" : ""}`;
-
   showLoading("正 在 提 交");
   try {
     await api(`claims?id=eq.${claimId}`, {
@@ -1332,25 +1139,21 @@ async function loadPosts() {
   const listEl = document.getElementById("postList");
   if (!listEl) return;
   listEl.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
-
   try {
     const allPosts = await api(`posts?select=*&order=created_at.desc`);
     const posts = (allPosts || []).filter(p =>
       p.status === "approved" || p.author === session.name
     );
-
     if (!posts.length) {
       listEl.innerHTML = `<div class="panel"><div class="empty-hint">暂 无 帖 子</div></div>`;
       return;
     }
-
     const comments = await api(`post_comments?select=*&order=created_at.asc`);
     const commentMap = {};
     (comments || []).forEach(c => {
       if (!commentMap[c.post_id]) commentMap[c.post_id] = [];
       commentMap[c.post_id].push(c);
     });
-
     listEl.innerHTML = `<div class="panel">${posts.map(p => {
       const myComments = commentMap[p.id] || [];
       let statusLine = "";
@@ -1393,7 +1196,6 @@ async function submitPost() {
   const title = document.getElementById("postTitle").value.trim();
   const content = document.getElementById("postContent").value.trim();
   if (!content) { alert("说点什么吧"); return; }
-
   showLoading("正 在 发 布");
   try {
     await api(`posts`, {
@@ -1423,16 +1225,13 @@ async function likePost(postId, currentLikes) {
       body: JSON.stringify({ likes: (currentLikes || 0) + 1 })
     });
     loadPosts();
-  } catch (e) {
-    alert("点赞失败：" + e.message);
-  }
+  } catch (e) { alert("点赞失败：" + e.message); }
 }
 
 async function submitComment(postId) {
   const input = document.getElementById("commentInput-" + postId);
   const content = input.value.trim();
   if (!content) return;
-
   try {
     await api(`post_comments`, {
       method: "POST",
@@ -1444,16 +1243,13 @@ async function submitComment(postId) {
       const el = document.getElementById("comments-" + postId);
       if (el) el.style.display = "block";
     }, 200);
-  } catch (e) {
-    alert("评论失败：" + e.message);
-  }
+  } catch (e) { alert("评论失败：" + e.message); }
 }
 
 /* ==================== 我的消息 ==================== */
 async function renderMyMessages() {
   const box = document.getElementById("tabContents");
   box.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
-
   try {
     const msgs = await api(`messages?to_user=eq.${encodeURIComponent(session.name)}&select=*&order=created_at.desc`);
     if (!Array.isArray(msgs) || !msgs.length) {
@@ -1481,7 +1277,7 @@ async function markRead(msgId) {
   renderMyMessages();
 }
 
-/* ==================== 教师系统 ==================== */
+/* ==================== 教师端 ==================== */
 let teacherTab = "quests";
 
 function renderTeacherTabs() {
@@ -1493,7 +1289,6 @@ function renderTeacherTabs() {
   `;
   renderTeacherContent();
 }
-
 function switchTeacherTab(t) { teacherTab = t; renderTeacherTabs(); }
 
 async function renderTeacherContent() {
@@ -1514,14 +1309,23 @@ async function renderTeacherQuests() {
   const box = document.getElementById("tabContents");
   const list = Array.isArray(quests) ? quests : [];
 
+  const locationOptions = LOCATIONS.map(l => `<option value="${l}">${l}</option>`).join("");
+
   box.innerHTML = `
     <div class="panel">
       <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">发 布 新 课 题</div>
-<input type="text" id="nqTitle" class="magic-input" placeholder="课题标题">
-<textarea id="nqDesc" class="magic-input" placeholder="课题描述（必填）" rows="5"></textarea>
-<input type="text" id="nqReward" class="magic-input" placeholder="奖励（可选）">
-<input type="number" id="nqMax" class="magic-input" placeholder="推荐接取人数（默认 1）" min="1" value="1">
-<button class="magic-btn" onclick="createQuest()">发 布</button>
+      <input type="text" id="nqTitle" class="magic-input" placeholder="课题标题">
+      <textarea id="nqDesc" class="magic-input" placeholder="课题描述（必填）" rows="5"></textarea>
+      <div class="select-wrap">
+        <select id="nqLocation" class="magic-select">
+          <option value="">— 请选择任务地点 —</option>
+          ${locationOptions}
+        </select>
+      </div>
+      <textarea id="nqCompletion" class="magic-input" placeholder="完成条件（必填，比如：提交一份实验结果）" rows="3"></textarea>
+      <input type="text" id="nqReward" class="magic-input" placeholder="奖励（可选）">
+      <input type="number" id="nqMax" class="magic-input" placeholder="推荐接取人数（默认 1）" min="1" value="1">
+      <button class="magic-btn" onclick="createQuest()">发 布</button>
     </div>
     <div class="panel">
       <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">现 有 课 题</div>
@@ -1529,6 +1333,9 @@ async function renderTeacherQuests() {
         <div class="quest-card">
           <div class="quest-title">${esc(q.title)}</div>
           ${q.description ? `<div class="quest-desc">${esc(q.description)}</div>` : ""}
+          ${q.location ? `<div class="quest-reward">📍 ${esc(q.location)}</div>` : ""}
+          ${q.completion ? `<div class="quest-desc">✓ 完成条件：${esc(q.completion)}</div>` : ""}
+          ${q.reward ? `<div class="quest-reward">✦ ${esc(q.reward)}</div>` : ""}
           ${q.max_claims ? `<div class="quest-reward">👥 推荐接取人数：${q.max_claims}</div>` : ""}
           <span class="status-badge ${statusClass(q.status)}">${statusText(q.status)}</span>
           <button class="magic-btn small danger" style="float:right" onclick="deleteQuest(${q.id})">删 除</button>
@@ -1541,11 +1348,15 @@ async function renderTeacherQuests() {
 async function createQuest() {
   const title = document.getElementById("nqTitle").value.trim();
   const desc = document.getElementById("nqDesc").value.trim();
+  const location = document.getElementById("nqLocation").value;
+  const completion = document.getElementById("nqCompletion").value.trim();
   const reward = document.getElementById("nqReward").value.trim();
   const max = parseInt(document.getElementById("nqMax").value) || 1;
 
   if (!title) { alert("请填标题"); return; }
   if (!desc) { alert("课题描述是必填的"); return; }
+  if (!location) { alert("请选择任务地点"); return; }
+  if (!completion) { alert("完成条件是必填的"); return; }
   if (max < 1) { alert("推荐接取人数至少为 1"); return; }
 
   showLoading("正 在 发 布");
@@ -1555,6 +1366,8 @@ async function createQuest() {
       body: JSON.stringify({
         title,
         description: desc,
+        location,
+        completion,
         reward,
         max_claims: max,
         status: "open"
@@ -1617,13 +1430,11 @@ async function approveClaim(claimId, questId) {
   await api(`quests?id=eq.${questId}`, { method: "PATCH", body: JSON.stringify({ status: "doing" }) });
   renderTeacherContent();
 }
-
 async function rejectClaim(claimId, questId) {
   await api(`claims?id=eq.${claimId}`, { method: "DELETE" });
   await api(`quests?id=eq.${questId}`, { method: "PATCH", body: JSON.stringify({ status: "open" }) });
   renderTeacherContent();
 }
-
 async function approveItems(claimId) {
   await api(`claims?id=eq.${claimId}`, {
     method: "PATCH",
@@ -1635,12 +1446,10 @@ async function approveItems(claimId) {
   }
   renderTeacherContent();
 }
-
 async function rejectItems(claimId) {
   await api(`claims?id=eq.${claimId}`, { method: "PATCH", body: JSON.stringify({ items_status: "rejected" }) });
   renderTeacherContent();
 }
-
 function editItems(claimId, current) {
   openModal(`
     <div class="modal-title">修 改 物 品 记 录</div>
@@ -1651,7 +1460,6 @@ function editItems(claimId, current) {
     </div>
   `);
 }
-
 async function saveEditItems(claimId) {
   const v = document.getElementById("editItemsVal").value;
   await api(`claims?id=eq.${claimId}`, { method: "PATCH", body: JSON.stringify({ items: v }) });
@@ -1714,14 +1522,12 @@ async function renderStudents() {
 async function renderForumAdmin() {
   const box = document.getElementById("tabContents");
   box.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
-
   try {
     const posts = await api(`posts?select=*&order=created_at.desc`);
     if (!Array.isArray(posts) || !posts.length) {
       box.innerHTML = `<div class="panel"><div class="empty-hint">暂 无 帖 子</div></div>`;
       return;
     }
-
     const pending = posts.filter(p => p.status === "pending");
     const approved = posts.filter(p => p.status === "approved");
 
@@ -1753,7 +1559,6 @@ async function renderForumAdmin() {
         `).join("") : `<div class="empty-hint">暂 无 已 通 过 帖 子</div>`}
       </div>
     `;
-
     box.innerHTML = html;
   } catch (e) {
     box.innerHTML = `<div class="panel"><div class="empty-hint">读取失败：${esc(e.message)}</div></div>`;
@@ -1764,13 +1569,10 @@ async function approvePost(postId) {
   await api(`posts?id=eq.${postId}`, { method: "PATCH", body: JSON.stringify({ status: "approved" }) });
   renderForumAdmin();
 }
-
 async function rejectPost(postId, author, title) {
   if (!confirm(`确定删除「${author}」的帖子？会给 TA 发一条通知。`)) return;
-
   const reason = prompt("请填写违禁原因（会发给学生）：", "涉嫌违禁内容");
   if (reason === null) return;
-
   try {
     await api(`messages`, {
       method: "POST",
