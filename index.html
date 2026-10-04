@@ -4,46 +4,56 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>阿斐理恩魔法学院 · 课题板</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { height: 100%; }
 
+  :root {
+    --bg-deep: #0a0618;
+    --bg-mid: #150a28;
+    --gold: #e8c66a;
+    --gold-dim: #b8933a;
+    --purple: #6a4fd0;
+    --purple-deep: #3a2a8a;
+    --purple-dark: #2a1a6a;
+    --text-main: #e8e0f0;
+    --text-soft: #c0b0d8;
+    --text-dim: #8878a8;
+  }
+
   body {
-    font-family: "Songti SC", "宋体", "SimSun", serif;
-    color: #e8e3d3;
+    font-family: "Cinzel", "Cormorant Garamond", "Songti SC", "STSong", serif;
+    color: var(--text-main);
     min-height: 100vh;
-    background: #060c20;
+    background:
+      radial-gradient(ellipse at 50% 0%, #2a1a4a 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 100%, #1a0e2e 0%, transparent 60%),
+      linear-gradient(160deg, #0a0618 0%, #150a28 50%, #0a0618 100%);
     overflow-x: hidden;
     position: relative;
   }
 
   body::before {
-    content: ""; position: fixed; inset: 0; z-index: 0;
+    content: "";
+    position: fixed; inset: 0; z-index: 0;
     pointer-events: none;
-    background:
-      radial-gradient(ellipse 70% 60% at 50% 40%, rgba(10,20,50,0.05), rgba(4,8,24,0.35) 90%),
-      linear-gradient(160deg, rgba(10,20,60,0.15), rgba(4,8,24,0.25));
-  }
-
-  body::after {
-    content: ""; position: fixed; inset: -10%; z-index: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(circle 2px at 8% 18%, rgba(255,255,255,1), transparent 50%),
-      radial-gradient(circle 1.5px at 22% 62%, rgba(200,220,255,0.95), transparent 50%),
-      radial-gradient(circle 2.5px at 38% 12%, rgba(255,255,255,0.9), transparent 50%),
-      radial-gradient(circle 1.5px at 52% 78%, rgba(180,210,255,0.9), transparent 50%),
-      radial-gradient(circle 2px at 68% 32%, rgba(255,250,240,0.9), transparent 50%),
-      radial-gradient(circle 2px at 82% 68%, rgba(255,255,255,0.95), transparent 50%),
-      radial-gradient(circle 1.5px at 92% 15%, rgba(255,255,255,0.85), transparent 50%),
-      radial-gradient(circle 2px at 15% 88%, rgba(210,230,255,0.9), transparent 50%);
-    animation: twinkle 6s ease-in-out infinite;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, #fff, transparent),
+      radial-gradient(1px 1px at 80% 30%, #c8b8ff, transparent),
+      radial-gradient(1.5px 1.5px at 35% 60%, #fff, transparent),
+      radial-gradient(1px 1px at 60% 75%, #e0d0ff, transparent),
+      radial-gradient(1.5px 1.5px at 90% 85%, #fff, transparent),
+      radial-gradient(1px 1px at 25% 90%, #c8b8ff, transparent),
+      radial-gradient(1px 1px at 45% 15%, #fff, transparent),
+      radial-gradient(1px 1px at 70% 50%, #d0c0ff, transparent);
+    opacity: 0.7;
+    animation: twinkle 4s ease-in-out infinite;
   }
 
   @keyframes twinkle {
-    0%, 100% { opacity: 0.75; }
-    50%      { opacity: 0.35; }
+    0%, 100% { opacity: 0.4; }
+    50%      { opacity: 0.9; }
   }
 
   .center-sigil {
@@ -53,40 +63,49 @@
     z-index: 0; pointer-events: none;
     background-image: url("kabbalah.png");
     background-size: contain; background-position: center; background-repeat: no-repeat;
-    opacity: 0.14;
+    opacity: 0.10;
     animation: sigilBreath 14s ease-in-out infinite;
     mix-blend-mode: screen;
   }
 
   @keyframes sigilBreath {
-    0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-    50%      { opacity: 0.18; transform: translate(-50%, -50%) scale(1.03) rotate(1.5deg); }
+    0%, 100% { opacity: 0.08; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+    50%      { opacity: 0.14; transform: translate(-50%, -50%) scale(1.03) rotate(1.5deg); }
   }
 
   .wrap {
     position: relative; z-index: 1;
-    max-width: 960px; margin: 0 auto;
+    max-width: 1000px; margin: 0 auto;
     padding: 32px 20px 80px;
   }
 
   .panel {
     position: relative;
-    background: rgba(10,18,42,0.78);
-    border: 1px solid rgba(120,170,255,0.3);
-    border-radius: 16px;
-    padding: 28px 26px;
-    box-shadow: 0 0 60px rgba(60,120,230,0.18), 0 0 20px rgba(30,70,160,0.35), inset 0 0 40px rgba(30,60,140,0.25);
-    backdrop-filter: blur(8px);
-    margin-bottom: 20px;
+    background:
+      linear-gradient(160deg, rgba(40,25,70,0.9) 0%, rgba(20,10,40,0.95) 100%);
+    border: 1px solid rgba(200,170,90,0.55);
+    padding: 30px 28px;
+    margin-bottom: 22px;
+    box-shadow:
+      0 0 0 1px rgba(80,50,120,0.5),
+      inset 0 0 40px rgba(120,90,200,0.18),
+      0 8px 40px rgba(0,0,0,0.6);
+    clip-path: polygon(
+      16px 0, 100% 0, 100% calc(100% - 16px),
+      calc(100% - 16px) 100%, 0 100%, 0 16px
+    );
   }
-  .panel::before, .panel::after {
-    content: ""; position: absolute;
-    width: 36px; height: 36px;
-    border: 1px solid rgba(150,190,255,0.45);
+  .panel::before {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 1px solid rgba(200,170,90,0.25);
+    clip-path: polygon(
+      12px 0, 100% 0, 100% calc(100% - 12px),
+      calc(100% - 12px) 100%, 0 100%, 0 12px
+    );
     pointer-events: none;
   }
-  .panel::before { top: 8px; left: 8px; border-right: none; border-bottom: none; border-top-left-radius: 10px; }
-  .panel::after  { bottom: 8px; right: 8px; border-left: none; border-top: none; border-bottom-right-radius: 10px; }
 
   #loginScreen, #teacherScreen {
     display: flex; align-items: center; justify-content: center;
@@ -95,119 +114,212 @@
   }
   #teacherScreen { display: none; }
 
-  .login-box { width: 100%; max-width: 560px; }
+  .login-box { width: 100%; max-width: 600px; }
 
   .login-title {
-    font-size: 24px; letter-spacing: 6px; text-align: center;
-    color: #bcd8ff; margin-bottom: 6px; font-weight: normal;
-    text-shadow: 0 0 20px rgba(100,160,255,0.7);
+    font-size: 28px;
+    letter-spacing: 8px;
+    text-align: center;
+    color: var(--gold);
+    margin-bottom: 6px;
+    font-weight: 600;
+    text-shadow: 0 0 20px rgba(232,198,106,0.7), 0 0 40px rgba(220,180,80,0.4);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    justify-content: center;
   }
-  .login-sub {
-    text-align: center; font-size: 12px;
-    color: #7f9bc8; letter-spacing: 4px; margin-bottom: 28px;
-  }
-  .field-label {
-    font-size: 12px; letter-spacing: 3px;
-    color: #7f9bc8; margin-bottom: 8px; margin-top: 4px;
-  }
-  .magic-input {
-    display: block; width: 100%;
-    padding: 13px 16px; margin-bottom: 16px;
-    font-size: 15px; font-family: inherit; letter-spacing: 2px;
-    color: #eaf2ff;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(120,170,255,0.4);
-    border-radius: 10px; outline: none; transition: all 0.3s;
-  }
-  .magic-input::placeholder { color: #6d80a0; }
-  .magic-input:focus {
-    border-color: rgba(180,215,255,0.9);
-    box-shadow: 0 0 24px rgba(120,170,255,0.5);
-    background: rgba(255,255,255,0.08);
-  }
-  textarea.magic-input {
-    min-height: 80px; font-family: inherit;
-    resize: vertical; line-height: 1.7;
+  .login-title::before,
+  .login-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(232,198,106,0.7), transparent);
   }
 
-  .pass-wrap { position: relative; margin-bottom: 16px; }
-  .pass-wrap .magic-input { margin-bottom: 0; padding-right: 46px; }
-  .eye-btn {
-    position: absolute; right: 12px; top: 50%;
-    transform: translateY(-50%);
-    width: 26px; height: 26px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; color: #7f9bc8;
-    transition: color 0.3s; background: transparent; border: none; padding: 0;
+  .login-sub {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 4px;
+    margin-bottom: 32px;
+    font-style: italic;
   }
-  .eye-btn:hover { color: #bcd8ff; }
-  .eye-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  .field-label {
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    margin-bottom: 8px;
+    margin-top: 4px;
+    display: block;
+  }
+
+  .magic-input {
+    display: block;
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    font-size: 15px;
+    font-family: inherit;
+    letter-spacing: 2px;
+    color: var(--text-main);
+    background: rgba(20,10,40,0.7);
+    border: 1px solid rgba(200,170,90,0.5);
+    border-radius: 2px;
+    outline: none;
+    transition: all 0.3s;
+    box-shadow: inset 0 0 12px rgba(80,50,150,0.5);
+  }
+  .magic-input::placeholder { color: #8878a8; }
+  .magic-input:focus {
+    border-color: var(--gold);
+    box-shadow: inset 0 0 18px rgba(160,120,255,0.6), 0 0 20px rgba(200,170,90,0.5);
+  }
+
+  textarea.magic-input {
+    min-height: 90px;
+    font-family: inherit;
+    resize: vertical;
+    line-height: 1.8;
+  }
+
+  .pass-wrap { position: relative; margin-bottom: 18px; }
+  .pass-wrap .magic-input { margin-bottom: 0; padding-right: 50px; }
+  .eye-btn {
+    position: absolute;
+    right: 14px; top: 50%;
+    transform: translateY(-50%);
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--text-dim);
+    transition: color 0.3s;
+    background: transparent; border: none; padding: 0;
+  }
+  .eye-btn:hover { color: var(--gold); }
+  .eye-btn svg {
+    width: 20px; height: 20px;
+    fill: none; stroke: currentColor;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  }
   .eye-btn .eye-off { display: none; }
   .eye-btn.on .eye-on { display: none; }
   .eye-btn.on .eye-off { display: block; }
 
-  .select-wrap { position: relative; margin-bottom: 16px; }
+  .select-wrap { position: relative; margin-bottom: 18px; }
   .select-wrap::after {
-    content: "▾"; position: absolute; right: 16px; top: 50%;
+    content: "▾";
+    position: absolute;
+    right: 18px; top: 50%;
     transform: translateY(-50%);
-    color: #7f9bc8; font-size: 14px; pointer-events: none;
+    color: var(--gold);
+    font-size: 14px;
+    pointer-events: none;
   }
   .magic-select {
-    display: block; width: 100%;
-    padding: 13px 40px 13px 16px;
-    font-size: 15px; font-family: inherit; letter-spacing: 2px;
-    color: #eaf2ff;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(120,170,255,0.4);
-    border-radius: 10px; outline: none; transition: all 0.3s;
-    appearance: none; -webkit-appearance: none; cursor: pointer;
+    display: block;
+    width: 100%;
+    padding: 14px 44px 14px 18px;
+    font-size: 15px;
+    font-family: inherit;
+    letter-spacing: 2px;
+    color: var(--text-main);
+    background: rgba(20,10,40,0.7);
+    border: 1px solid rgba(200,170,90,0.5);
+    border-radius: 2px;
+    outline: none;
+    transition: all 0.3s;
+    appearance: none; -webkit-appearance: none;
+    cursor: pointer;
+    box-shadow: inset 0 0 12px rgba(80,50,150,0.5);
   }
   .magic-select:focus {
-    border-color: rgba(180,215,255,0.9);
-    box-shadow: 0 0 24px rgba(120,170,255,0.5);
-    background: rgba(255,255,255,0.08);
+    border-color: var(--gold);
+    box-shadow: inset 0 0 18px rgba(160,120,255,0.6), 0 0 20px rgba(200,170,90,0.5);
   }
-  .magic-select option { background: #0a1428; color: #eaf2ff; }
+  .magic-select option { background: #150a28; color: var(--text-main); }
 
   .magic-btn {
-    position: relative; display: block; width: 100%;
-    padding: 15px;
-    font-size: 15px; font-family: inherit; letter-spacing: 5px;
-    color: #eaf2ff;
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 16px 36px;
+    margin-top: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    letter-spacing: 5px;
+    color: #fff8e0;
     background:
-      linear-gradient(135deg, rgba(60,120,220,0.55), rgba(20,50,120,0.75)),
-      linear-gradient(180deg, rgba(255,255,255,0.06), transparent);
-    border: 1px solid rgba(120,170,255,0.55);
-    border-radius: 10px; cursor: pointer;
-    transition: all 0.4s ease;
-    box-shadow: 0 0 22px rgba(100,160,255,0.35), 0 0 60px rgba(60,120,230,0.25), inset 0 0 20px rgba(100,160,255,0.18);
-    text-shadow: 0 0 12px rgba(150,190,255,0.8);
-    overflow: hidden; margin-top: 6px;
+      linear-gradient(180deg, #6a4fd0 0%, #3a2a8a 50%, #2a1a6a 100%);
+    border: 1px solid var(--gold);
+    border-radius: 2px;
+    cursor: pointer;
+    overflow: hidden;
+    text-shadow: 0 0 8px rgba(255,220,120,0.9);
+    box-shadow:
+      inset 0 0 20px rgba(180,150,255,0.4),
+      inset 0 2px 0 rgba(255,255,255,0.2),
+      0 0 20px rgba(120,90,220,0.5);
+    transition: all 0.35s ease;
+    clip-path: polygon(
+      10px 0, 100% 0, 100% calc(100% - 10px),
+      calc(100% - 10px) 100%, 0 100%, 0 10px
+    );
   }
   .magic-btn::before {
-    content: ""; position: absolute; top: 0; left: -120%;
+    content: "";
+    position: absolute;
+    top: 0; left: -100%;
     width: 60%; height: 100%;
-    background: linear-gradient(100deg, transparent, rgba(190,220,255,0.55), transparent);
+    background: linear-gradient(100deg, transparent, rgba(255,240,200,0.6), transparent);
     transform: skewX(-20deg);
-    animation: sweep 3.5s ease-in-out infinite;
+    animation: sweep 3s ease-in-out infinite;
     pointer-events: none;
   }
   @keyframes sweep {
-    0%   { left: -120%; }
-    55%  { left: 130%; }
+    0%   { left: -100%; }
+    60%  { left: 130%; }
     100% { left: 130%; }
   }
   .magic-btn:hover {
-    transform: translateY(-2px); color: #fff;
-    border-color: rgba(180,215,255,0.9);
-    box-shadow: 0 0 32px rgba(120,170,255,0.65), 0 0 90px rgba(70,130,240,0.4), inset 0 0 26px rgba(140,190,255,0.3);
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 0 30px rgba(200,170,255,0.6),
+      inset 0 2px 0 rgba(255,255,255,0.3),
+      0 0 40px rgba(160,120,255,0.9);
   }
-  .magic-btn.small { width: auto; padding: 8px 16px; font-size: 12px; letter-spacing: 3px; margin: 0; }
-  .magic-btn.danger { background: linear-gradient(135deg, rgba(200,70,70,0.5), rgba(120,20,20,0.75)); border-color: rgba(255,140,140,0.5); }
-  .magic-btn.danger:hover { box-shadow: 0 0 32px rgba(255,120,120,0.6), inset 0 0 26px rgba(255,140,140,0.3); }
-  .magic-btn.success { background: linear-gradient(135deg, rgba(60,180,120,0.5), rgba(20,100,60,0.75)); border-color: rgba(140,255,190,0.5); }
-  .magic-btn.success:hover { box-shadow: 0 0 32px rgba(120,255,180,0.6), inset 0 0 26px rgba(140,255,190,0.3); }
-  .magic-btn.ghost { background: linear-gradient(135deg, rgba(80,80,100,0.5), rgba(30,30,50,0.75)); border-color: rgba(180,180,200,0.4); }
+  .magic-btn.small {
+    width: auto;
+    padding: 8px 18px;
+    font-size: 13px;
+    letter-spacing: 3px;
+    margin: 0;
+  }
+  .magic-btn.big {
+    padding: 20px 36px;
+    font-size: 17px;
+    letter-spacing: 8px;
+    margin-bottom: 20px;
+  }
+  .magic-btn.danger {
+    background: linear-gradient(180deg, #b03050 0%, #6a1a30 50%, #4a0e1e 100%);
+    border-color: #e87090;
+  }
+  .magic-btn.danger:hover {
+    box-shadow: inset 0 0 30px rgba(255,150,180,0.6), 0 0 40px rgba(220,90,130,0.9);
+  }
+  .magic-btn.success {
+    background: linear-gradient(180deg, #3aa070 0%, #1a6040 50%, #0a3a26 100%);
+    border-color: #7ae0b0;
+  }
+  .magic-btn.success:hover {
+    box-shadow: inset 0 0 30px rgba(150,255,200,0.6), 0 0 40px rgba(90,220,150,0.9);
+  }
+  .magic-btn.ghost {
+    background: linear-gradient(180deg, rgba(80,60,120,0.6) 0%, rgba(30,20,60,0.8) 100%);
+    border-color: rgba(180,150,220,0.5);
+  }
 
   .teacher-entry {
     position: fixed !important;
@@ -215,40 +327,51 @@
     left: auto !important; bottom: auto !important;
     transform: translateY(-50%) !important;
     z-index: 9998 !important;
-    padding: 22px 16px;
-    background: linear-gradient(135deg, rgba(30,60,140,0.9), rgba(10,20,50,0.95));
-    border: 1px solid rgba(120,170,255,0.5);
+    padding: 24px 18px;
+    background: linear-gradient(160deg, rgba(60,40,100,0.95), rgba(20,10,40,0.98));
+    border: 1px solid var(--gold);
     border-right: none;
-    border-radius: 14px 0 0 14px;
-    font-size: 12px; letter-spacing: 5px; color: #bcd8ff;
+    border-radius: 12px 0 0 12px;
+    font-size: 13px;
+    letter-spacing: 5px;
+    color: var(--gold);
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: -4px 0 20px rgba(60,120,230,0.35), inset 0 0 18px rgba(100,160,255,0.18);
-    text-shadow: 0 0 10px rgba(150,190,255,0.7);
-    writing-mode: vertical-rl; text-orientation: upright;
+    box-shadow: -4px 0 20px rgba(120,90,220,0.5), inset 0 0 20px rgba(200,170,90,0.15);
+    text-shadow: 0 0 10px rgba(232,198,106,0.9);
+    writing-mode: vertical-rl;
+    text-orientation: upright;
     display: flex; align-items: center; justify-content: center;
-    gap: 10px; user-select: none;
+    gap: 10px;
+    user-select: none;
   }
   .teacher-entry::before {
-    content: ""; position: absolute;
-    left: 0; top: 15%; bottom: 15%; width: 2px;
-    background: linear-gradient(to bottom, transparent, #8ab4ff, transparent);
+    content: "";
+    position: absolute;
+    left: 0; top: 15%; bottom: 15%;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
     animation: teacherGlow 2.5s ease-in-out infinite;
     border-radius: 2px;
   }
-  @keyframes teacherGlow { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+  @keyframes teacherGlow {
+    0%, 100% { opacity: 0.4; }
+    50%      { opacity: 1; }
+  }
   .teacher-entry:hover {
     transform: translateY(-50%) translateX(-6px) !important;
-    color: #eaf2ff;
-    border-color: rgba(180,215,255,0.95);
-    box-shadow: -8px 0 40px rgba(120,170,255,0.7), -4px 0 20px rgba(60,120,230,0.5), inset 0 0 26px rgba(140,190,255,0.3);
-    text-shadow: 0 0 18px rgba(200,225,255,1);
-    padding-right: 22px;
+    color: #fff8e0;
+    border-color: #fff0b0;
+    box-shadow: -8px 0 40px rgba(232,198,106,0.7), inset 0 0 26px rgba(220,180,90,0.3);
+    text-shadow: 0 0 18px rgba(255,240,180,1);
+    padding-right: 24px;
   }
 
   .screen-flip-out {
     animation: flipOut 0.7s cubic-bezier(0.6, 0, 0.4, 1) forwards;
-    transform-origin: left center; backface-visibility: hidden; pointer-events: none;
+    transform-origin: left center;
+    backface-visibility: hidden;
+    pointer-events: none;
   }
   @keyframes flipOut {
     0%   { transform: perspective(1400px) rotateY(0deg); opacity: 1; }
@@ -256,7 +379,8 @@
   }
   .screen-flip-in {
     animation: flipIn 0.7s cubic-bezier(0.6, 0, 0.4, 1) forwards;
-    transform-origin: right center; backface-visibility: hidden;
+    transform-origin: right center;
+    backface-visibility: hidden;
   }
   @keyframes flipIn {
     0%   { transform: perspective(1400px) rotateY(100deg); opacity: 0; }
@@ -264,176 +388,280 @@
   }
 
   #mainScreen { display: none; }
+
   .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 0 20px;
-    border-bottom: 1px solid rgba(120,170,255,0.2);
-    margin-bottom: 22px; flex-wrap: wrap; gap: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0 22px;
+    border-bottom: 1px solid rgba(200,170,90,0.3);
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 14px;
   }
   .topbar-left { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .user-info { font-size: 13px; letter-spacing: 2px; color: #bcd8ff; }
-  .user-house { font-size: 11px; color: #7f9bc8; letter-spacing: 2px; margin-left: 8px; }
+  .user-info {
+    font-size: 15px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(232,198,106,0.5);
+  }
+  .user-house {
+    font-size: 13px;
+    color: var(--text-soft);
+    letter-spacing: 2px;
+    margin-left: 10px;
+  }
   .topbar-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 
   .world-time {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13px; letter-spacing: 2px; color: #a8c4f0;
-    padding: 6px 14px;
-    border: 1px solid rgba(120,170,255,0.3);
-    border-radius: 20px;
-    background: rgba(10,18,42,0.5);
+    font-family: "Cinzel", "Cormorant Garamond", serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    padding: 8px 18px;
+    border: 1px solid rgba(200,170,90,0.5);
+    background: rgba(20,10,40,0.6);
     display: flex; align-items: center; gap: 10px;
+    box-shadow: inset 0 0 12px rgba(80,50,150,0.4);
   }
-  .world-time .season { color: #bcd8ff; text-shadow: 0 0 10px rgba(140,190,255,0.6); }
-  .world-time .sep { color: rgba(120,170,255,0.4); }
+  .world-time .season { color: var(--gold); text-shadow: 0 0 10px rgba(232,198,106,0.8); }
+  .world-time .sep { color: rgba(232,198,106,0.4); }
+  .world-time .festival {
+    color: #ff9ec8;
+    text-shadow: 0 0 12px rgba(255,150,200,0.9);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
 
-  .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tabs { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
   .tab {
-    padding: 10px 20px;
-    font-size: 13px; font-family: inherit; letter-spacing: 3px;
-    color: #7f9bc8;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(120,170,255,0.2);
-    border-radius: 8px; cursor: pointer; transition: all 0.3s;
+    padding: 11px 22px;
+    font-family: inherit;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    background: rgba(20,10,40,0.6);
+    border: 1px solid rgba(200,170,90,0.25);
+    cursor: pointer;
+    transition: all 0.35s;
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
   }
-  .tab:hover { color: #bcd8ff; border-color: rgba(150,190,255,0.5); }
+  .tab:hover { color: var(--gold); border-color: rgba(200,170,90,0.6); }
   .tab.active {
-    color: #eaf2ff;
-    background: rgba(100,160,255,0.15);
-    border-color: rgba(180,215,255,0.8);
-    box-shadow: 0 0 20px rgba(120,170,255,0.35), inset 0 0 14px rgba(140,190,255,0.12);
+    color: #fff8e0;
+    background: linear-gradient(180deg, rgba(106,79,208,0.8) 0%, rgba(58,42,138,0.9) 100%);
+    border-color: var(--gold);
+    box-shadow: inset 0 0 20px rgba(200,170,255,0.4), 0 0 20px rgba(120,90,220,0.6);
+    text-shadow: 0 0 10px rgba(255,220,120,0.9);
   }
 
+  /* 折叠标题条 */
+  .collapse-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    background: linear-gradient(180deg, rgba(106,79,208,0.7) 0%, rgba(58,42,138,0.85) 100%);
+    border: 1px solid var(--gold);
+    cursor: pointer;
+    transition: all 0.35s;
+    clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+    margin-bottom: 16px;
+    box-shadow: inset 0 0 20px rgba(200,170,255,0.3), 0 0 24px rgba(120,90,220,0.5);
+  }
+  .collapse-header:hover {
+    box-shadow: inset 0 0 30px rgba(200,170,255,0.5), 0 0 40px rgba(160,120,255,0.8);
+  }
+  .collapse-header .title {
+    font-size: 17px;
+    letter-spacing: 5px;
+    color: #fff8e0;
+    text-shadow: 0 0 12px rgba(255,220,120,0.9);
+  }
+  .collapse-header .count {
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-left: 12px;
+  }
+  .collapse-header .arrow {
+    font-size: 18px;
+    color: var(--gold);
+    transition: transform 0.35s;
+    text-shadow: 0 0 12px rgba(232,198,106,0.9);
+  }
+  .collapse-header.open .arrow {
+    transform: rotate(180deg);
+  }
+  .collapse-body {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease;
+  }
+  .collapse-body.open {
+    max-height: 5000px;
+  }
+
+  /* 课题卡 */
   .quest-card {
     position: relative;
-    background: rgba(255,255,255,0.035);
-    border: 1px solid rgba(120,170,255,0.25);
-    border-radius: 12px;
-    padding: 18px 20px; margin-bottom: 12px;
-    transition: all 0.3s;
+    background: rgba(20,10,40,0.6);
+    border: 1px solid rgba(200,170,90,0.3);
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    transition: all 0.35s;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
   }
   .quest-card:hover {
-    border-color: rgba(150,190,255,0.6);
-    background: rgba(100,160,255,0.08);
-    box-shadow: 0 0 24px rgba(120,170,255,0.2);
+    border-color: var(--gold);
+    background: rgba(40,25,70,0.7);
+    box-shadow: inset 0 0 30px rgba(120,90,200,0.25), 0 0 24px rgba(120,90,220,0.4);
   }
-  .quest-title { font-size: 16px; letter-spacing: 2px; color: #eaf2ff; margin-bottom: 8px; }
-  .quest-desc { font-size: 13px; line-height: 1.9; color: #c4d2e8; margin-bottom: 8px; }
-  .quest-reward { font-size: 12px; color: #bcd8ff; letter-spacing: 1px; margin-bottom: 10px; }
+  .quest-title {
+    font-size: 17px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(232,198,106,0.5);
+  }
+  .quest-desc { font-size: 15px; line-height: 1.9; color: var(--text-soft); margin-bottom: 8px; }
+  .quest-reward { font-size: 14px; color: var(--gold); letter-spacing: 1px; margin-bottom: 10px; opacity: 0.9; }
 
   .status-badge {
     display: inline-block;
-    font-size: 11px; letter-spacing: 2px;
-    padding: 3px 10px; border-radius: 12px; margin-right: 8px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    margin-right: 8px;
+    border: 1px solid;
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
   }
-  .s-open { background: rgba(60,180,120,0.2); color: #8ee0b0; border: 1px solid rgba(140,255,190,0.4); }
-  .s-pending { background: rgba(230,180,60,0.2); color: #f0d090; border: 1px solid rgba(255,220,140,0.4); }
-  .s-doing { background: rgba(80,150,255,0.2); color: #a8c8ff; border: 1px solid rgba(140,190,255,0.4); }
-  .s-done { background: rgba(150,150,150,0.2); color: #b0b0b0; border: 1px solid rgba(180,180,180,0.4); }
-  .s-rejected { background: rgba(200,70,70,0.2); color: #ffa0a0; border: 1px solid rgba(255,140,140,0.4); }
-  .s-overdue { background: rgba(200,70,70,0.25); color: #ff8888; border: 1px solid rgba(255,120,120,0.5); }
+  .s-open { background: rgba(60,180,120,0.2); color: #8ee0b0; border-color: rgba(140,255,190,0.5); }
+  .s-pending { background: rgba(230,180,60,0.2); color: #f0d090; border-color: rgba(255,220,140,0.5); }
+  .s-doing { background: rgba(80,150,255,0.2); color: #a8c8ff; border-color: rgba(140,190,255,0.5); }
+  .s-done { background: rgba(150,150,150,0.2); color: #b0b0b0; border-color: rgba(180,180,180,0.5); }
+  .s-rejected { background: rgba(200,70,70,0.2); color: #ffa0a0; border-color: rgba(255,140,140,0.5); }
+  .s-overdue { background: rgba(200,70,70,0.3); color: #ff8888; border-color: rgba(255,120,120,0.6); }
 
   .empty-hint {
-    text-align: center; padding: 40px 20px;
-    color: #7f9bc8; font-size: 13px; letter-spacing: 2px;
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--text-dim);
+    font-size: 15px;
+    letter-spacing: 2px;
+    font-style: italic;
   }
 
-  .house-group { margin-bottom: 28px; }
+  .house-group { margin-bottom: 30px; }
   .house-group-title {
-    font-size: 15px; letter-spacing: 4px; color: #bcd8ff;
-    padding-bottom: 8px; margin-bottom: 14px;
-    border-bottom: 1px solid rgba(120,170,255,0.25);
-    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 16px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(200,170,90,0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    text-shadow: 0 0 10px rgba(232,198,106,0.5);
   }
-  .house-group-title small { font-size: 11px; color: #7f9bc8; letter-spacing: 2px; }
+  .house-group-title small { font-size: 13px; color: var(--text-soft); letter-spacing: 2px; }
   .student-row {
-    padding: 12px 16px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(120,170,255,0.18);
-    border-radius: 8px; margin-bottom: 8px;
-    font-size: 13px; line-height: 1.8; color: #c4d2e8;
+    padding: 14px 18px;
+    background: rgba(20,10,40,0.5);
+    border: 1px solid rgba(200,170,90,0.2);
+    border-left: 3px solid var(--gold);
+    margin-bottom: 10px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text-soft);
   }
-  .student-row .name { color: #eaf2ff; letter-spacing: 2px; font-size: 14px; }
+  .student-row .name { color: var(--text-main); letter-spacing: 2px; font-size: 16px; }
   .student-row .grade {
-    font-size: 11px; color: #bcd8ff; margin-left: 8px;
-    padding: 1px 8px;
-    border: 1px solid rgba(140,190,255,0.4);
+    font-size: 12px;
+    color: var(--gold);
+    margin-left: 10px;
+    padding: 2px 10px;
+    border: 1px solid rgba(200,170,90,0.5);
     border-radius: 10px;
   }
   .student-row .quest-info {
-    margin-top: 6px; padding-left: 12px;
-    border-left: 1px dashed rgba(120,170,255,0.3);
-    font-size: 12px; color: #a0b8d8;
+    margin-top: 8px;
+    padding-left: 14px;
+    border-left: 1px dashed rgba(200,170,90,0.35);
+    font-size: 14px;
+    color: var(--text-soft);
   }
 
   .comment-item {
-    padding: 8px 12px; margin-bottom: 8px;
-    background: rgba(255,255,255,0.03);
-    border-left: 2px solid rgba(140,190,255,0.5);
-    border-radius: 0 6px 6px 0;
-    font-size: 13px; line-height: 1.7;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    background: rgba(20,10,40,0.5);
+    border-left: 2px solid var(--gold);
+    font-size: 14px;
+    line-height: 1.8;
   }
-  .comment-item .meta { color: #bcd8ff; font-size: 12px; margin-bottom: 4px; }
-  .comment-item .text { color: #c4d2e8; }
+  .comment-item .meta { color: var(--gold); font-size: 13px; margin-bottom: 4px; opacity: 0.85; }
+  .comment-item .text { color: var(--text-soft); }
 
   #loadingOverlay {
     position: fixed; inset: 0; z-index: 9999;
-    background: #060c20;
+    background: #0a0618;
     display: none; align-items: center; justify-content: center;
-    flex-direction: column; gap: 28px;
+    flex-direction: column; gap: 30px;
   }
   #loadingOverlay.show { display: flex; }
-  .magic-circle { position: relative; width: 220px; height: 220px; }
+  .magic-circle { position: relative; width: 240px; height: 240px; }
   .magic-circle .rune-ring {
     position: absolute; inset: 0; border-radius: 50%;
-    animation: spinSlow 24s linear infinite; transform-origin: center;
+    animation: spinSlow 24s linear infinite;
+    transform-origin: center;
   }
   .magic-circle .rune-ring svg { width: 100%; height: 100%; overflow: visible; }
   .magic-circle .rune-ring svg text {
-    fill: rgba(160,200,255,0.85);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13px; letter-spacing: 2px;
-    text-shadow: 0 0 8px rgba(140,190,255,0.9);
+    fill: rgba(232,198,106,0.85);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(232,198,106,0.9);
   }
   .magic-circle .rune-ring-2 {
-    position: absolute; inset: 18px; border-radius: 50%;
-    animation: spinSlowRev 18s linear infinite; transform-origin: center;
+    position: absolute; inset: 20px; border-radius: 50%;
+    animation: spinSlowRev 18s linear infinite;
+    transform-origin: center;
   }
   .magic-circle .rune-ring-2 svg { width: 100%; height: 100%; overflow: visible; }
   .magic-circle .rune-ring-2 svg text {
-    fill: rgba(180,215,255,0.55);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 10px; letter-spacing: 3px;
+    fill: rgba(200,170,220,0.6);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
   }
   .magic-circle .hexagram {
-    position: absolute; inset: 34px;
+    position: absolute; inset: 38px;
     animation: spinSlow 30s linear infinite reverse;
     transform-origin: center;
   }
   .magic-circle .hexagram svg { width: 100%; height: 100%; overflow: visible; }
   .magic-circle .hexagram polygon {
     fill: none;
-    stroke: rgba(180,215,255,0.9);
-    stroke-width: 1.2;
-    filter: drop-shadow(0 0 6px rgba(140,190,255,0.9));
+    stroke: var(--gold);
+    stroke-width: 1.4;
+    filter: drop-shadow(0 0 8px rgba(232,198,106,0.9));
   }
   .magic-circle .inner-ring {
-    position: absolute; inset: 54px; border-radius: 50%;
-    border: 1px dashed rgba(180,215,255,0.7);
+    position: absolute; inset: 60px;
+    border-radius: 50%;
+    border: 1px dashed rgba(232,198,106,0.7);
     animation: spinSlowRev 12s linear infinite;
-    box-shadow: 0 0 18px rgba(140,190,255,0.5), inset 0 0 18px rgba(140,190,255,0.4);
+    box-shadow: 0 0 20px rgba(232,198,106,0.5), inset 0 0 20px rgba(232,198,106,0.4);
   }
   .magic-circle .core {
-    position: absolute; inset: 88px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(220,235,255,1) 0%, rgba(180,215,255,0.8) 30%, rgba(120,170,255,0.35) 60%, transparent 100%);
-    box-shadow: 0 0 30px rgba(180,220,255,0.9), 0 0 60px rgba(120,170,255,0.6), 0 0 100px rgba(80,140,230,0.4);
+    position: absolute; inset: 96px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,240,180,1) 0%, rgba(232,198,106,0.8) 30%, rgba(160,120,255,0.35) 60%, transparent 100%);
+    box-shadow: 0 0 30px rgba(232,198,106,0.9), 0 0 60px rgba(200,150,80,0.6), 0 0 100px rgba(120,90,220,0.5);
     animation: corePulse 2s ease-in-out infinite;
-  }
-  .magic-circle::before {
-    content: ""; position: absolute; inset: -20px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(120,170,255,0.15) 0%, rgba(80,140,230,0.08) 40%, transparent 70%);
-    animation: corePulse 3s ease-in-out infinite;
-    pointer-events: none;
   }
   @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   @keyframes spinSlowRev { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
@@ -441,51 +669,128 @@
     0%, 100% { transform: scale(1); opacity: 0.85; }
     50%      { transform: scale(1.08); opacity: 1; }
   }
-  .loading-text {
-    font-size: 13px; letter-spacing: 6px; color: #bcd8ff;
-    text-shadow: 0 0 14px rgba(120,170,255,0.7);
-    animation: pulse 1.8s ease-in-out infinite;
-    margin-top: 8px;
-  }
   @keyframes pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+  .loading-text {
+    font-size: 15px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-shadow: 0 0 14px rgba(232,198,106,0.8);
+    animation: pulse 1.8s ease-in-out infinite;
+    margin-top: 10px;
+  }
 
   .modal-overlay {
     position: fixed; inset: 0; z-index: 10000;
-    background: rgba(4,8,24,0.88);
-    backdrop-filter: blur(6px);
+    background: rgba(4,2,16,0.9);
+    backdrop-filter: blur(8px);
     display: none; align-items: center; justify-content: center;
     padding: 20px;
   }
   .modal-overlay.show { display: flex; }
   .modal-box {
-    position: relative; max-width: 420px; width: 100%;
-    background: rgba(10,18,42,0.92);
-    border: 1px solid rgba(120,170,255,0.4);
-    border-radius: 14px; padding: 26px 24px;
-    box-shadow: 0 0 60px rgba(60,120,230,0.35), inset 0 0 40px rgba(30,60,140,0.3);
+    position: relative;
+    max-width: 460px; width: 100%;
+    background: linear-gradient(160deg, rgba(40,25,70,0.98) 0%, rgba(20,10,40,0.98) 100%);
+    border: 1px solid var(--gold);
+    padding: 30px 28px;
+    box-shadow: 0 0 60px rgba(120,90,220,0.4), inset 0 0 40px rgba(120,90,200,0.2);
     max-height: 90vh; overflow-y: auto;
+    clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
   }
   .modal-title {
-    font-size: 16px; letter-spacing: 4px; color: #bcd8ff;
-    margin-bottom: 14px;
-    text-shadow: 0 0 14px rgba(100,160,255,0.6);
+    font-size: 17px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    margin-bottom: 18px;
+    text-align: center;
+    text-shadow: 0 0 14px rgba(232,198,106,0.7);
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
-  .modal-box .magic-input { margin-bottom: 10px; }
-  .modal-actions { display: flex; gap: 10px; margin-top: 14px; }
+  .modal-title::before,
+  .modal-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(232,198,106,0.7), transparent);
+  }
+  .modal-box .magic-input { margin-bottom: 12px; }
+  .modal-actions { display: flex; gap: 12px; margin-top: 16px; }
   .modal-actions .magic-btn { flex: 1; margin-top: 0; }
+
+  /* ===== 全屏发布遮罩 ===== */
+  #publishOverlay {
+    position: fixed; inset: 0; z-index: 10001;
+    background: linear-gradient(160deg, #1a0e2e 0%, #0a0618 100%);
+    display: none;
+    flex-direction: column;
+    padding: 24px 20px 40px;
+    overflow-y: auto;
+  }
+  #publishOverlay.show { display: flex; }
+
+  .publish-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(200,170,90,0.3);
+  }
+  .publish-title {
+    font-size: 20px;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-shadow: 0 0 14px rgba(232,198,106,0.7);
+  }
+  .publish-inner {
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* ===== 搜索页 ===== */
+  .search-section {
+    margin-bottom: 28px;
+  }
+  .search-section-title {
+    font-size: 15px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid rgba(200,170,90,0.3);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .search-section-title small {
+    font-size: 12px;
+    color: var(--text-soft);
+    letter-spacing: 2px;
+  }
+  mark.highlight {
+    background: rgba(232,198,106,0.3);
+    color: #fff8e0;
+    padding: 1px 4px;
+    border-radius: 2px;
+    text-shadow: 0 0 8px rgba(232,198,106,0.9);
+  }
 
   @media (max-width: 600px) {
     .wrap { padding: 20px 12px 80px; }
-    .panel { padding: 20px 16px; }
-    .login-title { font-size: 20px; letter-spacing: 4px; }
-    .tab { padding: 8px 14px; font-size: 12px; letter-spacing: 2px; }
-    .topbar { padding: 10px 0 16px; }
+    .panel { padding: 22px 18px; }
+    .login-title { font-size: 22px; letter-spacing: 5px; }
+    .tab { padding: 9px 16px; font-size: 13px; letter-spacing: 2px; }
+    .topbar { padding: 12px 0 18px; }
     .teacher-entry {
       writing-mode: horizontal-tb;
-      padding: 12px 16px;
-      border-radius: 12px 0 0 12px;
-      letter-spacing: 3px; font-size: 11px;
+      padding: 12px 18px;
+      letter-spacing: 3px;
+      font-size: 12px;
     }
+    .publish-title { font-size: 17px; letter-spacing: 4px; }
   }
 </style>
 </head>
@@ -567,6 +872,7 @@
 <div class="teacher-entry" id="teacherEntry" onclick="flipToTeacher()">
   <span>教 师 入 口</span>
 </div>
+
 <div id="mainScreen">
   <div class="wrap">
     <div class="topbar">
@@ -617,6 +923,46 @@
   <div class="modal-box" id="modalBox"></div>
 </div>
 
+<div id="publishOverlay">
+  <div class="publish-top">
+    <div class="publish-title">发 布 新 课 题</div>
+    <button class="magic-btn small danger" onclick="closePublish()">取 消</button>
+  </div>
+  <div class="publish-inner">
+    <div class="field-label">课 题 标 题</div>
+    <input type="text" id="nqTitle" class="magic-input" placeholder="请输入标题">
+
+    <div class="field-label">课 题 描 述（必填）</div>
+    <textarea id="nqDesc" class="magic-input" placeholder="详细描述这个课题" rows="5"></textarea>
+
+    <div class="field-label">任 务 地 点</div>
+    <div class="select-wrap">
+      <select id="nqLocation" class="magic-select">
+        <option value="">— 请选择任务地点 —</option>
+      </select>
+    </div>
+
+    <div class="field-label">完 成 条 件（必填）</div>
+    <textarea id="nqCompletion" class="magic-input" placeholder="比如：提交一份实验结果" rows="3"></textarea>
+
+    <div class="field-label">奖 励（可选）</div>
+    <input type="text" id="nqReward" class="magic-input" placeholder="比如：学分 +5">
+
+    <div class="field-label">推 荐 接 取 人 数</div>
+    <input type="number" id="nqMax" class="magic-input" min="1" value="1" placeholder="默认 1">
+
+    <div class="field-label">截 止 期 限</div>
+    <div class="select-wrap">
+      <select id="nqDeadline" class="magic-select">
+        <option value="1">1 天</option>
+        <option value="3">3 天</option>
+        <option value="7" selected>7 天</option>
+      </select>
+    </div>
+
+    <button class="magic-btn big" onclick="createQuest()">发 布 课 题</button>
+  </div>
+</div>
 <script>
 /* ==================== 配置 ==================== */
 const SUPABASE_URL = "https://svrdrzaxyxtbltctcfzu.supabase.co";
@@ -637,8 +983,21 @@ const LOCATIONS = [
   "阿斐理恩中央花园","阿斐理恩侧花园"
 ];
 
-const WORLD_EPOCH_REAL = 2020;
-const WORLD_EPOCH_WORLD = 1703;
+/* 现实节日（月-日 → 节日名） */
+const FESTIVALS = {
+  "9-23": "丰收庆典",
+  "10-5": "地母诞辰",
+  "11-15": "南十字星夜",
+  "12-21": "太阳祭",
+  "12-24": "源典环日",
+  "1-25": "银雨节",
+  "4-10": "校庆日",
+  "4-11": "校庆日",
+  "4-12": "校庆日",
+  "4-13": "校庆日",
+  "5-1": "鲜花节",
+  "6-22": "仲夏夜庆典"
+};
 
 const HEADERS = {
   "apikey": SUPABASE_KEY,
@@ -647,13 +1006,23 @@ const HEADERS = {
   "Prefer": "return=representation"
 };
 
-let session = { role: null, name: null, house: null, position: null, enrollYear: null, location: "阿斐理恩" };
+let session = { role: null, name: null, house: null, position: null, grade: null, location: "阿斐理恩" };
 
 /* ==================== 工具 ==================== */
 function esc(s) {
   return String(s || "").replace(/[&<>"']/g, m => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
   }[m]));
+}
+
+function highlight(text, keyword) {
+  if (!keyword) return esc(text);
+  const safe = esc(text);
+  const k = esc(keyword);
+  if (!k) return safe;
+  const escaped = k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const re = new RegExp(escaped, "gi");
+  return safe.replace(re, m => `<mark class="highlight">${m}</mark>`);
 }
 
 async function api(path, opts = {}) {
@@ -691,7 +1060,7 @@ function toggleEye(inputId, btn) {
 /* ==================== 世界历 ==================== */
 function getWorldDate() {
   const now = new Date();
-  const year = WORLD_EPOCH_WORLD + (now.getFullYear() - WORLD_EPOCH_REAL);
+  const year = now.getFullYear();
   const month = now.getMonth() + 1;
   const day = now.getDate();
   let season;
@@ -699,27 +1068,24 @@ function getWorldDate() {
   else if (month === 12 || month <= 2) season = "冰雪季";
   else if (month >= 3 && month <= 5) season = "萌芽季";
   else season = "谷收季";
-  return { year, month, day, season };
+  const festival = FESTIVALS[`${month}-${day}`] || null;
+  return { year, month, day, season, festival };
 }
-function getCurrentWorldYear() { return getWorldDate().year; }
 function renderWorldTime() {
   const w = getWorldDate();
   const el = document.getElementById("worldTime");
   if (!el) return;
-  el.innerHTML = `世界历 <span class="season">${w.year}</span> <span class="sep">·</span> ${w.month} <span class="sep">·</span> ${w.day} <span class="sep">·</span> <span class="season">${w.season}</span>`;
+  let html = `世界历 <span class="season">${w.year}</span> <span class="sep">·</span> ${w.month} <span class="sep">·</span> ${w.day} <span class="sep">·</span> <span class="season">${w.season}</span>`;
+  if (w.festival) html += ` <span class="sep">·</span> <span class="festival">✦ ${w.festival}</span>`;
+  el.innerHTML = html;
   setTimeout(renderWorldTime, 60000);
 }
-function calcGrade(enrollYear) {
-  if (!enrollYear) return null;
-  const g = getCurrentWorldYear() - enrollYear + 1;
-  if (g < 1) return 1;
-  if (g > 7) return 7;
-  return g;
+
+function gradeText(grade) {
+  if (!grade) return "";
+  return `${grade} 年级`;
 }
-function gradeText(enrollYear) {
-  const g = calcGrade(enrollYear);
-  return g ? `${g} 年级` : "";
-}
+
 function isQuestOverdue(q) {
   if (!q || !q.deadline_days || !q.created_at) return false;
   if (q.status === "done") return false;
@@ -750,8 +1116,8 @@ async function doLogin() {
       const stu = existing[0];
       const patch = {};
       if (stu.house !== house) patch.house = house;
-      if (!stu.enroll_year) patch.enroll_year = getCurrentWorldYear();
       if (!stu.role) patch.role = "student";
+      if (!stu.grade) patch.grade = 1;
       if (Object.keys(patch).length) {
         await api(`students?name=eq.${encodeURIComponent(name)}`, {
           method: "PATCH",
@@ -760,20 +1126,19 @@ async function doLogin() {
       }
       session = {
         role: "student", name, house,
-        enrollYear: stu.enroll_year || getCurrentWorldYear(),
+        grade: stu.grade || 1,
         location: stu.location || "阿斐理恩"
       };
     } else {
-      const enrollYear = getCurrentWorldYear();
       await api(`students`, {
         method: "POST",
-        body: JSON.stringify({ name, house, role: "student", enroll_year: enrollYear, location: "阿斐理恩" })
+        body: JSON.stringify({ name, house, role: "student", grade: 1, location: "阿斐理恩" })
       });
-      session = { role: "student", name, house, enrollYear, location: "阿斐理恩" };
+      session = { role: "student", name, house, grade: 1, location: "阿斐理恩" };
     }
   } catch (e) {
     console.warn("学生记录失败:", e);
-    session = { role: "student", name, house, enrollYear: getCurrentWorldYear(), location: "阿斐理恩" };
+    session = { role: "student", name, house, grade: 1, location: "阿斐理恩" };
   }
 
   setTimeout(() => { hideLoading(); enterSystem(); }, 1600);
@@ -851,7 +1216,7 @@ async function doTeacherLogin() {
 }
 
 function doLogout() {
-  session = { role: null, name: null, house: null, position: null, enrollYear: null, location: "阿斐理恩" };
+  session = { role: null, name: null, house: null, position: null, grade: null, location: "阿斐理恩" };
   ["loginName","loginPass","loginHouse","teacherName","teacherPass","teacherPosition"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = "";
@@ -872,7 +1237,7 @@ function enterSystem() {
 
   const topUser = document.getElementById("topUser");
   if (session.role === "student") {
-    const grade = gradeText(session.enrollYear);
+    const grade = gradeText(session.grade);
     const loc = session.location || "阿斐理恩";
     topUser.innerHTML = `${esc(session.name)}<span class="user-house">${esc(session.house)}${grade ? " · " + grade : ""} · ${esc(loc)}</span>`;
   } else {
@@ -887,6 +1252,7 @@ function enterSystem() {
 
 /* ==================== 学生端 ==================== */
 let studentTab = "quests";
+let questBoardOpen = false;
 
 function renderStudentTabs() {
   document.getElementById("tabBar").innerHTML = `
@@ -896,6 +1262,7 @@ function renderStudentTabs() {
     <div class="tab ${studentTab==='forum'?'active':''}" onclick="switchStudentTab('forum')">讨 论 区</div>
     <div class="tab ${studentTab==='messages'?'active':''}" onclick="switchStudentTab('messages')">我 的 消 息</div>
     <div class="tab ${studentTab==='profile'?'active':''}" onclick="switchStudentTab('profile')">我 的 信 息</div>
+    <div class="tab ${studentTab==='search'?'active':''}" onclick="switchStudentTab('search')">搜 索</div>
   `;
   renderStudentContent();
 }
@@ -905,49 +1272,92 @@ async function renderStudentContent() {
   const box = document.getElementById("tabContents");
   box.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
   try {
-    if (studentTab === "quests") await renderQuests();
+    if (studentTab === "quests") await renderQuestBoard();
     else if (studentTab === "mine") await renderMyQuests();
     else if (studentTab === "items") await renderMyItems();
     else if (studentTab === "forum") await renderForum();
     else if (studentTab === "messages") await renderMyMessages();
     else if (studentTab === "profile") await renderProfile();
+    else if (studentTab === "search") await renderSearch();
   } catch (e) {
     box.innerHTML = `<div class="panel"><div class="empty-hint">读取失败：${esc(e.message)}</div></div>`;
   }
 }
 
-async function renderQuests() {
+/* -------- 课题板（折叠） -------- */
+async function renderQuestBoard() {
   const quests = await api(`quests?select=*&order=created_at.desc`);
+  const all = Array.isArray(quests) ? quests : [];
+  // 只显示未完成
+  const openQuests = all.filter(q => q.status === "open");
+  // 我接取的、未完成的
+  const myClaims = await api(`claims?student_name=eq.${encodeURIComponent(session.name)}&select=*`);
+  const claimList = Array.isArray(myClaims) ? myClaims : [];
+  const myDoing = claimList.filter(c => c.status !== "completed" && c.status !== "rejected");
+  const questMap = {};
+  all.forEach(q => questMap[q.id] = q);
+  const doingQuests = myDoing.map(c => ({ claim: c, quest: questMap[c.quest_id] })).filter(x => x.quest);
+
   const box = document.getElementById("tabContents");
-  if (!Array.isArray(quests) || !quests.length) {
-    box.innerHTML = `<div class="panel"><div class="empty-hint">暂 无 课 题</div></div>`;
-    return;
-  }
-  box.innerHTML = `<div class="panel">${quests.map(q => {
-    const canClaim = q.status === "open";
-    const overdue = isQuestOverdue(q);
-    return `
-      <div class="quest-card">
-        <div class="quest-title">${esc(q.title)}</div>
-        ${q.description ? `<div class="quest-desc">${esc(q.description)}</div>` : ""}
-        ${q.location ? `<div class="quest-reward">📍 地点：${esc(q.location)}</div>` : ""}
-        ${q.completion ? `<div class="quest-desc">✓ 完成条件：${esc(q.completion)}</div>` : ""}
-        ${q.reward ? `<div class="quest-reward">✦ 奖励：${esc(q.reward)}</div>` : ""}
-        ${q.max_claims ? `<div class="quest-reward">👥 已接：${q.claimed_count || 0} / ${q.max_claims}</div>` : ""}
-        ${q.deadline_days ? `<div class="quest-reward">${deadlineText(q)}</div>` : ""}
-        <span class="status-badge ${statusClass(q.status)}">${statusText(q.status)}</span>
-        ${overdue ? `<span class="status-badge s-overdue">已超时</span>` : ""}
-        ${canClaim ? `<button class="magic-btn small" style="margin-left:8px" onclick="claimQuest(${q.id})">领 取</button>` : ""}
+  const total = openQuests.length + doingQuests.length;
+
+  box.innerHTML = `
+    <div class="panel" style="padding:0;background:transparent;border:none;box-shadow:none;">
+      <div class="collapse-header ${questBoardOpen ? 'open' : ''}" onclick="toggleQuestBoard()">
+        <div>
+          <span class="title">课 题 领 取</span>
+          <span class="count">（${total}）</span>
+        </div>
+        <span class="arrow">▾</span>
       </div>
-    `;
-  }).join("")}</div>`;
+      <div class="collapse-body ${questBoardOpen ? 'open' : ''}">
+        ${total === 0 ? `<div class="empty-hint">暂 无 可 领 取 或 进 行 中 的 课 题</div>` : ""}
+        ${doingQuests.length ? `
+          <div style="margin-bottom:20px;">
+            <div class="search-section-title"><span>进 行 中 的 课 题</span><small>${doingQuests.length}</small></div>
+            ${doingQuests.map(x => renderQuestCard(x.quest, x.claim)).join("")}
+          </div>
+        ` : ""}
+        ${openQuests.length ? `
+          <div>
+            <div class="search-section-title"><span>可 领 取 的 课 题</span><small>${openQuests.length}</small></div>
+            ${openQuests.map(q => renderQuestCard(q, null)).join("")}
+          </div>
+        ` : ""}
+      </div>
+    </div>
+  `;
+}
+
+function toggleQuestBoard() {
+  questBoardOpen = !questBoardOpen;
+  renderQuestBoard();
+}
+
+function renderQuestCard(q, claim) {
+  const overdue = isQuestOverdue(q);
+  const canClaim = !claim && q.status === "open";
+  return `
+    <div class="quest-card">
+      <div class="quest-title">${esc(q.title)}</div>
+      ${q.description ? `<div class="quest-desc">${esc(q.description)}</div>` : ""}
+      ${q.location ? `<div class="quest-reward">📍 地点：${esc(q.location)}</div>` : ""}
+      ${q.completion ? `<div class="quest-desc">✓ 完成条件：${esc(q.completion)}</div>` : ""}
+      ${q.reward ? `<div class="quest-reward">✦ 奖励：${esc(q.reward)}</div>` : ""}
+      ${q.max_claims ? `<div class="quest-reward">👥 已接：${q.claimed_count || 0} / ${q.max_claims}</div>` : ""}
+      ${q.deadline_days ? `<div class="quest-reward">${deadlineText(q)}</div>` : ""}
+      <span class="status-badge ${statusClass(q.status)}">${statusText(q.status)}</span>
+      ${overdue ? `<span class="status-badge s-overdue">已超时</span>` : ""}
+      ${canClaim ? `<button class="magic-btn small" style="margin-left:8px" onclick="claimQuest(${q.id})">领 取</button>` : ""}
+    </div>
+  `;
 }
 
 function statusText(s) {
-  return ({ open:"可领取", taken:"审核中", doing:"进行中", done:"已完成", rejected:"已驳回" })[s] || s;
+  return ({ open:"可领取", taken:"审核中", doing:"进行中", done:"已完成", rejected:"已驳回", pending:"待审核", approved:"进行中", completed:"已完成" })[s] || s;
 }
 function statusClass(s) {
-  return ({ open:"s-open", taken:"s-pending", doing:"s-doing", done:"s-done", rejected:"s-rejected" })[s] || "s-open";
+  return ({ open:"s-open", taken:"s-pending", doing:"s-doing", done:"s-done", rejected:"s-rejected", pending:"s-pending", approved:"s-doing", completed:"s-done" })[s] || "s-open";
 }
 
 async function claimQuest(questId) {
@@ -1001,6 +1411,7 @@ async function claimQuest(questId) {
   }
 }
 
+/* -------- 我的课题 -------- */
 async function renderMyQuests() {
   const claims = await api(`claims?student_name=eq.${encodeURIComponent(session.name)}&select=*&order=created_at.desc`);
   const quests = await api(`quests?select=*`);
@@ -1020,14 +1431,14 @@ async function renderMyQuests() {
     if (c.items) {
       itemLine = `<div class="quest-desc">物品：${esc(c.items)} <span class="status-badge ${itemStatusClass(itemsStatus)}">${itemStatusText(itemsStatus)}</span></div>`;
     }
-    const canSubmit = c.status === "approved" || c.status === "doing" || (c.status === "completed" && itemsStatus === "rejected");
+    const canSubmit = c.status === "doing" || c.status === "approved" || (c.status === "completed" && itemsStatus === "rejected");
     return `
       <div class="quest-card">
         <div class="quest-title">${esc(q.title || "（课题已删除）")}</div>
         ${q.location ? `<div class="quest-reward">📍 ${esc(q.location)}</div>` : ""}
         ${q.completion ? `<div class="quest-desc">✓ 完成条件：${esc(q.completion)}</div>` : ""}
         ${q.deadline_days ? `<div class="quest-reward">${deadlineText(q)}</div>` : ""}
-        <span class="status-badge ${statusClass(c.status === "approved" ? "doing" : c.status)}">${statusText(c.status === "approved" ? "doing" : c.status)}</span>
+        <span class="status-badge ${statusClass(c.status)}">${statusText(c.status)}</span>
         ${overdue ? `<span class="status-badge s-overdue">已超时</span>` : ""}
         ${itemLine}
         ${canSubmit ? `<button class="magic-btn small" style="margin-top:10px" onclick="openSubmitItems(${c.id}, '${esc(q.title || "")}')">提 交 物 品</button>` : ""}
@@ -1046,7 +1457,7 @@ function itemStatusClass(s) {
 function openSubmitItems(claimId, questTitle) {
   openModal(`
     <div class="modal-title">提 交 物 品</div>
-    <div style="font-size:12px;color:#7f9bc8;margin-bottom:14px;">课题：${esc(questTitle)}</div>
+    <div style="font-size:13px;color:#c0b0d8;margin-bottom:16px;text-align:center;">课题：${esc(questTitle)}</div>
     <input type="text" id="itemName" class="magic-input" placeholder="物品名称">
     <input type="text" id="itemQty" class="magic-input" placeholder="数量（可选）">
     <input type="text" id="itemNote" class="magic-input" placeholder="备注（可选）">
@@ -1101,7 +1512,7 @@ async function renderMyItems() {
   `).join("")}</div>`;
 }
 
-/* ==================== 我的信息 ==================== */
+/* -------- 我的信息 -------- */
 async function renderProfile() {
   const box = document.getElementById("tabContents");
   let student = null;
@@ -1115,13 +1526,13 @@ async function renderProfile() {
   ).join("");
   box.innerHTML = `
     <div class="panel">
-      <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">我 的 信 息</div>
-      <div style="font-size:13px;color:#c4d2e8;line-height:2;margin-bottom:20px;">
-        姓名：<span style="color:#eaf2ff;">${esc(session.name)}</span><br>
-        学院：<span style="color:#eaf2ff;">${esc(session.house)}</span><br>
-        年级：<span style="color:#eaf2ff;">${gradeText(session.enrollYear) || "—"}</span>
+      <div class="login-title" style="font-size:20px;margin-bottom:22px;">我 的 信 息</div>
+      <div style="font-size:15px;color:#c0b0d8;line-height:2.2;margin-bottom:24px;">
+        姓名：<span style="color:#e8e0f0;">${esc(session.name)}</span><br>
+        学院：<span style="color:#e8e0f0;">${esc(session.house)}</span><br>
+        年级：<span style="color:#e8e0f0;">${gradeText(session.grade) || "—"}</span>
       </div>
-      <div class="field-label">当 前 所 在 地（选 择 后 会 显 示 在 名 字 旁 边）</div>
+      <div class="field-label">当 前 所 在 地</div>
       <div class="select-wrap">
         <select id="profileLocation" class="magic-select">
           <option value="阿斐理恩" ${currentLocation === "阿斐理恩" ? "selected" : ""}>（不选择 · 显示为「阿斐理恩」）</option>
@@ -1129,9 +1540,6 @@ async function renderProfile() {
         </select>
       </div>
       <button class="magic-btn" onclick="saveLocation()">保 存</button>
-      <div style="font-size:12px;color:#7f9bc8;margin-top:16px;line-height:1.8;">
-        当前显示为：<span style="color:#bcd8ff;">${esc(session.name)} · ${esc(session.house)} · ${esc(currentLocation)}</span>
-      </div>
     </div>
   `;
 }
@@ -1145,7 +1553,7 @@ async function saveLocation() {
       body: JSON.stringify({ location: loc })
     });
     session.location = loc;
-    const grade = gradeText(session.enrollYear);
+    const grade = gradeText(session.grade);
     const topUser = document.getElementById("topUser");
     if (topUser) {
       topUser.innerHTML = `${esc(session.name)}<span class="user-house">${esc(session.house)}${grade ? " · " + grade : ""} · ${esc(loc)}</span>`;
@@ -1157,12 +1565,12 @@ async function saveLocation() {
   }
 }
 
-/* ==================== 讨论区 ==================== */
+/* -------- 讨论区 -------- */
 async function renderForum() {
   const box = document.getElementById("tabContents");
   box.innerHTML = `
     <div class="panel">
-      <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">发 布 帖 子</div>
+      <div class="login-title" style="font-size:18px;margin-bottom:20px;">发 布 帖 子</div>
       <input type="text" id="postTitle" class="magic-input" placeholder="标题">
       <textarea id="postContent" class="magic-input" placeholder="说点什么..." rows="3"></textarea>
       <button class="magic-btn" onclick="submitPost()">发 布</button>
@@ -1204,14 +1612,14 @@ async function loadPosts() {
           ${statusLine}
           <button class="magic-btn small" onclick="likePost(${p.id}, ${p.likes || 0})">♡ 点赞 ${p.likes || 0}</button>
           <button class="magic-btn small" style="margin-left:8px" onclick="toggleComments(${p.id})">评 论 (${myComments.length})</button>
-          <div id="comments-${p.id}" style="display:none;margin-top:14px;padding-top:14px;border-top:1px dashed rgba(120,170,255,0.3);">
+          <div id="comments-${p.id}" style="display:none;margin-top:16px;padding-top:16px;border-top:1px dashed rgba(200,170,90,0.35);">
             ${myComments.map(c => `
               <div class="comment-item">
                 <div class="meta">${esc(c.author)} · ${new Date(c.created_at).toLocaleString("zh-CN")}</div>
                 <div class="text">${esc(c.content)}</div>
               </div>
             `).join("")}
-            <div style="display:flex;gap:8px;margin-top:10px;">
+            <div style="display:flex;gap:10px;margin-top:12px;">
               <input type="text" id="commentInput-${p.id}" class="magic-input" style="margin:0;flex:1;" placeholder="写评论...">
               <button class="magic-btn small" onclick="submitComment(${p.id})">发 送</button>
             </div>
@@ -1283,7 +1691,7 @@ async function submitComment(postId) {
   } catch (e) { alert("评论失败：" + e.message); }
 }
 
-/* ==================== 我的消息 ==================== */
+/* -------- 我的消息 -------- */
 async function renderMyMessages() {
   const box = document.getElementById("tabContents");
   box.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
@@ -1294,7 +1702,7 @@ async function renderMyMessages() {
       return;
     }
     box.innerHTML = `<div class="panel">${msgs.map(m => `
-      <div class="quest-card" style="${m.is_read ? "" : "border-color:rgba(240,190,90,0.6);box-shadow:0 0 20px rgba(240,190,90,0.25);"}">
+      <div class="quest-card" style="${m.is_read ? "" : "border-color:rgba(232,198,106,0.7);box-shadow:0 0 24px rgba(232,198,106,0.3);"}">
         <div class="quest-title" style="${m.is_read ? "" : "color:#f0d090;"}">${m.is_read ? "系统消息" : "✦ 新消息"}</div>
         <div class="quest-desc">${esc(m.content)}</div>
         <div class="quest-reward">${new Date(m.created_at).toLocaleString("zh-CN")}</div>
@@ -1314,15 +1722,124 @@ async function markRead(msgId) {
   renderMyMessages();
 }
 
+/* ==================== 搜索 ==================== */
+async function renderSearch() {
+  const box = document.getElementById("tabContents");
+  box.innerHTML = `
+    <div class="panel">
+      <div class="login-title" style="font-size:20px;margin-bottom:22px;">全 站 搜 索</div>
+      <input type="text" id="searchInput" class="magic-input" placeholder="输入关键词..." oninput="doSearch()">
+    </div>
+    <div id="searchResults"></div>
+  `;
+}
+
+async function doSearch() {
+  const keyword = (document.getElementById("searchInput")?.value || "").trim();
+  const results = document.getElementById("searchResults");
+  if (!results) return;
+
+  if (!keyword) { results.innerHTML = ""; return; }
+
+  results.innerHTML = `<div class="panel"><div class="empty-hint">搜 索 中 ...</div></div>`;
+
+  try {
+    const [posts, students, quests] = await Promise.all([
+      api(`posts?status=eq.approved&select=*&order=created_at.desc`),
+      api(`students?select=*`),
+      api(`quests?select=*`)
+    ]);
+
+    const kw = keyword.toLowerCase();
+    const postHits = (posts || []).filter(p =>
+      (p.title || "").toLowerCase().includes(kw) ||
+      (p.content || "").toLowerCase().includes(kw) ||
+      (p.author || "").toLowerCase().includes(kw)
+    );
+    const stuHits = (students || []).filter(s =>
+      s.role !== "teacher" && s.role !== "super" &&
+      ((s.name || "").toLowerCase().includes(kw) || (s.house || "").toLowerCase().includes(kw))
+    );
+    const teacherHits = (students || []).filter(s =>
+      (s.role === "teacher" || s.role === "super") &&
+      ((s.name || "").toLowerCase().includes(kw) || (s.position || "").toLowerCase().includes(kw))
+    );
+    const questHits = (quests || []).filter(q =>
+      (q.title || "").toLowerCase().includes(kw) ||
+      (q.description || "").toLowerCase().includes(kw) ||
+      (q.location || "").toLowerCase().includes(kw)
+    );
+
+    let html = "";
+
+    if (postHits.length) {
+      html += `<div class="panel">
+        <div class="search-section-title"><span>📝 帖 子</span><small>${postHits.length}</small></div>
+        ${postHits.map(p => `
+          <div class="quest-card">
+            <div class="quest-title">${highlight(p.title || "（无标题）", keyword)}</div>
+            <div class="quest-desc">${highlight(p.content, keyword)}</div>
+            <div class="quest-reward">${highlight(p.author, keyword)} · ${new Date(p.created_at).toLocaleString("zh-CN")}</div>
+          </div>
+        `).join("")}
+      </div>`;
+    }
+
+    if (stuHits.length) {
+      html += `<div class="panel">
+        <div class="search-section-title"><span>🎓 学 生</span><small>${stuHits.length}</small></div>
+        ${stuHits.map(s => `
+          <div class="student-row">
+            <div class="name">${highlight(s.name, keyword)}<span class="grade">${esc(s.house || "")}</span></div>
+          </div>
+        `).join("")}
+      </div>`;
+    }
+
+    if (teacherHits.length) {
+      html += `<div class="panel">
+        <div class="search-section-title"><span>👨‍🏫 教 师</span><small>${teacherHits.length}</small></div>
+        ${teacherHits.map(s => `
+          <div class="student-row">
+            <div class="name">${highlight(s.name, keyword)}<span class="grade">${highlight(s.position || "", keyword)}</span></div>
+          </div>
+        `).join("")}
+      </div>`;
+    }
+
+    if (questHits.length) {
+      html += `<div class="panel">
+        <div class="search-section-title"><span>📚 课 题</span><small>${questHits.length}</small></div>
+        ${questHits.map(q => `
+          <div class="quest-card">
+            <div class="quest-title">${highlight(q.title, keyword)}</div>
+            ${q.description ? `<div class="quest-desc">${highlight(q.description, keyword)}</div>` : ""}
+            ${q.location ? `<div class="quest-reward">📍 ${highlight(q.location, keyword)}</div>` : ""}
+          </div>
+        `).join("")}
+      </div>`;
+    }
+
+    if (!html) html = `<div class="panel"><div class="empty-hint">没 有 找 到 匹 配 的 内 容</div></div>`;
+
+    results.innerHTML = html;
+  } catch (e) {
+    results.innerHTML = `<div class="panel"><div class="empty-hint">搜索失败：${esc(e.message)}</div></div>`;
+  }
+}
+
 /* ==================== 教师端 ==================== */
 let teacherTab = "quests";
+let teacherQuestFilter = "unfinished"; // unfinished | finished
 
 function renderTeacherTabs() {
   document.getElementById("tabBar").innerHTML = `
     <div class="tab ${teacherTab==='quests'?'active':''}" onclick="switchTeacherTab('quests')">课 题 管 理</div>
     <div class="tab ${teacherTab==='review'?'active':''}" onclick="switchTeacherTab('review')">审 核 中 心</div>
     <div class="tab ${teacherTab==='students'?'active':''}" onclick="switchTeacherTab('students')">学 生 总 览</div>
+    <div class="tab ${teacherTab==='teachers'?'active':''}" onclick="switchTeacherTab('teachers')">教 师 总 览</div>
     <div class="tab ${teacherTab==='forum'?'active':''}" onclick="switchTeacherTab('forum')">帖 子 管 理</div>
+    <div class="tab ${teacherTab==='search'?'active':''}" onclick="switchTeacherTab('search')">搜 索</div>
   `;
   renderTeacherContent();
 }
@@ -1335,46 +1852,32 @@ async function renderTeacherContent() {
     if (teacherTab === "quests") await renderTeacherQuests();
     else if (teacherTab === "review") await renderReview();
     else if (teacherTab === "students") await renderStudents();
+    else if (teacherTab === "teachers") await renderTeachers();
     else if (teacherTab === "forum") await renderForumAdmin();
+    else if (teacherTab === "search") await renderSearch();
   } catch (e) {
     box.innerHTML = `<div class="panel"><div class="empty-hint">读取失败：${esc(e.message)}</div></div>`;
   }
 }
 
+/* -------- 课题管理 -------- */
 async function renderTeacherQuests() {
   const quests = await api(`quests?select=*&order=created_at.desc`);
-  const box = document.getElementById("tabContents");
-  const list = Array.isArray(quests) ? quests : [];
-  const locationOptions = LOCATIONS.map(l => `<option value="${l}">${l}</option>`).join("");
-  const deadlineOptions = `
-    <option value="1">1 天</option>
-    <option value="3">3 天</option>
-    <option value="7" selected>7 天</option>
-  `;
+  const all = Array.isArray(quests) ? quests : [];
+  const unfinished = all.filter(q => q.status !== "done");
+  const finished = all.filter(q => q.status === "done");
+  const list = teacherQuestFilter === "unfinished" ? unfinished : finished;
 
+  const box = document.getElementById("tabContents");
   box.innerHTML = `
-    <div class="panel">
-      <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">发 布 新 课 题</div>
-      <input type="text" id="nqTitle" class="magic-input" placeholder="课题标题">
-      <textarea id="nqDesc" class="magic-input" placeholder="课题描述（必填）" rows="5"></textarea>
-      <div class="select-wrap">
-        <select id="nqLocation" class="magic-select">
-          <option value="">— 请选择任务地点 —</option>
-          ${locationOptions}
-        </select>
-      </div>
-      <textarea id="nqCompletion" class="magic-input" placeholder="完成条件（必填，比如：提交一份实验结果）" rows="3"></textarea>
-      <input type="text" id="nqReward" class="magic-input" placeholder="奖励（可选）">
-      <input type="number" id="nqMax" class="magic-input" placeholder="推荐接取人数（默认 1）" min="1" value="1">
-      <div class="select-wrap">
-        <select id="nqDeadline" class="magic-select">
-          ${deadlineOptions}
-        </select>
-      </div>
-      <button class="magic-btn" onclick="createQuest()">发 布</button>
+    <button class="magic-btn big" onclick="openPublish()">＋ 发 布 新 课 题</button>
+
+    <div class="tabs" style="margin-bottom:20px;">
+      <div class="tab ${teacherQuestFilter==='unfinished'?'active':''}" onclick="setQuestFilter('unfinished')">未 完 成（${unfinished.length}）</div>
+      <div class="tab ${teacherQuestFilter==='finished'?'active':''}" onclick="setQuestFilter('finished')">已 完 成（${finished.length}）</div>
     </div>
+
     <div class="panel">
-      <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">现 有 课 题</div>
       ${list.length ? list.map(q => {
         const overdue = isQuestOverdue(q);
         return `
@@ -1388,12 +1891,46 @@ async function renderTeacherQuests() {
           ${q.deadline_days ? `<div class="quest-reward">${deadlineText(q)}</div>` : ""}
           <span class="status-badge ${statusClass(q.status)}">${statusText(q.status)}</span>
           ${overdue ? `<span class="status-badge s-overdue">已超时</span>` : ""}
-          <button class="magic-btn small danger" style="float:right" onclick="deleteQuest(${q.id})">删 除</button>
-          <button class="magic-btn small" style="float:right;margin-right:8px" onclick="openEditQuest(${q.id})">编 辑</button>
+          <div style="display:flex;gap:8px;margin-top:12px;">
+            <button class="magic-btn small" onclick="openEditQuest(${q.id})">编 辑</button>
+            <button class="magic-btn small danger" onclick="deleteQuest(${q.id})">删 除</button>
+          </div>
         </div>
       `}).join("") : `<div class="empty-hint">暂 无 课 题</div>`}
     </div>
   `;
+}
+
+function setQuestFilter(f) {
+  teacherQuestFilter = f;
+  renderTeacherContent();
+}
+
+/* -------- 发布（全屏） -------- */
+function openPublish() {
+  // 填充地点下拉
+  const sel = document.getElementById("nqLocation");
+  if (sel && sel.options.length <= 1) {
+    LOCATIONS.forEach(l => {
+      const opt = document.createElement("option");
+      opt.value = l;
+      opt.textContent = l;
+      sel.appendChild(opt);
+    });
+  }
+  // 清空表单
+  ["nqTitle","nqDesc","nqCompletion","nqReward"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+  document.getElementById("nqLocation").value = "";
+  document.getElementById("nqMax").value = 1;
+  document.getElementById("nqDeadline").value = 7;
+  document.getElementById("publishOverlay").classList.add("show");
+}
+
+function closePublish() {
+  document.getElementById("publishOverlay").classList.remove("show");
 }
 
 async function createQuest() {
@@ -1421,7 +1958,11 @@ async function createQuest() {
         claimed_count: 0, status: "open"
       })
     });
-    setTimeout(() => { hideLoading(); renderTeacherContent(); }, 700);
+    setTimeout(() => {
+      hideLoading();
+      closePublish();
+      renderTeacherContent();
+    }, 700);
   } catch (e) {
     hideLoading();
     alert("失败：" + e.message);
@@ -1498,7 +2039,7 @@ async function saveEditQuest(questId) {
   }
 }
 
-/* ==================== 审核中心 ==================== */
+/* -------- 审核中心 -------- */
 async function renderReview() {
   const claims = await api(`claims?select=*&order=created_at.desc`);
   const quests = await api(`quests?select=*`);
@@ -1508,36 +2049,56 @@ async function renderReview() {
   const list = Array.isArray(claims) ? claims : [];
   const pendingClaim = list.filter(c => c.status === "pending");
   const pendingItems = list.filter(c => c.items_status === "pending");
+  const doing = list.filter(c => c.status === "doing" || c.status === "approved");
+
   box.innerHTML = `
     <div class="panel">
-      <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">课 题 领 取 审 核</div>
+      <div class="login-title" style="font-size:18px;margin-bottom:22px;">课 题 领 取 审 核</div>
       ${pendingClaim.length ? pendingClaim.map(c => `
         <div class="quest-card">
           <div class="quest-title">${esc((questMap[c.quest_id] || {}).title || "（已删除）")}</div>
           <div class="quest-desc">领取人：${esc(c.student_name)} · ${esc(c.house || "")}</div>
-          <button class="magic-btn small success" onclick="approveClaim(${c.id}, ${c.quest_id})">通 过</button>
-          <button class="magic-btn small danger" style="margin-left:8px" onclick="rejectClaim(${c.id}, ${c.quest_id})">驳 回</button>
+          <div style="display:flex;gap:8px;margin-top:12px;">
+            <button class="magic-btn small success" onclick="approveClaim(${c.id}, ${c.quest_id})">通 过</button>
+            <button class="magic-btn small danger" onclick="rejectClaim(${c.id}, ${c.quest_id})">驳 回</button>
+          </div>
         </div>
       `).join("") : `<div class="empty-hint">暂 无 待 审 核 的 领 取</div>`}
     </div>
     <div class="panel">
-      <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">物 品 审 核</div>
+      <div class="login-title" style="font-size:18px;margin-bottom:22px;">物 品 审 核</div>
       ${pendingItems.length ? pendingItems.map(c => `
         <div class="quest-card">
           <div class="quest-title">${esc(c.items)}</div>
           <div class="quest-desc">提交人：${esc(c.student_name)} · ${esc(c.house || "")}</div>
           <div class="quest-desc">来源课题：${esc((questMap[c.quest_id] || {}).title || "（已删除）")}</div>
-          <button class="magic-btn small success" onclick="approveItems(${c.id})">通 过</button>
-          <button class="magic-btn small danger" style="margin-left:8px" onclick="rejectItems(${c.id})">驳 回</button>
-          ${session.role === "super" ? `<button class="magic-btn small" style="margin-left:8px" onclick="editItems(${c.id}, '${esc(c.items)}')">修 改</button>` : ""}
+          <div style="display:flex;gap:8px;margin-top:12px;">
+            <button class="magic-btn small success" onclick="approveItems(${c.id})">通 过</button>
+            <button class="magic-btn small danger" onclick="rejectItems(${c.id})">驳 回</button>
+            ${session.role === "super" ? `<button class="magic-btn small" onclick="editItems(${c.id}, '${esc(c.items)}')">修 改</button>` : ""}
+          </div>
         </div>
       `).join("") : `<div class="empty-hint">暂 无 待 审 核 的 物 品</div>`}
+    </div>
+    <div class="panel">
+      <div class="login-title" style="font-size:18px;margin-bottom:22px;">进 行 中 的 课 题</div>
+      ${doing.length ? doing.map(c => `
+        <div class="quest-card">
+          <div class="quest-title">${esc((questMap[c.quest_id] || {}).title || "（已删除）")}</div>
+          <div class="quest-desc">领取人：${esc(c.student_name)} · ${esc(c.house || "")}</div>
+          ${c.items ? `<div class="quest-desc">已提交物品：${esc(c.items)}</div>` : ""}
+          <div style="display:flex;gap:8px;margin-top:12px;">
+            <button class="magic-btn small success" onclick="markComplete(${c.id})">标 记 完 成</button>
+            ${session.role === "super" ? `<button class="magic-btn small danger" onclick="revokeComplete(${c.id})">撤 销 完 成</button>` : ""}
+          </div>
+        </div>
+      `).join("") : `<div class="empty-hint">暂 无 进 行 中 的 课 题</div>`}
     </div>
   `;
 }
 
 async function approveClaim(claimId, questId) {
-  await api(`claims?id=eq.${claimId}`, { method: "PATCH", body: JSON.stringify({ status: "approved" }) });
+  await api(`claims?id=eq.${claimId}`, { method: "PATCH", body: JSON.stringify({ status: "doing" }) });
   await api(`quests?id=eq.${questId}`, { method: "PATCH", body: JSON.stringify({ status: "doing" }) });
   renderTeacherContent();
 }
@@ -1557,12 +2118,47 @@ async function approveItems(claimId) {
     method: "PATCH",
     body: JSON.stringify({ items_status: "approved", status: "completed" })
   });
+  await checkQuestComplete(claimId);
   renderTeacherContent();
 }
 async function rejectItems(claimId) {
   await api(`claims?id=eq.${claimId}`, { method: "PATCH", body: JSON.stringify({ items_status: "rejected" }) });
   renderTeacherContent();
 }
+async function markComplete(claimId) {
+  if (!confirm("确定标记这个课题为已完成？")) return;
+  await api(`claims?id=eq.${claimId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ status: "completed" })
+  });
+  await checkQuestComplete(claimId);
+  renderTeacherContent();
+}
+async function revokeComplete(claimId) {
+  if (!confirm("确定撤销完成？学生会回到「进行中」状态。")) return;
+  await api(`claims?id=eq.${claimId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ status: "doing" })
+  });
+  renderTeacherContent();
+}
+
+/* 检查这个课题的所有接取者是否都完成 */
+async function checkQuestComplete(claimId) {
+  const c = await api(`claims?id=eq.${claimId}&select=*`);
+  if (!c || !c.length) return;
+  const questId = c[0].quest_id;
+  const allClaims = await api(`claims?quest_id=eq.${questId}&select=*`);
+  if (!Array.isArray(allClaims) || !allClaims.length) return;
+  const allDone = allClaims.every(x => x.status === "completed");
+  if (allDone) {
+    await api(`quests?id=eq.${questId}`, {
+      method: "PATCH",
+      body: JSON.stringify({ status: "done" })
+    });
+  }
+}
+
 function editItems(claimId, current) {
   openModal(`
     <div class="modal-title">修 改 物 品 记 录</div>
@@ -1580,7 +2176,7 @@ async function saveEditItems(claimId) {
   renderTeacherContent();
 }
 
-/* ==================== 学生总览 ==================== */
+/* -------- 学生总览 -------- */
 async function renderStudents() {
   const students = await api(`students?select=*&order=created_at.asc`);
   const claims = await api(`claims?select=*&order=created_at.desc`);
@@ -1608,16 +2204,19 @@ async function renderStudents() {
         </div>
         ${list.map(s => {
           const myClaims = claimList.filter(c => c.student_name === s.name);
-          const grade = gradeText(s.enroll_year);
+          const grade = gradeText(s.grade);
           const loc = s.location || "阿斐理恩";
           return `
             <div class="student-row">
-              <div class="name">${esc(s.name)}${grade ? `<span class="grade">${grade}</span>` : ""}<span class="grade" style="border-color:rgba(240,190,90,0.5);color:#f0d090;">📍 ${esc(loc)}</span></div>
-              <div style="font-size:11px;color:#7f9bc8;margin-top:4px;">${s.id ? `<button class="magic-btn small" style="padding:4px 10px;font-size:11px;" onclick="openChangeHouse(${s.id}, '${esc(s.name)}', '${esc(s.house || "")}')">修 改 学 院</button>` : ""}</div>
+              <div class="name">${esc(s.name)}${grade ? `<span class="grade">${grade}</span>` : ""}<span class="grade" style="border-color:rgba(232,198,106,0.5);color:#f0d090;">📍 ${esc(loc)}</span></div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+                ${s.id ? `<button class="magic-btn small" style="padding:4px 12px;font-size:12px;" onclick="openChangeHouse(${s.id}, '${esc(s.name)}', '${esc(s.house || "")}')">修 改 学 院</button>` : ""}
+                ${s.id ? `<button class="magic-btn small" style="padding:4px 12px;font-size:12px;" onclick="openChangeGrade(${s.id}, '${esc(s.name)}', ${s.grade || 1})">修 改 年 级</button>` : ""}
+              </div>
               ${myClaims.length ? myClaims.map(c => {
                 const q = questMap[c.quest_id] || {};
                 const itemTxt = c.items ? ` · 物品：${esc(c.items)} <span class="status-badge ${itemStatusClass(c.items_status || "none")}">${itemStatusText(c.items_status || "none")}</span>` : "";
-                return `<div class="quest-info">◆ ${esc(q.title || "（已删除）")} — ${statusText(c.status === "approved" ? "doing" : c.status)}${itemTxt}</div>`;
+                return `<div class="quest-info">◆ ${esc(q.title || "（已删除）")} — ${statusText(c.status)}${itemTxt}</div>`;
               }).join("") : `<div class="quest-info">暂无领取记录</div>`}
             </div>
           `;
@@ -1635,11 +2234,9 @@ function openChangeHouse(studentId, name, currentHouse) {
   ).join("");
   openModal(`
     <div class="modal-title">修 改 学 院</div>
-    <div style="font-size:13px;color:#7f9bc8;margin-bottom:14px;">学生：${esc(name)}</div>
+    <div style="font-size:14px;color:#c0b0d8;margin-bottom:16px;text-align:center;">学生：${esc(name)}</div>
     <div class="select-wrap">
-      <select id="changeHouseSelect" class="magic-select">
-        ${options}
-      </select>
+      <select id="changeHouseSelect" class="magic-select">${options}</select>
     </div>
     <div class="modal-actions">
       <button class="magic-btn small" style="flex:1" onclick="closeModal()">取 消</button>
@@ -1647,7 +2244,6 @@ function openChangeHouse(studentId, name, currentHouse) {
     </div>
   `);
 }
-
 async function saveChangeHouse(studentId) {
   const newHouse = document.getElementById("changeHouseSelect").value;
   showLoading("正 在 修 改");
@@ -1663,7 +2259,60 @@ async function saveChangeHouse(studentId) {
   }
 }
 
-/* ==================== 帖子管理 ==================== */
+function openChangeGrade(studentId, name, currentGrade) {
+  const options = [1,2,3,4,5,6,7].map(g =>
+    `<option value="${g}" ${currentGrade === g ? "selected" : ""}>${g} 年级</option>`
+  ).join("");
+  openModal(`
+    <div class="modal-title">修 改 年 级</div>
+    <div style="font-size:14px;color:#c0b0d8;margin-bottom:16px;text-align:center;">学生：${esc(name)}</div>
+    <div class="select-wrap">
+      <select id="changeGradeSelect" class="magic-select">${options}</select>
+    </div>
+    <div class="modal-actions">
+      <button class="magic-btn small" style="flex:1" onclick="closeModal()">取 消</button>
+      <button class="magic-btn small" style="flex:1" onclick="saveChangeGrade(${studentId})">保 存</button>
+    </div>
+  `);
+}
+async function saveChangeGrade(studentId) {
+  const newGrade = parseInt(document.getElementById("changeGradeSelect").value) || 1;
+  showLoading("正 在 修 改");
+  try {
+    await api(`students?id=eq.${studentId}`, {
+      method: "PATCH",
+      body: JSON.stringify({ grade: newGrade })
+    });
+    setTimeout(() => { hideLoading(); closeModal(); renderTeacherContent(); }, 500);
+  } catch (e) {
+    hideLoading();
+    alert("修改失败：" + e.message);
+  }
+}
+
+/* -------- 教师总览 -------- */
+async function renderTeachers() {
+  const students = await api(`students?select=*&order=created_at.asc`);
+  const box = document.getElementById("tabContents");
+  const list = (Array.isArray(students) ? students : []).filter(s => s.role === "teacher" || s.role === "super");
+  if (!list.length) {
+    box.innerHTML = `<div class="panel"><div class="empty-hint">暂 无 教 师 记 录</div></div>`;
+    return;
+  }
+  box.innerHTML = `
+    <div class="panel">
+      <div class="login-title" style="font-size:18px;margin-bottom:22px;">教 师 名 单</div>
+      ${list.map(t => `
+        <div class="student-row">
+          <div class="name">${esc(t.name)}${t.role === "super" ? '<span class="grade" style="border-color:rgba(232,198,106,0.7);color:#f0d090;">SUPER</span>' : ""}</div>
+          <div class="quest-info">${esc(t.position || "—")}</div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+/* -------- 帖子管理 -------- */
 async function renderForumAdmin() {
   const box = document.getElementById("tabContents");
   box.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
@@ -1677,27 +2326,31 @@ async function renderForumAdmin() {
     const approved = posts.filter(p => p.status === "approved");
     let html = `
       <div class="panel">
-        <div style="font-size:14px;letter-spacing:3px;color:#f0d090;margin-bottom:14px;">⏳ 待 审 核 帖 子（${pending.length}）</div>
+        <div class="login-title" style="font-size:18px;margin-bottom:22px;color:#f0d090;">⏳ 待 审 核 帖 子（${pending.length}）</div>
         ${pending.length ? pending.map(p => `
           <div class="quest-card">
             <div class="quest-title">${esc(p.title || "（无标题）")}</div>
             <div class="quest-desc">${esc(p.content)}</div>
             <div class="quest-reward">${esc(p.author)}${p.house ? " · " + esc(p.house) : ""} · ${new Date(p.created_at).toLocaleString("zh-CN")}</div>
-            <button class="magic-btn small success" onclick="approvePost(${p.id})">通 过</button>
-            <button class="magic-btn small danger" style="margin-left:8px" onclick="rejectPost(${p.id}, '${esc(p.author)}', '${esc(p.title || "")}')">驳 回 并 通 知</button>
+            <div style="display:flex;gap:8px;margin-top:12px;">
+              <button class="magic-btn small success" onclick="approvePost(${p.id})">通 过</button>
+              <button class="magic-btn small danger" onclick="rejectPost(${p.id}, '${esc(p.author)}', '${esc(p.title || "")}')">驳 回 并 通 知</button>
+            </div>
           </div>
         `).join("") : `<div class="empty-hint">暂 无 待 审 核 帖 子</div>`}
       </div>
     `;
     html += `
       <div class="panel">
-        <div style="font-size:14px;letter-spacing:3px;color:#bcd8ff;margin-bottom:14px;">已 通 过 帖 子（${approved.length}）</div>
+        <div class="login-title" style="font-size:18px;margin-bottom:22px;">已 通 过 帖 子（${approved.length}）</div>
         ${approved.length ? approved.map(p => `
           <div class="quest-card">
             <div class="quest-title">${esc(p.title || "（无标题）")}</div>
             <div class="quest-desc">${esc(p.content)}</div>
             <div class="quest-reward">${esc(p.author)}${p.house ? " · " + esc(p.house) : ""} · ${new Date(p.created_at).toLocaleString("zh-CN")} · ♡ ${p.likes || 0}</div>
-            <button class="magic-btn small danger" onclick="rejectPost(${p.id}, '${esc(p.author)}', '${esc(p.title || "")}')">删 除 并 通 知</button>
+            <div style="display:flex;gap:8px;margin-top:12px;">
+              <button class="magic-btn small danger" onclick="rejectPost(${p.id}, '${esc(p.author)}', '${esc(p.title || "")}')">删 除 并 通 知</button>
+            </div>
           </div>
         `).join("") : `<div class="empty-hint">暂 无 已 通 过 帖 子</div>`}
       </div>
@@ -1737,7 +2390,10 @@ async function rejectPost(postId, author, title) {
 
 /* ==================== 启动 ==================== */
 window.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeModal();
+  if (e.key === "Escape") {
+    closeModal();
+    closePublish();
+  }
 });
 </script>
 
