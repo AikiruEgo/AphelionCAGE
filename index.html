@@ -455,7 +455,6 @@
     text-shadow: 0 0 10px rgba(255,220,120,0.9);
   }
 
-  /* 折叠标题条 */
   .collapse-header {
     display: flex;
     align-items: center;
@@ -502,7 +501,6 @@
     max-height: 5000px;
   }
 
-  /* 课题卡 */
   .quest-card {
     position: relative;
     background: rgba(20,10,40,0.6);
@@ -719,7 +717,6 @@
   .modal-actions { display: flex; gap: 12px; margin-top: 16px; }
   .modal-actions .magic-btn { flex: 1; margin-top: 0; }
 
-  /* ===== 全屏发布遮罩 ===== */
   #publishOverlay {
     position: fixed; inset: 0; z-index: 10001;
     background: linear-gradient(160deg, #1a0e2e 0%, #0a0618 100%);
@@ -750,10 +747,7 @@
     margin: 0 auto;
   }
 
-  /* ===== 搜索页 ===== */
-  .search-section {
-    margin-bottom: 28px;
-  }
+  .search-section { margin-bottom: 28px; }
   .search-section-title {
     font-size: 15px;
     letter-spacing: 4px;
@@ -765,11 +759,7 @@
     justify-content: space-between;
     align-items: baseline;
   }
-  .search-section-title small {
-    font-size: 12px;
-    color: var(--text-soft);
-    letter-spacing: 2px;
-  }
+  .search-section-title small { font-size: 12px; color: var(--text-soft); letter-spacing: 2px; }
   mark.highlight {
     background: rgba(232,198,106,0.3);
     color: #fff8e0;
@@ -983,7 +973,6 @@ const LOCATIONS = [
   "阿斐理恩中央花园","阿斐理恩侧花园"
 ];
 
-/* 现实节日（月-日 → 节日名） */
 const FESTIVALS = {
   "9-23": "丰收庆典",
   "10-5": "地母诞辰",
@@ -1284,13 +1273,10 @@ async function renderStudentContent() {
   }
 }
 
-/* -------- 课题板（折叠） -------- */
 async function renderQuestBoard() {
   const quests = await api(`quests?select=*&order=created_at.desc`);
   const all = Array.isArray(quests) ? quests : [];
-  // 只显示未完成
   const openQuests = all.filter(q => q.status === "open");
-  // 我接取的、未完成的
   const myClaims = await api(`claims?student_name=eq.${encodeURIComponent(session.name)}&select=*`);
   const claimList = Array.isArray(myClaims) ? myClaims : [];
   const myDoing = claimList.filter(c => c.status !== "completed" && c.status !== "rejected");
@@ -1411,7 +1397,6 @@ async function claimQuest(questId) {
   }
 }
 
-/* -------- 我的课题 -------- */
 async function renderMyQuests() {
   const claims = await api(`claims?student_name=eq.${encodeURIComponent(session.name)}&select=*&order=created_at.desc`);
   const quests = await api(`quests?select=*`);
@@ -1512,7 +1497,6 @@ async function renderMyItems() {
   `).join("")}</div>`;
 }
 
-/* -------- 我的信息 -------- */
 async function renderProfile() {
   const box = document.getElementById("tabContents");
   let student = null;
@@ -1565,7 +1549,6 @@ async function saveLocation() {
   }
 }
 
-/* -------- 讨论区 -------- */
 async function renderForum() {
   const box = document.getElementById("tabContents");
   box.innerHTML = `
@@ -1691,7 +1674,6 @@ async function submitComment(postId) {
   } catch (e) { alert("评论失败：" + e.message); }
 }
 
-/* -------- 我的消息 -------- */
 async function renderMyMessages() {
   const box = document.getElementById("tabContents");
   box.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
@@ -1830,7 +1812,7 @@ async function doSearch() {
 
 /* ==================== 教师端 ==================== */
 let teacherTab = "quests";
-let teacherQuestFilter = "unfinished"; // unfinished | finished
+let teacherQuestFilter = "unfinished";
 
 function renderTeacherTabs() {
   document.getElementById("tabBar").innerHTML = `
@@ -1860,7 +1842,6 @@ async function renderTeacherContent() {
   }
 }
 
-/* -------- 课题管理 -------- */
 async function renderTeacherQuests() {
   const quests = await api(`quests?select=*&order=created_at.desc`);
   const all = Array.isArray(quests) ? quests : [];
@@ -1891,8 +1872,9 @@ async function renderTeacherQuests() {
           ${q.deadline_days ? `<div class="quest-reward">${deadlineText(q)}</div>` : ""}
           <span class="status-badge ${statusClass(q.status)}">${statusText(q.status)}</span>
           ${overdue ? `<span class="status-badge s-overdue">已超时</span>` : ""}
-          <div style="display:flex;gap:8px;margin-top:12px;">
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
             <button class="magic-btn small" onclick="openEditQuest(${q.id})">编 辑</button>
+            <button class="magic-btn small" onclick="openClaimList(${q.id}, '${esc(q.title)}')">查 看 接 取 者</button>
             <button class="magic-btn small danger" onclick="deleteQuest(${q.id})">删 除</button>
           </div>
         </div>
@@ -1906,9 +1888,7 @@ function setQuestFilter(f) {
   renderTeacherContent();
 }
 
-/* -------- 发布（全屏） -------- */
 function openPublish() {
-  // 填充地点下拉
   const sel = document.getElementById("nqLocation");
   if (sel && sel.options.length <= 1) {
     LOCATIONS.forEach(l => {
@@ -1918,7 +1898,6 @@ function openPublish() {
       sel.appendChild(opt);
     });
   }
-  // 清空表单
   ["nqTitle","nqDesc","nqCompletion","nqReward"].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = "";
@@ -1974,6 +1953,79 @@ async function deleteQuest(id) {
   await api(`claims?quest_id=eq.${id}`, { method: "DELETE" });
   await api(`quests?id=eq.${id}`, { method: "DELETE" });
   renderTeacherContent();
+}
+
+async function openClaimList(questId, questTitle) {
+  showLoading("正 在 读 取");
+  try {
+    const claims = await api(`claims?quest_id=eq.${questId}&select=*&order=created_at.asc`);
+    hideLoading();
+    const list = Array.isArray(claims) ? claims : [];
+
+    if (!list.length) {
+      openModal(`
+        <div class="modal-title">接 取 者</div>
+        <div style="font-size:13px;color:#c0b0d8;margin-bottom:16px;text-align:center;">${esc(questTitle)}</div>
+        <div class="empty-hint" style="padding:20px;">暂 无 学 生 接 取</div>
+        <div class="modal-actions">
+          <button class="magic-btn small" style="flex:1" onclick="closeModal()">关 闭</button>
+        </div>
+      `);
+      return;
+    }
+
+    openModal(`
+      <div class="modal-title">接 取 者</div>
+      <div style="font-size:13px;color:#c0b0d8;margin-bottom:16px;text-align:center;">${esc(questTitle)}</div>
+      ${list.map(c => `
+        <div class="quest-card" style="padding:12px 14px;">
+          <div class="quest-title" style="font-size:15px;">${esc(c.student_name)}</div>
+          <div class="quest-desc" style="font-size:13px;">学院：${esc(c.house || "—")}</div>
+          <div class="quest-desc" style="font-size:13px;">
+            状态：<span class="status-badge ${statusClass(c.status)}">${statusText(c.status)}</span>
+          </div>
+          ${c.items ? `<div class="quest-desc" style="font-size:13px;">物品：${esc(c.items)}</div>` : ""}
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+            <button class="magic-btn small danger" style="padding:4px 12px;font-size:12px;" onclick="revokeClaim(${c.id}, ${questId}, '${esc(c.student_name)}')">撤 销 接 取</button>
+            ${session.role === "super" && c.status === "completed" ? `<button class="magic-btn small" style="padding:4px 12px;font-size:12px;" onclick="revokeComplete(${c.id})">撤 销 完 成</button>` : ""}
+          </div>
+        </div>
+      `).join("")}
+      <div class="modal-actions">
+        <button class="magic-btn small" style="flex:1" onclick="closeModal()">关 闭</button>
+      </div>
+    `);
+  } catch (e) {
+    hideLoading();
+    alert("读取失败：" + e.message);
+  }
+}
+
+async function revokeClaim(claimId, questId, studentName) {
+  if (!confirm(`确定撤销「${studentName}」的接取？\n\nTA 将不再拥有这个课题。`)) return;
+  showLoading("正 在 撤 销");
+  try {
+    await api(`claims?id=eq.${claimId}`, { method: "DELETE" });
+
+    const q = await api(`quests?id=eq.${questId}&select=*`);
+    if (q && q.length) {
+      const newCount = Math.max(0, (q[0].claimed_count || 1) - 1);
+      const patch = { claimed_count: newCount };
+      if (q[0].status !== "done") {
+        if (newCount < (q[0].max_claims || 1)) patch.status = "open";
+        else patch.status = "taken";
+      }
+      await api(`quests?id=eq.${questId}`, { method: "PATCH", body: JSON.stringify(patch) });
+    }
+
+    hideLoading();
+    closeModal();
+    alert("已撤销");
+    renderTeacherContent();
+  } catch (e) {
+    hideLoading();
+    alert("撤销失败：" + e.message);
+  }
 }
 
 async function openEditQuest(questId) {
@@ -2039,7 +2091,6 @@ async function saveEditQuest(questId) {
   }
 }
 
-/* -------- 审核中心 -------- */
 async function renderReview() {
   const claims = await api(`claims?select=*&order=created_at.desc`);
   const quests = await api(`quests?select=*`);
@@ -2087,7 +2138,7 @@ async function renderReview() {
           <div class="quest-title">${esc((questMap[c.quest_id] || {}).title || "（已删除）")}</div>
           <div class="quest-desc">领取人：${esc(c.student_name)} · ${esc(c.house || "")}</div>
           ${c.items ? `<div class="quest-desc">已提交物品：${esc(c.items)}</div>` : ""}
-          <div style="display:flex;gap:8px;margin-top:12px;">
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
             <button class="magic-btn small success" onclick="markComplete(${c.id})">标 记 完 成</button>
             ${session.role === "super" ? `<button class="magic-btn small danger" onclick="revokeComplete(${c.id})">撤 销 完 成</button>` : ""}
           </div>
@@ -2143,7 +2194,6 @@ async function revokeComplete(claimId) {
   renderTeacherContent();
 }
 
-/* 检查这个课题的所有接取者是否都完成 */
 async function checkQuestComplete(claimId) {
   const c = await api(`claims?id=eq.${claimId}&select=*`);
   if (!c || !c.length) return;
@@ -2176,7 +2226,6 @@ async function saveEditItems(claimId) {
   renderTeacherContent();
 }
 
-/* -------- 学生总览 -------- */
 async function renderStudents() {
   const students = await api(`students?select=*&order=created_at.asc`);
   const claims = await api(`claims?select=*&order=created_at.desc`);
@@ -2212,6 +2261,7 @@ async function renderStudents() {
               <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
                 ${s.id ? `<button class="magic-btn small" style="padding:4px 12px;font-size:12px;" onclick="openChangeHouse(${s.id}, '${esc(s.name)}', '${esc(s.house || "")}')">修 改 学 院</button>` : ""}
                 ${s.id ? `<button class="magic-btn small" style="padding:4px 12px;font-size:12px;" onclick="openChangeGrade(${s.id}, '${esc(s.name)}', ${s.grade || 1})">修 改 年 级</button>` : ""}
+                ${s.id && session.role === "super" ? `<button class="magic-btn small danger" style="padding:4px 12px;font-size:12px;" onclick="deleteStudent(${s.id}, '${esc(s.name)}')">删 除</button>` : ""}
               </div>
               ${myClaims.length ? myClaims.map(c => {
                 const q = questMap[c.quest_id] || {};
@@ -2226,6 +2276,20 @@ async function renderStudents() {
   }
   if (!html) html = `<div class="empty-hint">暂 无 学 生 记 录</div>`;
   box.innerHTML = `<div class="panel">${html}</div>`;
+}
+
+async function deleteStudent(studentId, name) {
+  if (!confirm(`确定删除学生「${name}」？\n\n会同时删除 TA 的所有课题记录和消息。`)) return;
+  showLoading("正 在 删 除");
+  try {
+    await api(`claims?student_name=eq.${encodeURIComponent(name)}`, { method: "DELETE" });
+    await api(`messages?to_user=eq.${encodeURIComponent(name)}`, { method: "DELETE" });
+    await api(`students?id=eq.${studentId}`, { method: "DELETE" });
+    setTimeout(() => { hideLoading(); renderTeacherContent(); alert("已删除"); }, 500);
+  } catch (e) {
+    hideLoading();
+    alert("删除失败：" + e.message);
+  }
 }
 
 function openChangeHouse(studentId, name, currentHouse) {
@@ -2290,7 +2354,6 @@ async function saveChangeGrade(studentId) {
   }
 }
 
-/* -------- 教师总览 -------- */
 async function renderTeachers() {
   const students = await api(`students?select=*&order=created_at.asc`);
   const box = document.getElementById("tabContents");
@@ -2306,13 +2369,25 @@ async function renderTeachers() {
         <div class="student-row">
           <div class="name">${esc(t.name)}${t.role === "super" ? '<span class="grade" style="border-color:rgba(232,198,106,0.7);color:#f0d090;">SUPER</span>' : ""}</div>
           <div class="quest-info">${esc(t.position || "—")}</div>
+          ${session.role === "super" && t.role !== "super" ? `<div style="margin-top:8px;"><button class="magic-btn small danger" style="padding:4px 12px;font-size:12px;" onclick="deleteTeacher(${t.id}, '${esc(t.name)}')">删 除</button></div>` : ""}
         </div>
       `).join("")}
     </div>
   `;
 }
 
-/* -------- 帖子管理 -------- */
+async function deleteTeacher(teacherId, name) {
+  if (!confirm(`确定删除教师「${name}」？`)) return;
+  showLoading("正 在 删 除");
+  try {
+    await api(`students?id=eq.${teacherId}`, { method: "DELETE" });
+    setTimeout(() => { hideLoading(); renderTeacherContent(); alert("已删除"); }, 500);
+  } catch (e) {
+    hideLoading();
+    alert("删除失败：" + e.message);
+  }
+}
+
 async function renderForumAdmin() {
   const box = document.getElementById("tabContents");
   box.innerHTML = `<div class="panel"><div class="empty-hint">正 在 读 取 ...</div></div>`;
