@@ -602,79 +602,195 @@
   .comment-item .meta { color: var(--gold); font-size: 13px; margin-bottom: 4px; opacity: 0.85; }
   .comment-item .text { color: var(--text-soft); }
 
+  /* ==================== 加载页（身份验证终端） ==================== */
   #loadingOverlay {
     position: fixed; inset: 0; z-index: 9999;
-    background: #0a0618;
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(120,40,80,0.35) 0%, transparent 55%),
+      radial-gradient(ellipse at 70% 40%, rgba(80,40,160,0.4) 0%, transparent 55%),
+      linear-gradient(160deg, #1a0618 0%, #0a0618 60%, #150a28 100%);
     display: none; align-items: center; justify-content: center;
-    flex-direction: column; gap: 30px;
+    flex-direction: column;
+    padding: 20px;
   }
   #loadingOverlay.show { display: flex; }
-  .magic-circle { position: relative; width: 240px; height: 240px; }
-  .magic-circle .rune-ring {
-    position: absolute; inset: 0; border-radius: 50%;
-    animation: spinSlow 24s linear infinite;
-    transform-origin: center;
+
+  .terminal-box {
+    width: 100%;
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+    align-items: center;
   }
-  .magic-circle .rune-ring svg { width: 100%; height: 100%; overflow: visible; }
-  .magic-circle .rune-ring svg text {
-    fill: rgba(232,198,106,0.85);
-    font-family: 'Cinzel', serif;
-    font-size: 13px;
-    letter-spacing: 2px;
-    text-shadow: 0 0 8px rgba(232,198,106,0.9);
+
+  .ring-wrap {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    margin: 0 auto;
   }
-  .magic-circle .rune-ring-2 {
-    position: absolute; inset: 20px; border-radius: 50%;
-    animation: spinSlowRev 18s linear infinite;
-    transform-origin: center;
+  .ring-wrap svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
   }
-  .magic-circle .rune-ring-2 svg { width: 100%; height: 100%; overflow: visible; }
-  .magic-circle .rune-ring-2 svg text {
-    fill: rgba(200,170,220,0.6);
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    letter-spacing: 3px;
-  }
-  .magic-circle .hexagram {
-    position: absolute; inset: 38px;
-    animation: spinSlow 30s linear infinite reverse;
-    transform-origin: center;
-  }
-  .magic-circle .hexagram svg { width: 100%; height: 100%; overflow: visible; }
-  .magic-circle .hexagram polygon {
+  .ring-track {
     fill: none;
-    stroke: var(--gold);
-    stroke-width: 1.4;
+    stroke: rgba(200,170,90,0.15);
+    stroke-width: 4;
+  }
+  .ring-fill {
+    fill: none;
+    stroke: url(#ringGrad);
+    stroke-width: 4;
+    stroke-linecap: round;
     filter: drop-shadow(0 0 8px rgba(232,198,106,0.9));
+    transition: stroke-dashoffset 0.5s ease;
   }
-  .magic-circle .inner-ring {
-    position: absolute; inset: 60px;
-    border-radius: 50%;
-    border: 1px dashed rgba(232,198,106,0.7);
-    animation: spinSlowRev 12s linear infinite;
-    box-shadow: 0 0 20px rgba(232,198,106,0.5), inset 0 0 20px rgba(232,198,106,0.4);
+  .ring-dashed {
+    fill: none;
+    stroke: rgba(200,170,90,0.35);
+    stroke-width: 1;
+    stroke-dasharray: 2 6;
   }
-  .magic-circle .core {
-    position: absolute; inset: 96px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,240,180,1) 0%, rgba(232,198,106,0.8) 30%, rgba(160,120,255,0.35) 60%, transparent 100%);
-    box-shadow: 0 0 30px rgba(232,198,106,0.9), 0 0 60px rgba(200,150,80,0.6), 0 0 100px rgba(120,90,220,0.5);
-    animation: corePulse 2s ease-in-out infinite;
+  .ring-core {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
-  @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  @keyframes spinSlowRev { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-  @keyframes corePulse {
-    0%, 100% { transform: scale(1); opacity: 0.85; }
-    50%      { transform: scale(1.08); opacity: 1; }
+  .ring-percent {
+    font-family: "Cinzel", serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff8e0;
+    letter-spacing: 2px;
+    text-shadow:
+      0 0 20px rgba(232,198,106,0.9),
+      0 0 40px rgba(200,150,80,0.5);
+    line-height: 1;
   }
-  @keyframes pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
-  .loading-text {
-    font-size: 15px;
+  .ring-label {
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    margin-top: 10px;
+    text-shadow: 0 0 10px rgba(232,198,106,0.6);
+  }
+
+  .terminal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .info-head {
+    font-size: 13px;
     letter-spacing: 6px;
     color: var(--gold);
-    text-shadow: 0 0 14px rgba(232,198,106,0.8);
-    animation: pulse 1.8s ease-in-out infinite;
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+  .info-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 20px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(200,170,90,0.2);
+    position: relative;
+  }
+  .info-row::before {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -1px;
+    width: 60px; height: 1px;
+    background: linear-gradient(to right, var(--gold), transparent);
+  }
+  .info-key {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gold-dim);
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+  .info-key small {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(200,170,90,0.5);
+    margin-top: 2px;
+  }
+  .info-val {
+    font-size: 15px;
+    letter-spacing: 3px;
+    color: #fff8e0;
+    text-shadow: 0 0 10px rgba(232,198,106,0.5);
+    text-align: right;
+    transition: all 0.4s;
+  }
+  .info-val.blank {
+    color: rgba(200,170,90,0.3);
+    text-shadow: none;
+  }
+
+  .auth-status {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
     margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .auth-status.show { opacity: 1; }
+  .auth-check {
+    width: 32px; height: 32px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 18px;
+    box-shadow: 0 0 16px rgba(232,198,106,0.7), inset 0 0 10px rgba(232,198,106,0.3);
+  }
+  .auth-text {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(232,198,106,0.7);
+  }
+  .auth-text small {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 3px;
+    opacity: 0.6;
+    margin-top: 4px;
+  }
+
+  .terminal-foot {
+    position: absolute;
+    bottom: 24px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(200,170,90,0.35);
+  }
+
+  @media (max-width: 700px) {
+    .terminal-box {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    .ring-wrap { width: 180px; height: 180px; }
+    .ring-percent { font-size: 30px; }
+    .info-row { grid-template-columns: 100px 1fr; }
+    .info-val { font-size: 13px; }
   }
 
   .modal-overlay {
@@ -839,11 +955,12 @@
         <option value="古代占卜课教授">古代占卜课教授</option>
         <option value="算术占卜课教授">算术占卜课教授</option>
         <option value="神奇生物保护课教授">神奇生物保护课教授</option>
+        <option value="炼金基础课教授">炼金基础课教授</option>
         <option value="缄默林生态区负责人">缄默林生态区负责人</option>
         <option value="校医">校医</option>
+        <option value="教务处老师">教务处老师</option>
         <option value="管理员">管理员</option>
         <option value="园丁">园丁</option>
-        <option value="超级管理员">超级管理员</option>
       </select>
     </div>
     <div class="field-label">密 码</div>
@@ -880,33 +997,51 @@
 </div>
 
 <div id="loadingOverlay">
-  <div class="magic-circle">
-    <div class="rune-ring">
-      <svg viewBox="0 0 220 220">
+  <div class="terminal-box">
+    <div class="ring-wrap">
+      <svg viewBox="0 0 260 260">
         <defs>
-          <path id="runeCirclePath" d="M 110,110 m -100,0 a 100,100 0 1,1 200,0 a 100,100 0 1,1 -200,0" />
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ff88c8"/>
+            <stop offset="50%" stop-color="#e8c66a"/>
+            <stop offset="100%" stop-color="#a888ff"/>
+          </linearGradient>
         </defs>
-        <text><textPath href="#runeCirclePath" startOffset="0%">✦ A P H E L I O N · M A G I C A · A C A D E M Y ✦ ✦ M A G I C A L · A R C A N U M ✦</textPath></text>
+        <circle class="ring-track" cx="130" cy="130" r="110"/>
+        <circle class="ring-dashed" cx="130" cy="130" r="100"/>
+        <circle class="ring-fill" id="ringFill" cx="130" cy="130" r="110"
+                stroke-dasharray="691.15"
+                stroke-dashoffset="691.15"/>
       </svg>
+      <div class="ring-core">
+        <div class="ring-percent" id="ringPercent">0%</div>
+        <div class="ring-label" id="ringLabel">初 始 化</div>
+      </div>
     </div>
-    <div class="rune-ring-2">
-      <svg viewBox="0 0 220 220">
-        <defs>
-          <path id="runeCirclePath2" d="M 110,110 m -84,0 a 84,84 0 1,1 168,0 a 84,84 0 1,1 -168,0" />
-        </defs>
-        <text><textPath href="#runeCirclePath2" startOffset="0%">✧ ✦ ✧ ☾ ☉ ✧ ✦ ✧ ★ ✧ ✦ ✧ ☽ ✧ ✦ ✧</textPath></text>
-      </svg>
+    <div class="terminal-info">
+      <div class="info-head">身 份 验 证 终 端</div>
+      <div class="info-row">
+        <div class="info-key">DEPT<small>所属部门</small></div>
+        <div class="info-val blank" id="infoDept">—</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">RANK<small>职称</small></div>
+        <div class="info-val blank" id="infoRank">—</div>
+      </div>
+      <div class="info-row">
+        <div class="info-key">STATUS<small>在岗状态</small></div>
+        <div class="info-val blank" id="infoStatus">—</div>
+      </div>
+      <div class="auth-status" id="authStatus">
+        <div class="auth-check">✓</div>
+        <div class="auth-text">
+          ACCESS GRANTED
+          <small>认 证 通 过</small>
+        </div>
+      </div>
     </div>
-    <div class="hexagram">
-      <svg viewBox="0 0 150 150">
-        <polygon points="75,10 130,120 20,120" />
-        <polygon points="75,140 20,30 130,30" />
-      </svg>
-    </div>
-    <div class="inner-ring"></div>
-    <div class="core"></div>
   </div>
-  <div class="loading-text" id="loadingText">正 在 连 接 魔 法 网 络</div>
+  <div class="terminal-foot">APHELION ACADEMY · IDENTITY VERIFICATION TERMINAL</div>
 </div>
 
 <div class="modal-overlay" id="modal">
@@ -1005,8 +1140,8 @@ function esc(s) {
 }
 function getWeekStart() {
   const now = new Date();
-  const day = now.getDay(); // 0=周日, 1=周一 ...
-  const diff = day === 0 ? 6 : day - 1; // 距离周一的天数
+  const day = now.getDay();
+  const diff = day === 0 ? 6 : day - 1;
   const monday = new Date(now);
   monday.setDate(now.getDate() - diff);
   monday.setHours(0, 0, 0, 0);
@@ -1034,13 +1169,6 @@ async function api(path, opts = {}) {
   return data;
 }
 
-function showLoading(text = "正 在 连 接 魔 法 网 络") {
-  document.getElementById("loadingText").textContent = text;
-  document.getElementById("loadingOverlay").classList.add("show");
-}
-function hideLoading() {
-  document.getElementById("loadingOverlay").classList.remove("show");
-}
 function openModal(html) {
   document.getElementById("modalBox").innerHTML = html;
   document.getElementById("modal").classList.add("show");
@@ -1052,6 +1180,92 @@ function toggleEye(inputId, btn) {
   const inp = document.getElementById(inputId);
   if (inp.type === "password") { inp.type = "text"; btn.classList.add("on"); }
   else { inp.type = "password"; btn.classList.remove("on"); }
+}
+
+/* ==================== 加载页（身份验证终端） ==================== */
+const RING_LENGTH = 691.15;
+
+function resetLoading() {
+  document.getElementById("ringFill").style.strokeDashoffset = RING_LENGTH;
+  document.getElementById("ringPercent").textContent = "0%";
+  document.getElementById("ringLabel").textContent = "初 始 化";
+  document.getElementById("infoDept").textContent = "—";
+  document.getElementById("infoRank").textContent = "—";
+  document.getElementById("infoStatus").textContent = "—";
+  document.getElementById("infoDept").classList.add("blank");
+  document.getElementById("infoRank").classList.add("blank");
+  document.getElementById("infoStatus").classList.add("blank");
+  document.getElementById("authStatus").classList.remove("show");
+}
+
+/**
+ * @param {object} userInfo { dept, rank, status }
+ * @param {function} onComplete 加载完毕后执行
+ */
+function runLoading(userInfo, onComplete) {
+  const overlay = document.getElementById("loadingOverlay");
+  const ringFill = document.getElementById("ringFill");
+  const ringPercent = document.getElementById("ringPercent");
+  const ringLabel = document.getElementById("ringLabel");
+  const infoDept = document.getElementById("infoDept");
+  const infoRank = document.getElementById("infoRank");
+  const infoStatus = document.getElementById("infoStatus");
+  const authStatus = document.getElementById("authStatus");
+
+  resetLoading();
+  overlay.classList.add("show");
+
+  const steps = [
+    { label: "接入沟通渠道", to: 25, dept: null, rank: null, status: null },
+    { label: "检测魔力信道", to: 50, dept: userInfo.dept, rank: null, status: null },
+    { label: "评估现实占用", to: 75, dept: userInfo.dept, rank: userInfo.rank, status: null },
+    { label: "释放元素负荷", to: 100, dept: userInfo.dept, rank: userInfo.rank, status: userInfo.status }
+  ];
+
+  let curPct = 0;
+  let stepIdx = 0;
+
+  // 平滑递增函数
+  function animateTo(targetPct, duration, callback) {
+    const startPct = curPct;
+    const t0 = performance.now();
+    function tick(now) {
+      const p = Math.min(1, (now - t0) / duration);
+      const ease = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      curPct = startPct + (targetPct - startPct) * ease;
+      ringPercent.textContent = Math.floor(curPct) + "%";
+      ringFill.style.strokeDashoffset = RING_LENGTH * (1 - curPct / 100);
+      if (p < 1) requestAnimationFrame(tick);
+      else { curPct = targetPct; if (callback) callback(); }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function stepNext() {
+    if (stepIdx >= steps.length) {
+      // 全部完成
+      ringPercent.textContent = "100%";
+      ringFill.style.strokeDashoffset = 0;
+      ringLabel.textContent = "认 证 通 过";
+      authStatus.classList.add("show");
+      setTimeout(() => {
+        overlay.classList.remove("show");
+        if (onComplete) onComplete();
+      }, 1000);
+      return;
+    }
+    const s = steps[stepIdx];
+    ringLabel.textContent = s.label;
+    animateTo(s.to, 700, () => {
+      if (s.dept) { infoDept.textContent = s.dept; infoDept.classList.remove("blank"); }
+      if (s.rank) { infoRank.textContent = s.rank; infoRank.classList.remove("blank"); }
+      if (s.status) { infoStatus.textContent = s.status; infoStatus.classList.remove("blank"); }
+      stepIdx++;
+      setTimeout(stepNext, 120);
+    });
+  }
+
+  setTimeout(stepNext, 300);
 }
 
 /* ==================== 世界历 ==================== */
@@ -1095,7 +1309,7 @@ function deadlineText(q) {
   return `⏰ 截止：发布后 ${q.deadline_days} 天`;
 }
 
-/* ==================== 登录 ==================== */
+/* ==================== 学生登录 ==================== */
 async function doLogin() {
   const name = document.getElementById("loginName").value.trim();
   const pass = document.getElementById("loginPass").value;
@@ -1105,24 +1319,31 @@ async function doLogin() {
   if (!house) { alert("请选择你的学院。"); return; }
   if (pass !== STUDENT_PASSWORD) { alert("通行密码不正确。"); return; }
 
-  showLoading("正 在 唤 醒 魔 法 阵");
-
-  try {
-    const existing = await api(`students?name=eq.${encodeURIComponent(name)}&select=*`);
+  try {    const existing = await api(`students?name=eq.${encodeURIComponent(name)}&select=*`);
     if (existing && existing.length) {
       const stu = existing[0];
+      const finalHouse = stu.house || house;
+
       const patch = {};
-      if (stu.house !== house) patch.house = house;
       if (!stu.role) patch.role = "student";
       if (!stu.grade) patch.grade = 1;
+      if (!stu.house) patch.house = house;
+
       if (Object.keys(patch).length) {
         await api(`students?name=eq.${encodeURIComponent(name)}`, {
           method: "PATCH",
           body: JSON.stringify(patch)
         });
       }
+
+      if (stu.house && stu.house !== house) {
+        alert(`你的学院是「${stu.house}」，已按学院档案记录。`);
+      }
+
       session = {
-        role: "student", name, house,
+        role: "student",
+        name,
+        house: finalHouse,
         grade: stu.grade || 1,
         location: stu.location || "阿斐理恩"
       };
@@ -1138,7 +1359,12 @@ async function doLogin() {
     session = { role: "student", name, house, grade: 1, location: "阿斐理恩" };
   }
 
-  setTimeout(() => { hideLoading(); enterSystem(); }, 1600);
+  const userInfo = {
+    dept: house,
+    rank: gradeText(session.grade) || "1 年级",
+    status: "在读"
+  };
+  runLoading(userInfo, () => enterSystem());
 }
 
 function flipToTeacher() {
@@ -1173,6 +1399,7 @@ function backToStudent() {
   }, 700);
 }
 
+/* ==================== 教师登录 ==================== */
 async function doTeacherLogin() {
   const name = document.getElementById("teacherName").value.trim();
   const position = document.getElementById("teacherPosition").value;
@@ -1181,12 +1408,15 @@ async function doTeacherLogin() {
   if (!name) { alert("请输入你的名字。"); return; }
   if (!position) { alert("请选择你的职位。"); return; }
 
-  let role = null;
-  if (pass === SUPER_PASSWORD) role = "super";
-  else if (pass === TEACHER_PASSWORD) role = "teacher";
-  else { alert("密码不正确。"); return; }
-
-  showLoading("正 在 验 证 教 师 权 限");
+    let role = null;
+  if (position === "缄默林生态区负责人" && pass === SUPER_PASSWORD) {
+    role = "super";
+  } else if (pass === TEACHER_PASSWORD) {
+    role = "teacher";
+  } else {
+    alert("密码不正确。");
+    return;
+  }
 
   try {
     const existing = await api(`students?name=eq.${encodeURIComponent(name)}&select=*`);
@@ -1205,11 +1435,15 @@ async function doTeacherLogin() {
 
   session = { role, name, position, house: null, location: "阿斐理恩" };
 
-  setTimeout(() => {
-    hideLoading();
+  const userInfo = {
+    dept: position,
+    rank: role === "super" ? "SUPER" : "TEACHER",
+    status: "在岗"
+  };
+  runLoading(userInfo, () => {
     document.getElementById("teacherScreen").style.display = "none";
     enterSystem();
-  }, 1400);
+  });
 }
 
 function doLogout() {
@@ -1355,29 +1589,24 @@ function statusClass(s) {
 }
 
 async function claimQuest(questId) {
-  showLoading("正 在 提 交 申 请");
   try {
-// 检查本周接取数量
-const weekStart = getWeekStart();
-const myAllClaims = await api(`claims?student_name=eq.${encodeURIComponent(session.name)}&select=*`);
-const weekClaims = (myAllClaims || []).filter(c => new Date(c.created_at) >= weekStart);
-if (weekClaims.length >= 3) {
-  hideLoading();
-  alert("你本周已经接取了 3 个课题，下周再继续吧。");
-  return;
-}
+    const weekStart = getWeekStart();
+    const myAllClaims = await api(`claims?student_name=eq.${encodeURIComponent(session.name)}&select=*`);
+    const weekClaims = (myAllClaims || []).filter(c => new Date(c.created_at) >= weekStart);
+    if (weekClaims.length >= 3) {
+      alert("你本周已经接取了 3 个课题，下周再继续吧。");
+      return;
+    }
     const qArr = await api(`quests?id=eq.${questId}&select=*`);
-    if (!qArr || !qArr.length) { hideLoading(); alert("课题不存在"); return; }
+    if (!qArr || !qArr.length) { alert("课题不存在"); return; }
     const q = qArr[0];
     if (q.status !== "open") {
-      hideLoading();
       alert("这个课题已经不可以领取了。");
       renderStudentContent();
       return;
     }
     const mine = await api(`claims?quest_id=eq.${questId}&student_name=eq.${encodeURIComponent(session.name)}&select=*`);
     if (mine && mine.length) {
-      hideLoading();
       alert("你已经接过这个课题了。");
       return;
     }
@@ -1392,7 +1621,6 @@ if (weekClaims.length >= 3) {
       })
     });
     if (!res.ok) {
-      hideLoading();
       alert("提交失败：" + await res.text());
       return;
     }
@@ -1403,13 +1631,9 @@ if (weekClaims.length >= 3) {
       method: "PATCH",
       body: JSON.stringify(patch)
     });
-    setTimeout(() => {
-      hideLoading();
-      alert("领取成功，等待教师审核。");
-      renderStudentContent();
-    }, 800);
+    alert("领取成功，等待教师审核。");
+    renderStudentContent();
   } catch (e) {
-    hideLoading();
     alert("操作失败：" + e.message);
   }
 }
@@ -1476,20 +1700,15 @@ async function submitItems(claimId) {
   const note = document.getElementById("itemNote").value.trim();
   if (!name) { alert("请填写物品名称"); return; }
   const items = qty ? `${name} × ${qty}${note ? "（" + note + "）" : ""}` : `${name}${note ? "（" + note + "）" : ""}`;
-  showLoading("正 在 提 交");
   try {
     await api(`claims?id=eq.${claimId}`, {
       method: "PATCH",
       body: JSON.stringify({ items, items_status: "pending" })
     });
-    setTimeout(() => {
-      hideLoading();
-      closeModal();
-      alert("已提交，等待教师审核。");
-      renderStudentContent();
-    }, 800);
+    closeModal();
+    alert("已提交，等待教师审核。");
+    renderStudentContent();
   } catch (e) {
-    hideLoading();
     alert("提交失败：" + e.message);
   }
 }
@@ -1547,7 +1766,6 @@ async function renderProfile() {
 
 async function saveLocation() {
   const loc = document.getElementById("profileLocation").value || "阿斐理恩";
-  showLoading("正 在 保 存");
   try {
     await api(`students?name=eq.${encodeURIComponent(session.name)}`, {
       method: "PATCH",
@@ -1559,9 +1777,9 @@ async function saveLocation() {
     if (topUser) {
       topUser.innerHTML = `${esc(session.name)}<span class="user-house">${esc(session.house)}${grade ? " · " + grade : ""} · ${esc(loc)}</span>`;
     }
-    setTimeout(() => { hideLoading(); renderProfile(); alert("已保存"); }, 500);
+    renderProfile();
+    alert("已保存");
   } catch (e) {
-    hideLoading();
     alert("保存失败：" + e.message);
   }
 }
@@ -1641,7 +1859,6 @@ async function submitPost() {
   const title = document.getElementById("postTitle").value.trim();
   const content = document.getElementById("postContent").value.trim();
   if (!content) { alert("说点什么吧"); return; }
-  showLoading("正 在 发 布");
   try {
     await api(`posts`, {
       method: "POST",
@@ -1656,9 +1873,8 @@ async function submitPost() {
     });
     document.getElementById("postTitle").value = "";
     document.getElementById("postContent").value = "";
-    setTimeout(() => { hideLoading(); loadPosts(); }, 700);
+    loadPosts();
   } catch (e) {
-    hideLoading();
     alert("发布失败：" + e.message);
   }
 }
@@ -1944,7 +2160,6 @@ async function createQuest() {
   if (!completion) { alert("完成条件是必填的"); return; }
   if (max < 1) { alert("推荐接取人数至少为 1"); return; }
 
-  showLoading("正 在 发 布");
   try {
     await api(`quests`, {
       method: "POST",
@@ -1954,13 +2169,9 @@ async function createQuest() {
         claimed_count: 0, status: "open"
       })
     });
-    setTimeout(() => {
-      hideLoading();
-      closePublish();
-      renderTeacherContent();
-    }, 700);
+    closePublish();
+    renderTeacherContent();
   } catch (e) {
-    hideLoading();
     alert("失败：" + e.message);
   }
 }
@@ -1973,10 +2184,8 @@ async function deleteQuest(id) {
 }
 
 async function openClaimList(questId, questTitle) {
-  showLoading("正 在 读 取");
   try {
     const claims = await api(`claims?quest_id=eq.${questId}&select=*&order=created_at.asc`);
-    hideLoading();
     const list = Array.isArray(claims) ? claims : [];
 
     if (!list.length) {
@@ -2013,17 +2222,14 @@ async function openClaimList(questId, questTitle) {
       </div>
     `);
   } catch (e) {
-    hideLoading();
     alert("读取失败：" + e.message);
   }
 }
 
 async function revokeClaim(claimId, questId, studentName) {
   if (!confirm(`确定撤销「${studentName}」的接取？\n\nTA 将不再拥有这个课题。`)) return;
-  showLoading("正 在 撤 销");
   try {
     await api(`claims?id=eq.${claimId}`, { method: "DELETE" });
-
     const q = await api(`quests?id=eq.${questId}&select=*`);
     if (q && q.length) {
       const newCount = Math.max(0, (q[0].claimed_count || 1) - 1);
@@ -2034,13 +2240,10 @@ async function revokeClaim(claimId, questId, studentName) {
       }
       await api(`quests?id=eq.${questId}`, { method: "PATCH", body: JSON.stringify(patch) });
     }
-
-    hideLoading();
     closeModal();
     alert("已撤销");
     renderTeacherContent();
   } catch (e) {
-    hideLoading();
     alert("撤销失败：" + e.message);
   }
 }
@@ -2092,7 +2295,6 @@ async function saveEditQuest(questId) {
     alert("标题、描述、地点、完成条件都不能为空");
     return;
   }
-  showLoading("正 在 保 存");
   try {
     await api(`quests?id=eq.${questId}`, {
       method: "PATCH",
@@ -2101,9 +2303,9 @@ async function saveEditQuest(questId) {
         max_claims: max, deadline_days: deadline
       })
     });
-    setTimeout(() => { hideLoading(); closeModal(); renderTeacherContent(); }, 600);
+    closeModal();
+    renderTeacherContent();
   } catch (e) {
-    hideLoading();
     alert("保存失败：" + e.message);
   }
 }
@@ -2216,16 +2418,13 @@ async function checkQuestComplete(claimId) {
   if (!c || !c.length) return;
   const questId = c[0].quest_id;
 
-  // 取这个课题
   const q = await api(`quests?id=eq.${questId}&select=*`);
   if (!q || !q.length) return;
   const quest = q[0];
 
-  // 取所有接取记录
   const allClaims = await api(`claims?quest_id=eq.${questId}&select=*`);
   if (!Array.isArray(allClaims) || !allClaims.length) return;
 
-  // 条件：接满了 + 所有人都完成了
   const isFull = (quest.claimed_count || 0) >= (quest.max_claims || 1);
   const allDone = allClaims.every(x => x.status === "completed");
 
@@ -2302,21 +2501,77 @@ async function renderStudents() {
       </div>
     `;
   }
-  if (!html) html = `<div class="empty-hint">暂 无 学 生 记 录</div>`;
-  box.innerHTML = `<div class="panel">${html}</div>`;
+   if (!html) html = `<div class="empty-hint">暂 无 学 生 记 录</div>`;
+  const addBtn = session.role === "super"
+    ? `<button class="magic-btn big" onclick="openAddStudent()">＋ 添 加 学 生</button>`
+    : "";
+  box.innerHTML = `${addBtn}<div class="panel">${html}</div>`;
 }
 
 async function deleteStudent(studentId, name) {
   if (!confirm(`确定删除学生「${name}」？\n\n会同时删除 TA 的所有课题记录和消息。`)) return;
-  showLoading("正 在 删 除");
   try {
     await api(`claims?student_name=eq.${encodeURIComponent(name)}`, { method: "DELETE" });
     await api(`messages?to_user=eq.${encodeURIComponent(name)}`, { method: "DELETE" });
     await api(`students?id=eq.${studentId}`, { method: "DELETE" });
-    setTimeout(() => { hideLoading(); renderTeacherContent(); alert("已删除"); }, 500);
+    renderTeacherContent();
+    alert("已删除");
   } catch (e) {
-    hideLoading();
     alert("删除失败：" + e.message);
+  }
+}
+function openAddStudent() {
+  const options = HOUSES.map(h =>
+    `<option value="${h}">${h}</option>`
+  ).join("");
+  openModal(`
+    <div class="modal-title">添 加 学 生</div>
+    <div class="field-label">姓 名</div>
+    <input type="text" id="addStuName" class="magic-input" placeholder="请输入学生姓名" maxlength="20">
+    <div class="field-label">学 院</div>
+    <div class="select-wrap">
+      <select id="addStuHouse" class="magic-select">
+        <option value="">— 请选择学院 —</option>
+        ${options}
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="magic-btn small" style="flex:1" onclick="closeModal()">取 消</button>
+      <button class="magic-btn small" style="flex:1" onclick="saveAddStudent()">添 加</button>
+    </div>
+  `);
+}
+
+async function saveAddStudent() {
+  const name = document.getElementById("addStuName").value.trim();
+  const house = document.getElementById("addStuHouse").value;
+
+  if (!name) { alert("请输入学生姓名"); return; }
+  if (!house) { alert("请选择学院"); return; }
+
+  try {
+    const existing = await api(`students?name=eq.${encodeURIComponent(name)}&select=*`);
+    if (existing && existing.length) {
+      alert("已经有这个名字了。");
+      return;
+    }
+
+    await api(`students`, {
+      method: "POST",
+      body: JSON.stringify({
+        name,
+        house,
+        role: "student",
+        grade: 1,
+        location: "阿斐理恩"
+      })
+    });
+
+    closeModal();
+    renderTeacherContent();
+    alert(`已添加学生：${name}（${house}）`);
+  } catch (e) {
+    alert("添加失败：" + e.message);
   }
 }
 
@@ -2338,15 +2593,14 @@ function openChangeHouse(studentId, name, currentHouse) {
 }
 async function saveChangeHouse(studentId) {
   const newHouse = document.getElementById("changeHouseSelect").value;
-  showLoading("正 在 修 改");
   try {
     await api(`students?id=eq.${studentId}`, {
       method: "PATCH",
       body: JSON.stringify({ house: newHouse })
     });
-    setTimeout(() => { hideLoading(); closeModal(); renderTeacherContent(); }, 500);
+    closeModal();
+    renderTeacherContent();
   } catch (e) {
-    hideLoading();
     alert("修改失败：" + e.message);
   }
 }
@@ -2369,15 +2623,14 @@ function openChangeGrade(studentId, name, currentGrade) {
 }
 async function saveChangeGrade(studentId) {
   const newGrade = parseInt(document.getElementById("changeGradeSelect").value) || 1;
-  showLoading("正 在 修 改");
   try {
     await api(`students?id=eq.${studentId}`, {
       method: "PATCH",
       body: JSON.stringify({ grade: newGrade })
     });
-    setTimeout(() => { hideLoading(); closeModal(); renderTeacherContent(); }, 500);
+    closeModal();
+    renderTeacherContent();
   } catch (e) {
-    hideLoading();
     alert("修改失败：" + e.message);
   }
 }
@@ -2406,12 +2659,11 @@ async function renderTeachers() {
 
 async function deleteTeacher(teacherId, name) {
   if (!confirm(`确定删除教师「${name}」？`)) return;
-  showLoading("正 在 删 除");
   try {
     await api(`students?id=eq.${teacherId}`, { method: "DELETE" });
-    setTimeout(() => { hideLoading(); renderTeacherContent(); alert("已删除"); }, 500);
+    renderTeacherContent();
+    alert("已删除");
   } catch (e) {
-    hideLoading();
     alert("删除失败：" + e.message);
   }
 }
